@@ -32,8 +32,11 @@ namespace DotNetCoreZhHans.Service
         public Task ScanFiles() => Task.Run(GetXmlFilePaths, token);
 
         public void GetXmlFilePaths() => _ = config.Directorys
+            .Where(ExistsDirectory)
             .Select(FileExtensions.ExpandEnvironmentVariables)
             .SelectMany(GetFiles).Count();
+
+        private bool ExistsDirectory(string directory) => Directory.Exists(directory);
 
         private IEnumerable<string> GetFiles(string directory) =>
              TestAndGetFiles(directory).Concat(TestAndGetDirectories(directory));

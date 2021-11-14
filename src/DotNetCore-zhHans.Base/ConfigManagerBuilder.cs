@@ -61,6 +61,7 @@ namespace DotNetCorezhHans.Base
             Directorys = new()
             {
                 "C:\\Program Files\\dotnet\\packs\\",
+                "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\ReferenceAssemblies\\Microsoft\\Framework",
                 "%UserProFile%\\.nuget\\packages\\",
             },
             ApiConfigs = new()
