@@ -60,8 +60,7 @@ namespace DotNetCorezhHans.Base
             UpdateUrl = "http://www.wyj55.cn/download/DotNetCorezhHans/Update.json",
             Directorys = new()
             {
-                "C:\\Program Files\\dotnet\\packs\\",
-                "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\ReferenceAssemblies\\Microsoft\\Framework",
+                "C:\\Program Files\\dotnet\\packs\\",                
                 "%UserProFile%\\.nuget\\packages\\",
             },
             ApiConfigs = new()
