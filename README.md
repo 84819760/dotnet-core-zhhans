@@ -1,64 +1,27 @@
-# 使用
+# API选择
 
-先到各平台注册账号,并且获得相应的`SecretId`和`SecretKey`,注意妥善保管避免造成经济损失！填写配置文件后运行即可！
+提供商  | 单次最大请求 | QPS | 每月免费额度 | 免费额度超出后果
+---  |  --      | --    | --        | --
+百度 |  6000    | 1     |   无      | 无
+腾讯 |  2000    | 5     |   500w    | 停止服务
+阿里 |  5000    | 50    |   100w    | 进入计费模式
+华为 |  2000    | 未知  |   100w    | 计费
 
-[百度 通用翻译](https://api.fanyi.baidu.com/)  
-[腾讯 机器翻译](https://cloud.tencent.com/document/api/551/15611)  
-[阿里 机器翻译](https://help.aliyun.com/document_detail/158244.html?spm=a2c4g.11186623.2.2.2ea22b579d7wQv)  
+> 建议选择百度
 
+---
 
-# 配置文件
-> 配置文件名称 `DotNetCore-zhHans.Config.ini`
-```ini
-[Configuration]
-; 每次翻译的字符数最大值(建议值:2000)
-MaximumCharacter = 2000
-; 是否保留原文(建议值:True)
-IsKeepOriginal = True
-; 要扫描的路径
-Directorys = "C:\Program Files\dotnet\packs\", "%UserProFile%\.nuget\packages\"
+# 关于翻译中的”异常”
+    异常并不代表整个文件不可用，而是某些行没有通过严格的检查，这些错误要么来自翻译引擎，要么是软件代码原因，以超大文件netstandard.xml为例，大约会出现10个异常。出现异常的内容不会写入数据库，等以后能解决的时候开启“重新生成”即可。
 
-; ============================百度云翻译API设置
-[baidu]
-; 百度为 'APP ID'
-SecretId = "必填项"
-; 百度为 '密钥'
-SecretKey = "必填项"
-; 间隔时间ms(例如百度免费版每秒只能请求一次)
-IntervalTime = 1000
-; 线程数量(百度免费版只能为1)
-ThreadCount = 1
-; ; 是否取消处理包含占位符的内容，某些情况下会丢失内容,除了百度都建议值:True。
-; ; 如果检测到问题会记录到log文件夹。
-CancelPlaceholder = False
+---
 
-;;不用的API记得用（分号 ;）注释掉，否则运行时会报错！
+# 常见问题
+1.	扫描中必须有对应的同名dll文件，否则被忽略。
+1.  如果XML文件中包含阿拉伯文字，会被忽略。
+1.  如果更新.NET自带的XML文档，需要开启管理员权限，否则出现错误” is denied”。
 
-; ; ============================阿里云机器翻译API设置
-; [aliyun]
-; ; 阿里为 'AccessKey Id'
-; SecretId = "必填项"
-; SecretKey = "必填项"
-; IntervalTime = 1000
-; ThreadCount = 1
-; ; 是否取消处理包含占位符的内容，某些情况下会丢失内容,除了百度都建议值:True。
-; ; 如果检测到问题会记录到log文件夹。
-; CancelPlaceholder = True
-; ; 阿里区域设置默认为cn-beijing，不用记得注释掉！
-; ; Region = "可选项"
+---
 
-; ; ============================腾讯云机器翻译API设置
-; [tencent]
-; SecretId = "必填项"
-; SecretKey = "必填项"
-; IntervalTime = 1000
-; ThreadCount = 1
-; ; 是否取消处理包含占位符的内容，某些情况下会丢失内容,除了百度都建议值:True。
-; ; 如果检测到问题会记录到log文件夹。
-; CancelPlaceholder = True
-; ; 腾讯区域设置默认为ap-beijing，不用记得注释掉！
-; ; Region = "可选项"
-```
-
-
-
+# 四、	免责声明
+    本软件为免费提供，源码根据开源协议提供，本人不承担使用软件或源码导致的任何后果，本人承诺不会植入任何非法内容。
