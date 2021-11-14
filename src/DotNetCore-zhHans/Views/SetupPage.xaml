@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="DotNetCorezhHans.Views.SetupPage"
+             x:Name="UserControl1"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DotNetCorezhHans.Views"
+             mc:Ignorable="d" 
+             Background="{StaticResource PRIMAR_BackgroundBrush}"
+             d:DesignHeight="400" d:DesignWidth="{StaticResource windowWidth}"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             
+             xmlns:prism="http://prismlibrary.com/" 
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:near="clr-namespace:NearExtend.WpfPrism;assembly=NearExtend.WpfPrism" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewmodels="clr-namespace:DotNetCorezhHans.ViewModels" 
+             Loaded="UserControl1_Loaded"
+             d:DataContext="{d:DesignInstance Type=viewmodels:SetupPageViewModel,IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+        <Style TargetType="local:ListModule">
+            <Setter Property="Height" Value="150"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="0 10 0 0"/>
+        </Style>
+
+        <Storyboard x:Key="show">
+            <DoubleAnimation 
+                Storyboard.TargetProperty="Opacity"
+                Duration="{StaticResource Duration15}"
+                To="1" From="0"/>
+        </Storyboard>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <local:ListModule x:Name="BasicOptions" Grid.Column="1" ContentHorizontalAlignment="Center" Title="基本选项"/>
+        <local:ListModule x:Name="ApiPage" Grid.Column="3" Icon="ArrowDecision" ContentHorizontalAlignment="Center" Title="API选项"/>
+        <local:ListModule x:Name="FolderPage" Height="190"    Margin="0 15 0 0" ContentHorizontalAlignment="Stretch"
+                          Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" Icon="Folder" Title="扫描路径"/>
+        <Button Content="保存到配置文件"  Grid.Row="2" Grid.Column="1"  Grid.ColumnSpan="3" 
+                Margin="0 10" IsEnabled="{Binding ButtonState}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Click">
+                    <i:CallMethodAction MethodName="Save" TargetObject="{Binding}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+    </Grid>
+</UserControl>

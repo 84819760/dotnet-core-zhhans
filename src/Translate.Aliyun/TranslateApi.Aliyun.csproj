@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>TranslateApi.Aliyun</RootNamespace>
+    <Platforms>AnyCPU;x64;x86</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="aliyun-net-sdk-alimt" Version="3.0.30" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetCore-zhHans.Base\DotNetCore-zhHans.Base.csproj" />
+  </ItemGroup>
+
+</Project>

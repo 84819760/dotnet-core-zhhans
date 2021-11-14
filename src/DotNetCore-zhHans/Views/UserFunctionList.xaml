@@ -1,0 +1,75 @@
+﻿<UserControl x:Name="userControl" x:Class="DotNetCorezhHans.Views.UserFunctionList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DotNetCorezhHans.Views"
+             mc:Ignorable="d" Background="{StaticResource PRIMAR_BackgroundBrush}"
+             
+             xmlns:prism="http://prismlibrary.com/" 
+             prism:ViewModelLocator.AutoWireViewModel="True"        
+          
+             xmlns:viewmodels="clr-namespace:DotNetCorezhHans.ViewModels"
+             xmlns:animationdefinition="clr-namespace:DotNetCorezhHans"
+             d:DataContext="{d:DesignInstance Type=viewmodels:UserFunctionListViewModel,IsDesignTimeCreatable=True}"
+             d:DesignHeight="100" d:DesignWidth="{StaticResource windowWidth}">
+    <UserControl.Resources>
+        <Storyboard x:Key="Setup">
+            <animationdefinition:GridLengthAnimation
+                Storyboard.TargetName="row1"
+                Storyboard.TargetProperty="Height"
+                To="0" Duration="{StaticResource Duration03}" />
+
+            <animationdefinition:GridLengthAnimation
+                Storyboard.TargetName="row0"
+                Storyboard.TargetProperty="Height"
+                To="1*" Duration="{StaticResource Duration03}" />
+        </Storyboard>
+
+        <Storyboard x:Key="Surprised">
+            <animationdefinition:GridLengthAnimation
+                Storyboard.TargetName="row1"
+                Storyboard.TargetProperty="Height"
+                To="1*" Duration="{StaticResource Duration03}" />
+
+            <animationdefinition:GridLengthAnimation
+                Storyboard.TargetName="row0"
+                Storyboard.TargetProperty="Height"
+                To="0" Duration="{StaticResource Duration03}" />
+        </Storyboard>
+
+        <Storyboard x:Key="Default">
+            <animationdefinition:GridLengthAnimation
+                Storyboard.TargetName="row1"
+                Storyboard.TargetProperty="Height"
+                To="5*" Duration="{StaticResource Duration02}" />
+            <animationdefinition:GridLengthAnimation
+                Storyboard.TargetName="row0"
+                Storyboard.TargetProperty="Height"
+                To="5*" Duration="{StaticResource Duration02}" />
+        </Storyboard>
+
+    </UserControl.Resources>
+
+    <Grid>
+       
+        <Grid Height="{Binding ActualHeight, ElementName=userControl}" Visibility="{Binding PrimaryVisibility}">
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="row0" Height="5*"/>
+                <RowDefinition x:Name="row1" Height="5*"/>
+            </Grid.RowDefinitions>
+
+            <local:NavigationItamConfig Grid.Row="0"/>
+            <local:NavigationItamDonation Grid.Row="1"/>
+
+            <Line X1="0" Y1="0" X2="{StaticResource windowHeight}" Y2="0"
+                  Grid.Row="1" Opacity="1"
+                  StrokeThickness="1" Margin="2 0 2 0"
+                  Stroke="{StaticResource DIVIDER_Brush}"/>
+        </Grid>
+
+        <local:FileListPage Visibility="{Binding DataContext.SecondaryVisibility
+            , RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:UserFunctionList}}}" />
+    </Grid>
+
+</UserControl>

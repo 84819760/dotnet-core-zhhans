@@ -1,0 +1,61 @@
+﻿<prism:PrismApplication x:Class="DotNetCorezhHans.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:DotNetCorezhHans"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"  
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             xmlns:prism="http://prismlibrary.com/" >
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="Aqua" SecondaryColor="DarkGreen" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Color x:Key="PRIMAR">#3F51B5</Color>
+            <Color x:Key="PRIMAR_Background">#FAFAFA</Color>
+            <Color x:Key="PRIMARY_LIGHT">#C5CAE9</Color>
+            <Color x:Key="PRIMARY_DARK">#303F9F</Color>
+            <Color x:Key="PRIMARY_TEXT">#212121</Color>
+            <Color x:Key="TEXT_ICONS">#FFFFFF</Color>
+            <Color x:Key="ACCENT">#536DFE</Color>
+            <Color x:Key="SECONDARY_TEXT">#757575</Color>
+            <Color x:Key="DIVIDER">#BDBDBD</Color>
+            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource PRIMAR}"/>
+            <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="{StaticResource TEXT_ICONS}"/>
+            <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="{StaticResource PRIMARY_LIGHT}"/>
+            <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="{StaticResource PRIMARY_TEXT}"/>
+            <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="{StaticResource PRIMARY_DARK}"/>
+            <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="{StaticResource TEXT_ICONS}"/>
+            <SolidColorBrush x:Key="SecondaryAccentBrush" Color="{StaticResource ACCENT}"/>
+            <SolidColorBrush x:Key="SecondaryAccentForegroundBrush" Color="{StaticResource TEXT_ICONS}"/>
+            <SolidColorBrush x:Key="PRIMAR_BackgroundBrush" Color="{StaticResource PRIMAR_Background}"/>
+            <SolidColorBrush x:Key="SECONDARY_TextBrush" Color="{StaticResource SECONDARY_TEXT}"/>
+            <SolidColorBrush x:Key="DIVIDER_Brush" Color="{StaticResource DIVIDER}"/>
+            <SolidColorBrush x:Key="TEXT_ICONS_Brush" Color="{StaticResource TEXT_ICONS}"/>
+            <SolidColorBrush x:Key="SECONDARY_TEXT_Brush" Color="{StaticResource SECONDARY_TEXT}"/>
+
+            <DropShadowEffect x:Key="shadowWindw" BlurRadius="5" ShadowDepth="0" Opacity="1" />
+            <DropShadowEffect x:Key="limitShadow05" BlurRadius="5" ShadowDepth="-90" Opacity=".5" />
+            <DropShadowEffect x:Key="limitShadow04" BlurRadius="5" ShadowDepth="-90" Opacity=".4" />
+            <DropShadowEffect x:Key="limitShadow03" BlurRadius="5" ShadowDepth="-90" Opacity=".3" />
+            <DropShadowEffect x:Key="limitShadow02" BlurRadius="5" ShadowDepth="-90" Opacity=".2" />
+            <DropShadowEffect x:Key="limitShadow01" BlurRadius="5" ShadowDepth="-90" Opacity=".1" />
+            <DropShadowEffect x:Key="limitShadow" BlurRadius="5" ShadowDepth="0" Opacity="1" />
+
+            <sys:Double x:Key="windowWidth">430</sys:Double>
+            <sys:Double x:Key="windowHeight">462</sys:Double>
+            
+        
+
+            <Duration x:Key="Duration15">0:0:1.5</Duration>
+            <Duration x:Key="Duration05">0:0:0.5</Duration>
+            <Duration x:Key="Duration04">0:0:0.4</Duration>
+            <Duration x:Key="Duration03">0:0:0.3</Duration>
+            <Duration x:Key="Duration02">0:0:0.2</Duration>
+            <Duration x:Key="Duration01">0:0:0.1</Duration>
+            <Duration x:Key="Duration00">0:0:0</Duration>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</prism:PrismApplication>

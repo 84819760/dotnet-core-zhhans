@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <RootNamespace>DotNetCore_zhHans.Boot</RootNamespace>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>j12.ico</ApplicationIcon>
+    <Platforms>AnyCPU;x86</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="j12.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="j12.ico" />
+  </ItemGroup>
+
+</Project>

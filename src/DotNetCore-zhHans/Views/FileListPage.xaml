@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="DotNetCorezhHans.Views.FileListPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DotNetCorezhHans.Views"
+             
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewmodels="clr-namespace:DotNetCorezhHans.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewmodels:FileListPageViewModel,IsDesignTimeCreatable=True}"
+             
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"             
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"              
+             Loaded="UserControl_Loaded"
+             d:Background="White"
+             mc:Ignorable="d" 
+             d:DesignWidth="{StaticResource windowWidth}" d:DesignHeight="100">
+    <UserControl.Resources>
+        <Thickness x:Key="Margin10">10 0 0 0</Thickness>
+        <Style x:Key="listTextBlock" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="10 0"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <UniformGrid x:Name="UniformGrid1" Visibility="{Binding SecondaryVisibility}"
+                     Columns="5" Grid.Row="0" Margin="0 5" >
+            <StackPanel Orientation="Horizontal" Grid.Column="1" >
+                <TextBlock Text="总数:" Margin="{StaticResource Margin10}"/>
+                <TextBlock Text="{Binding Count}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="2"  >
+                <TextBlock Text="完成:" Margin="{StaticResource Margin10}"/>
+                <TextBlock Text="{Binding CheckCount}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="3"  >
+                <TextBlock Text="异常:" Margin="{StaticResource Margin10}"/>
+                <TextBlock Text="{Binding AlertCount}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="4"  >
+                <TextBlock Text="错误:" Margin="{StaticResource Margin10}"/>
+                <TextBlock Text="{Binding ErrorCount}"/>
+            </StackPanel>
+        </UniformGrid>
+
+        <ListBox x:Name="ListBox1" Visibility="{Binding SecondaryVisibility}"
+                 ItemsSource="{Binding Items}"                 
+                 Grid.IsSharedSizeScope="True" Grid.Row="1">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <local:FileItem/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <TextBlock x:Name="TextBlock1" Visibility="{Binding PrimaryVisibility}"
+                   Text="{Binding ScanContent}" FontSize="15"                   
+                   Margin="20 50 20 0"
+                   Grid.Row="1"                  
+                   TextWrapping="Wrap"/>
+    </Grid>
+</UserControl>

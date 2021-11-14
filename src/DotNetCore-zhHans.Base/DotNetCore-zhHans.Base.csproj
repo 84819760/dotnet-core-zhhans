@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>DotNetCorezhHans.Base</RootNamespace>
+    <Platforms>AnyCPU;x64;x86</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="执行过程.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0-preview.6.21352.12" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Ini" Version="6.0.0-preview.6.21352.12" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0-preview.6.21352.12" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0-preview.6.21352.12" />
+	<PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
+	  <PackageReference Include="NearCoreExtensions" Version="1.0.8" />
+  </ItemGroup>
+
+</Project>

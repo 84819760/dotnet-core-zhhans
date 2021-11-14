@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="DotNetCorezhHans.Views.VersionUpdate"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DotNetCorezhHans.Views"
+             mc:Ignorable="d" 
+             Background="White"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewmodels="clr-namespace:DotNetCorezhHans.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:VersionUpdateViewModel, IsDesignTimeCreatable=True}"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:prism="http://prismlibrary.com/" 
+             prism:ViewModelLocator.AutoWireViewModel="True"
+            
+             d:DesignHeight="{StaticResource windowHeight}" d:DesignWidth="{StaticResource windowWidth}">
+    <UserControl.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="10 10"/>
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryHueDarkBrush}"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <Label>
+                <materialDesign:PackIcon Kind="Drupal" Width="30" Height="30" />
+            </Label>
+        </StackPanel>
+
+        <TextBox Grid.Row="1" Text="{Binding Data.Information}"  
+                 Style="{x:Null}" BorderThickness="0"
+                 IsReadOnly="True"
+                 Margin="20 20" FontSize="15" 
+                 HorizontalAlignment="Center"
+                 Width="350"/>
+
+        <StackPanel Grid.Row="2">
+            <GridSplitter Height="1" HorizontalAlignment="Stretch" />
+            <Label>
+                <materialDesign:PackIcon Kind="SatelliteUplink" Width="30" Height="30" />
+            </Label>
+        </StackPanel>
+
+        <Button Grid.Row="3" Style="{StaticResource MaterialDesignRaisedButton}"
+                Width="150"
+                Height="60"
+                HorizontalAlignment="Center"
+                materialDesign:ButtonProgressAssist.Value="{Binding Progress}"
+                materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"   >
+            <TextBlock Text="{Binding ButtonContent}" />
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Click">
+                    <i:CallMethodAction MethodName="CallMethod" TargetObject="{Binding}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+    </Grid>
+</UserControl>

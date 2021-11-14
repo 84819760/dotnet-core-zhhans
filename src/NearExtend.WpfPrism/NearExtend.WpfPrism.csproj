@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Platforms>AnyCPU;x64;x86</Platforms>
+  </PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="NearCoreExtensions" Version="1.0.8" />
+		<PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+	</ItemGroup>
+</Project>

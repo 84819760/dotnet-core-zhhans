@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="DotNetCorezhHans.Views.DonationPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DotNetCorezhHans.Views" 
+             xmlns:viewmodels="clr-namespace:DotNetCorezhHans.ViewModels" 
+           
+             
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"      
+             xmlns:prism="http://prismlibrary.com/" 
+             prism:ViewModelLocator.AutoWireViewModel="True"  
+ 
+             mc:Ignorable="d" 
+             d:DesignWidth="{StaticResource windowWidth}">
+    <Grid>      
+        <local:UserFunctItem  x:Name="Cover"               
+                        Title="惊喜"
+                        IconKind="Label"
+                        Subtitle="感谢您使用本软件，因此我们额外赠送一些福利。"/>
+
+        <TextBlock x:Name="ContentTextBlock" Text="欢迎欢迎" FontSize="50"  Visibility="Collapsed" />
+    </Grid>
+</UserControl>

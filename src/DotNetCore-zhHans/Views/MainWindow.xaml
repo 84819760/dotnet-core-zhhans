@@ -1,0 +1,75 @@
+﻿<Window x:Name="window" x:Class="DotNetCorezhHans.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"          
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+       
+        xmlns:ad="clr-namespace:DotNetCorezhHans"    
+        Background="Yellow"  
+
+        xmlns:viewmodels="clr-namespace:DotNetCorezhHans.ViewModels" 
+        d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel,IsDesignTimeCreatable=True}"
+        xmlns:local="clr-namespace:DotNetCorezhHans.Views"
+        Title="{Binding Title}"
+        
+        WindowStyle="None" AllowsTransparency="True"  
+        WindowStartupLocation="CenterScreen" 
+        ResizeMode="CanMinimize"
+        BorderThickness="5"
+        Effect="{StaticResource shadowWindw}"
+        
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"    
+        xmlns:prism="http://prismlibrary.com/" 
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        Width="{StaticResource windowWidth}" 
+        Height="{StaticResource windowHeight}">
+    <Window.Resources>
+        <GridLength x:Key="Row2Default">6.5*</GridLength>
+        <GridLength x:Key="Row3Default">5*</GridLength>
+        <GridLength x:Key="Row2configure">0</GridLength>
+        <GridLength x:Key="Row3configure">1*</GridLength>
+
+        <Storyboard x:Key="SubPage">
+            <ad:GridLengthAnimation
+                Storyboard.TargetName="row2"
+                Storyboard.TargetProperty="Height"
+                To="{StaticResource Row2configure}"
+                Duration="{StaticResource Duration05}" />
+            <ad:GridLengthAnimation
+                Storyboard.TargetName="row3"
+                Storyboard.TargetProperty="Height"
+                To="{StaticResource Row3configure}"
+                Duration="{StaticResource Duration05}"/>
+        </Storyboard>
+
+        <Storyboard x:Key="Default">
+            <ad:GridLengthAnimation
+                Storyboard.TargetName="row2"
+                Storyboard.TargetProperty="Height"
+                To="{StaticResource Row2Default}"
+                Duration="{StaticResource Duration02}"/>
+            <ad:GridLengthAnimation
+                Storyboard.TargetName="row3"
+                Storyboard.TargetProperty="Height"
+                To="{StaticResource Row3Default}"
+                Duration="{StaticResource Duration02}"/>
+        </Storyboard>
+        
+    </Window.Resources>
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo ProgressState="Normal" ProgressValue="{Binding WindowsProgress}"/>
+    </Window.TaskbarItemInfo>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="26" />
+            <RowDefinition x:Name="row2" Height="{StaticResource Row2Default}"/>
+            <RowDefinition x:Name="row3" Height="{StaticResource Row3Default}"/>
+        </Grid.RowDefinitions>
+        <local:UserFunctionList Grid.Row="2"/>
+        <local:Exhibition Grid.Row="1"/>
+        <local:TitleBlock Grid.Row="0"/>
+    </Grid> 
+</Window>

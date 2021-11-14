@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="DotNetCorezhHans.Views.NavigationItamConfig"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DotNetCorezhHans.Views" 
+             xmlns:viewmodels="clr-namespace:DotNetCorezhHans.ViewModels"   
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"      
+             
+             d:DataContext="{d:DesignInstance Type=viewmodels:NavigationItamConfigViewModel, IsDesignTimeCreatable=True}"
+             
+             xmlns:prism="http://prismlibrary.com/" 
+             prism:ViewModelLocator.AutoWireViewModel="True"  
+             
+             mc:Ignorable="d" 
+             d:Height="50"
+             d:Background="Yellow"
+             d:DesignWidth="{StaticResource windowWidth}">
+    <Grid>      
+        <local:UserFunctItem 
+                    Visibility="{Binding DataContext.PrimaryVisibility
+                                , RelativeSource={RelativeSource AncestorType=UserControl}}"  
+                    Target="Setup"
+                    Title="配置"
+                    IconKind="Cog"
+                    Subtitle="Api Token参数设置，支持百度、腾讯、阿里。"/>
+
+        <local:SetupPage Visibility="{Binding DataContext.SecondaryVisibility
+                                , RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+        
+        
+    </Grid>
+</UserControl>

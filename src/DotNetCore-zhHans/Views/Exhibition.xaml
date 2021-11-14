@@ -1,0 +1,192 @@
+﻿<UserControl x:Class="DotNetCorezhHans.Views.Exhibition"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DotNetCorezhHans.Views" 
+             xmlns:viewmodels="clr-namespace:DotNetCorezhHans.ViewModels" 
+             xmlns:converters="clr-namespace:DotNetCorezhHans" 
+             
+             d:DataContext="{d:DesignInstance Type=viewmodels:ExhibitionViewModel,IsDesignTimeCreatable=True}"
+             mc:Ignorable="d"  Background="{StaticResource PrimaryHueMidBrush}"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             
+             xmlns:prism="http://prismlibrary.com/" 
+             prism:ViewModelLocator.AutoWireViewModel="True"
+        
+                       
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             
+             d:DesignHeight="300" d:DesignWidth="{StaticResource windowWidth}">
+    <UserControl.Resources>
+        <Thickness x:Key="butMargin" Left="0" Top="0" Right="10" Bottom="-26"/>
+        <Thickness x:Key="toConfigure" Left="0" Top="0" Right="10" Bottom="-450"/>
+        <Thickness x:Key="toTranslateStart" Left="0" Top="0" Right="10" Bottom="-20"/>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TEXT_ICONS_Brush}"/>
+        </Style>
+        <Storyboard x:Key="SubPage">
+            <ThicknessAnimation
+                Storyboard.TargetProperty="Margin"
+                Storyboard.TargetName="Button1"
+                    To="{DynamicResource toConfigure}" 
+                    Duration="{StaticResource Duration05}">
+                <ThicknessAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseIn"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+            <BooleanAnimationUsingKeyFrames
+                Storyboard.TargetName="Button1"
+                Storyboard.TargetProperty="IsEnabled" 
+                Duration="{StaticResource Duration01}">
+                <DiscreteBooleanKeyFrame Value="False"/>
+            </BooleanAnimationUsingKeyFrames>
+            <DoubleAnimation
+                Storyboard.TargetName="Button1"
+                Storyboard.TargetProperty="Opacity"
+                To="0.2"  Duration="{StaticResource Duration05}"/>
+        </Storyboard>
+
+        <Storyboard x:Key="Default">
+            <ThicknessAnimation
+                Storyboard.TargetProperty="Margin"
+                Storyboard.TargetName="Button1"
+                    To="{DynamicResource butMargin}" 
+                    Duration="{StaticResource Duration02}">
+                <ThicknessAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseIn"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+            <BooleanAnimationUsingKeyFrames
+                Storyboard.TargetName="Button1"
+                Storyboard.TargetProperty="IsEnabled"
+                Duration="{StaticResource Duration01}">
+                <DiscreteBooleanKeyFrame Value="True"/>
+            </BooleanAnimationUsingKeyFrames>
+            <DoubleAnimation
+                Storyboard.TargetName="Button1"
+                Storyboard.TargetProperty="Opacity"
+                To="1"  Duration="{StaticResource Duration02}"/>
+        </Storyboard>
+
+        <Storyboard x:Key="TranslateStart">
+            <DoubleAnimation Storyboard.TargetName="Button1" 
+                             Storyboard.TargetProperty="Width"
+                             To="36" Duration="{StaticResource Duration01}"/>
+            <DoubleAnimation Storyboard.TargetName="Button1" 
+                             Storyboard.TargetProperty="Height"
+                             To="36" Duration="{StaticResource Duration01}"/>
+            <DoubleAnimation Storyboard.TargetName="ExhibitionProcess" 
+                             Storyboard.TargetProperty="Opacity"
+                             To="1" Duration="{StaticResource Duration05}"/>
+            <ThicknessAnimation
+                Storyboard.TargetProperty="Margin"
+                Storyboard.TargetName="Button1"
+                    To="{DynamicResource toTranslateStart}" 
+                    Duration="{StaticResource Duration01}">
+                <ThicknessAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseIn"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+        </Storyboard>
+
+        <Storyboard x:Key="TranslateEnd">
+            <DoubleAnimation Storyboard.TargetName="Button1" 
+                             Storyboard.TargetProperty="Width"
+                             To="56" Duration="{StaticResource Duration01}"/>
+            <DoubleAnimation Storyboard.TargetName="Button1" 
+                             Storyboard.TargetProperty="Height"
+                             To="56" Duration="{StaticResource Duration01}"/>
+            <DoubleAnimation Storyboard.TargetName="ExhibitionProcess" 
+                             Storyboard.TargetProperty="Opacity"
+                             To="0" Duration="{StaticResource Duration01}"/>
+            <ThicknessAnimation
+                Storyboard.TargetProperty="Margin"
+                Storyboard.TargetName="Button1"
+                    To="{DynamicResource butMargin}" 
+                    Duration="{StaticResource Duration01}">
+                <ThicknessAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+        </Storyboard>
+
+    </UserControl.Resources>
+
+    <Border BorderBrush="{StaticResource PrimaryHueMidBrush}" 
+            BorderThickness="0 0 0 1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1.2*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" 
+                       Text="{Binding Title}"
+                       FontSize="28" Margin="0 0 0 5"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Bottom"/>
+            <StackPanel Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="3" >
+                <TextBlock
+                       Text="{Binding Subtitle}"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       FontSize="17"
+                       Opacity="0.7"/>
+                <TextBlock Text="{Binding Version,StringFormat=Version : \{0\}}"  Opacity="0.7"/>
+            </StackPanel>
+
+            <local:ExhibitionProcess x:Name="ExhibitionProcess" 
+                                     Opacity="0"
+                                     Grid.ColumnSpan="10" 
+                                     Grid.RowSpan="10" />
+
+
+            <Grid Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBox Name="TextBox1" Width="0"/>
+                <Button x:Name="Button1"
+                    Style="{StaticResource MaterialDesignFloatingActionLightButton}"
+                    materialDesign:ButtonProgressAssist.IndicatorForeground="{StaticResource MaterialDesignBackground}"
+                    materialDesign:ButtonProgressAssist.IndicatorBackground="{StaticResource MaterialDesignDivider}"
+                    materialDesign:ButtonProgressAssist.Value="{Binding ProgressValue}"
+                    materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsIndicator}"
+                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsIndicator}"
+                    IsEnabled="{Binding IsEnabled}"
+                    Foreground="{StaticResource TEXT_ICONS_Brush}"                    
+                    Margin="{DynamicResource butMargin}"
+                    Background="{StaticResource SecondaryAccentBrush}"
+                    BorderBrush="{StaticResource SecondaryAccentBrush}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom">
+                    <materialDesign:PackIcon Kind="{Binding PackIconValue}"/>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:CallMethodAction MethodName="ClickHandler" TargetObject="{Binding}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+            </Grid>
+
+            <Rectangle Grid.Column="0" Grid.ColumnSpan="4" 
+                       Height="26" VerticalAlignment="Top"
+                       Opacity="0.02">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0.5 0" EndPoint="0.5 1">
+                        <GradientStop Color="White" Offset="0"/>
+                        <GradientStop Color="Transparent" Offset="1"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+         
+        </Grid>        
+    </Border>
+</UserControl>
