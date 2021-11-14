@@ -108,7 +108,7 @@ namespace DotNetCoreZhHans.Service.FileHandlers.FileActuators
             var newNode = doc.CreateElement("dotNetCoreZhHans");
             newNode.Attributes.Append(CreateXmlAttribute(doc));
             newNode.AppendChild(doc.CreateTextNode(DateTime.Now.ToString()));
-            doc.ChildNodes[1].AppendChild(newNode);
+            doc.SelectSingleNode("doc").AppendChild(newNode);
         }
 
         private XmlAttribute CreateXmlAttribute(XmlDocument doc)

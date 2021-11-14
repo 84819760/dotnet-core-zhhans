@@ -37,20 +37,18 @@ namespace DotNetCorezhHans.ViewModels
             }
         }
 
-        private VersionUpdateProvider GetVersionUpdateProvider()
+        private VersionUpdateProvider GetVersionUpdateProvider() => updateProvider ??= new()
         {
-            return updateProvider ??= new()
-            {
-                FirstRun = FirstRun,
-                SetProgress = SetProgress,
-                SetTitle = SetTitle,
-            };
-        }
+            FirstRun = FirstRun,
+            SetProgress = SetProgress,
+            SetTitle = SetTitle,
+        };
 
 
         public async void CallMethod()
         {
-            await updateProvider?.DownloadFile(Data.UpdateUrl);
+            if (updateProvider is null) return;
+            await updateProvider.DownloadFile(Data.UpdateUrl);
         }
 
         private void FirstRun() => Progress = 0;
