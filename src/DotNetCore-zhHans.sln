@@ -32,6 +32,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetCorezhHans.Update", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetCore-zhHans.Boot", "DotNetCore-zhHans.Boot\DotNetCore-zhHans.Boot.csproj", "{C7C9570A-110B-476D-8A90-3693954CDC03}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "问题", "问题", "{A0A316F7-1837-4994-85E7-DD7B354F714D}"
+	ProjectSection(SolutionItems) = preProject
+		已知问题.txt = 已知问题.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
