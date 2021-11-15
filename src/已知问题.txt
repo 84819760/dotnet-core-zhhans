@@ -1,3 +1,0 @@
-这个路径扫描会自己跳出，不知道为毛.退回.NET5试试
-PostManager.Post方法，要么尝试更换请求框架
-"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\ReferenceAssemblies\Microsoft\Framework",
