@@ -23,5 +23,12 @@
 
 ---
 
+# 建议扫描路径
+```
+C:\Program Files\dotnet\packs\
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\ReferenceAssemblies\Microsoft\Framework"
+%UserProFile%\.nuget\packages\
+```
+
 # 免责声明
 本软件为免费提供，源码根据开源协议提供，本人不承担使用软件或源码导致的任何后果，本人承诺不会植入任何非法内容。
