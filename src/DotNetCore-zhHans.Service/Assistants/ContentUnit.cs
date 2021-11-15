@@ -23,7 +23,14 @@ namespace DotNetCoreZhHans.Service
 
         public int Id { get; init; }
 
-        public override XmlNode GetXmlNode(NodeBase node) => node.Root.FindMap(Id).GetXmlNode();
+        public override XmlNode GetXmlNode(NodeBase node) => node.Root
+            .FindMap(Id)?.GetXmlNode() ?? CreateDuplicateTag(node, Id);
+
+        private static XmlNode CreateDuplicateTag(NodeBase node, int id)
+        {
+            var error = $"(错误:[重复标记{id}])";
+            return node.XmlDoc.CreateTextNode(error);
+        }
 
         public override string ToString() => $"Id = \"{Id}\"";
     }

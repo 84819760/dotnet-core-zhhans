@@ -11,6 +11,7 @@ namespace DotNetCoreZhHans.Service.XmlNodes
     internal class RootNode : NodeBase
     {
         private readonly Dictionary<int, NodeBase> map = new();
+        private readonly HashSet<int> firstHash = new();
 
         public RootNode(ITransmitData transmits
             , XmlNode xmlNode
@@ -28,17 +29,30 @@ namespace DotNetCoreZhHans.Service.XmlNodes
 
         public override string Key => $"{Id}";
 
-        public NodeBase FindMap(int id)
+        public NodeBase FindMap(int id) => IsFirst(id) ? default : FindId(id);
+
+        private bool IsFirst(int id)
         {
-            if (!map.TryGetValue(id, out var res))
-            {
-                var errorNode = XmlDoc.CreateElement("ErrorNode");
-                var error = XmlDoc.CreateTextNode($"DotNetCoreZhHans 异常:root中找不到id为{id}的节点");
-                errorNode.AppendChild(error);
-                return new ErrorNode(GetIndexProvider(), Transmits, errorNode, 99999, this);
-            }
+            var res = firstHash.Contains(id);
+            if (!res) firstHash.Add(id);
             return res;
         }
+
+        private NodeBase FindId(int id)
+        {
+            if (!map.TryGetValue(id, out var res))
+                res = CreateErrorNode(id);
+            return res;
+        }
+
+        private ErrorNode CreateErrorNode(int id)
+        {
+            var errorNode = XmlDoc.CreateElement("code");
+            var error = XmlDoc.CreateTextNode($"(错误:[找不到ID{id}])");
+            errorNode.AppendChild(error);
+            return new ErrorNode(GetIndexProvider(), Transmits, errorNode, 99999, this);
+        }
+
 
         public bool IsUpdateXml { get; set; }
 

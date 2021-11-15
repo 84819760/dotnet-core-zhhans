@@ -117,11 +117,8 @@ namespace DotNetCoreZhHans.Service.XmlNodes
         public override string ToString() => $"{GetType().Name} : {Key} ,{XmlNode.OuterXml}";
 
 
-        public virtual XmlNode CreateElement(string name = null)
-        {
-            name ??= Name;
-            return XmlDoc.CreateElement(name);
-        }
+        public virtual XmlNode CreateElement(string name = null) => 
+            XmlDoc.CreateElement(name ?? Name);
 
         public virtual XmlNode GetXmlNode()
         {
