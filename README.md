@@ -29,7 +29,7 @@ C:\Program Files\dotnet\packs\
 C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\ReferenceAssemblies\Microsoft\Framework
 %UserProFile%\.nuget\packages\
 
-客户端需要升级到1.0.0.2版本，否则会出现意外退出现象。
+客户端需要升级到1.0.0.3版本，否则会出现意外退出现象。
 ```
 
 # 免责声明
