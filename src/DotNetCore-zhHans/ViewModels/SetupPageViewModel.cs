@@ -8,7 +8,6 @@ namespace DotNetCorezhHans.ViewModels
     {
         private readonly PageStateMessage pageState = PageStateMessage.Instance;
         private readonly ConfigManager config;
-        private bool IsRunAdmin;
 
         public SetupPageViewModel()
         {

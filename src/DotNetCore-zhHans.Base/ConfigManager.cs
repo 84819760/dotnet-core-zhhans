@@ -55,8 +55,8 @@ namespace DotNetCorezhHans
 
         public string UpdateUrl { get; init; }
 
-        public static ConfigManager Instance =>
-          instance ??= ConfigManagerBuilder.CreateInstance();
+        public static ConfigManager Instance => 
+            instance ??= ConfigManagerBuilder.CreateInstance();
 
         public void Save() => ConfigManagerBuilder.Save(this);
 

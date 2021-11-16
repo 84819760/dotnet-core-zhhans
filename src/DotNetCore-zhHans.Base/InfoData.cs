@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,12 +22,16 @@ namespace DotNetCorezhHans.Base
         {
             try
             {
-                using var wc = new WebClient();
-                var json = await wc.DownloadStringTaskAsync(url);
+                using var hc = new HttpClient();
+                var json = await hc.GetStringAsync(url);
                 return Extensions.Deserialize<InfoData>(json);
             }
-            catch (Exception) { }
-            return new() { Information = "读取更新信息错误!" };
+            catch (Exception)
+            {
+                return new() { Information = "读取更新错误!" };
+            }
         }
+
+        public bool TestVersion(string version) => Version == version;
     }
 }

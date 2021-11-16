@@ -25,7 +25,7 @@
         xmlns:prism="http://prismlibrary.com/" 
         prism:ViewModelLocator.AutoWireViewModel="True"
         Width="{StaticResource windowWidth}" 
-        Height="{StaticResource windowHeight}">
+        Height="{StaticResource windowHeight}" Loaded="Window_Loaded">
     <Window.Resources>
         <GridLength x:Key="Row2Default">6.5*</GridLength>
         <GridLength x:Key="Row3Default">5*</GridLength>

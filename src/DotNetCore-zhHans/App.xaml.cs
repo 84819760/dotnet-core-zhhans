@@ -7,17 +7,21 @@ using DotNetCorezhHans.Base;
 using DotNetCorezhHans.ViewModels;
 using DotNetCorezhHans.Views;
 using Prism.Ioc;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace DotNetCorezhHans
 {
     public partial class App
     {
+        private static string version;
+
         public readonly static ConfigManager Config = ConfigManager.Instance;
+
         public static bool IsAdmin { get; set; } = Config.IsAdmin;
 
-        public static string Version => Assembly
+        public static Task<InfoData> InfoDataTask { get; private set; }
+
+        public static string Version => version ??= Assembly
             .GetExecutingAssembly().GetName()
             .Version.ToString();
 
@@ -25,6 +29,7 @@ namespace DotNetCorezhHans
         {
             ShowUpdate(e.Args?.FirstOrDefault());
             if (IsAdmin) UacHelper.RunAdmin();
+            InfoDataTask = Task.Run(() => InfoData.GetInfoData(Config.UpdateUrl));
             base.OnStartup(e);
         }
 

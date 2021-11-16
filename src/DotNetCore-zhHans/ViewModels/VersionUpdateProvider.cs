@@ -25,7 +25,7 @@ namespace DotNetCorezhHans.ViewModels
 
         public Action FirstRun { get; init; }
 
-        private string GetFilePath() => Path.Combine(downloadPath, $"{Guid.NewGuid()}.tmp");
+        private static string GetFilePath() => Path.Combine(downloadPath, $"{Guid.NewGuid()}.tmp");
 
         public async Task DownloadFile(string updateUrl)
         {

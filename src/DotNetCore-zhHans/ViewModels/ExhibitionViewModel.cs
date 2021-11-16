@@ -27,16 +27,18 @@ namespace DotNetCorezhHans.ViewModels
 
         public ExhibitionViewModel()
         {
+            if (IsDesignMode) return;
             execButtonState.Subscribe(SetButtonState);
             fileListMsg.Subscribe(x => fileListPageViewModel = x.Data, x => x.Target is ri);
             processMsg.Subscribe(x => exhibitionProcess = x.Data, x => x.Target is ri);
+            Version = App.Version;
         }
 
         public string Title { get; set; } = "DotNet Core Nuget";
 
         public string Subtitle { get; set; } = "Xml Document 汉化工具\r\n重庆 New +___+";
 
-        public string Version { get; set; } = App.Version;
+        public string Version { get; set; }
 
         public PackIconKind PackIconValue { get; set; } = PackIconKind.Play;
 

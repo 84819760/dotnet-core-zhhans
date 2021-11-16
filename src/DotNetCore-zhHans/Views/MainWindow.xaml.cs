@@ -53,5 +53,13 @@ namespace DotNetCorezhHans.Views
             };
             this.CallStory(call);
         }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            var data = await App.InfoDataTask;
+            if (data.TestVersion(App.Version)) return;
+            var isUpdate = MessageBox.Show("检测到更新，是否进入升级界面？", "软件更新", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+            if (isUpdate) pageState.Publish(PageControlType.Surprised);
+        }
     }
 }
