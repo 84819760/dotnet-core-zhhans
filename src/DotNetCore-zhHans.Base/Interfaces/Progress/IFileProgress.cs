@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace DotNetCorezhHans.Base.Interfaces
 {
-    public interface IFileProgress
+    public interface IFileProgress : IFilePath
     {
-        string Path { get; }
-
         /// <summary>
         /// 进度文本
         /// </summary>
@@ -48,4 +46,6 @@ namespace DotNetCorezhHans.Base.Interfaces
             return AddError(res);
         }
     }
+
+
 }

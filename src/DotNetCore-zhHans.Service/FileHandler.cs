@@ -5,6 +5,7 @@ using DotNetCorezhHans;
 using DotNetCorezhHans.Base;
 using DotNetCorezhHans.Base.Interfaces;
 using DotNetCoreZhHans.Service.FileHandlers;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DotNetCoreZhHans.Service
 {
@@ -36,6 +37,11 @@ namespace DotNetCoreZhHans.Service
         public GcManager GcManager => transmitDataBase.GcManager;
 
         public string Version => transmitDataBase.Version;
+
+        public Action<Exception, IFilePath, int> ErrorAction { get; init; }
+
+        void ITransmitData.AddError(Exception exception, IFilePath file, int index) =>
+            ErrorAction(exception, file, index);
 
         public Exception Interrupt
         {

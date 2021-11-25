@@ -19,7 +19,7 @@ namespace DotNetCoreZhHans.Service.XmlFileProviders
             this.transmits = transmits;
             this.filePath = filePath ?? transmits.File.Path;
             token = transmits.Token;
-            ForEach();
+            ForEachTestChinese();
         }
 
         public bool IsCancel => token.IsCancellationRequested;
@@ -33,19 +33,27 @@ namespace DotNetCoreZhHans.Service.XmlFileProviders
         /// </summary>
         public bool IsChinese { get; private set; }
 
+        /// <summary>
+        /// 跳过文件原因
+        /// </summary>
+        public string SkipReason { get; set; }
+
         protected virtual IEnumerable<string> Rows => File.ReadLines(FilePath);
 
-        private void ForEach()
+        private void ForEachTestChinese()
         {
             foreach (var item in Rows)
             {
-                if (IsCancel) break;
-                Test(item);
+                if (IsCancel || IsChinese) break;
+                TestChinese(item);
             }
         }
 
-        protected virtual void Test(string path) =>
-            IsChinese = IsChinese || regex.IsMatch(path);
+        protected virtual void TestChinese(string context)
+        {
+            IsChinese = IsChinese || regex.IsMatch(context);
+            if (IsChinese) SkipReason = context;
+        }
 
         private string GetZhHansFile()
         {
@@ -58,7 +66,8 @@ namespace DotNetCoreZhHans.Service.XmlFileProviders
         public XmlFileTestZhHans CreateZhHansXmlFile()
         {
             var path = GetZhHansFile();
-            return path is null ? default
+            return path is null
+                ? default
                 : new XmlFileTestZhHans(transmits, path)
                 {
                     IsChinese = true,

@@ -39,13 +39,16 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <TextBlock Text="是否保留原文" Grid.Row="0" />
-        <TextBlock Text="是否重新生成" Grid.Row="1"/>
+        <TextBlock Text="管理员身份运行" Grid.Row="1"/>
         <TextBlock Text="是否启用日志" Grid.Row="2"/>
-        <TextBlock Text="管理员身份运行" Grid.Row="3"/>
+        <TextBlock Text="是否重新生成" Grid.Row="3"/>
+        
+       
 
         <ToggleButton Grid.Column="1" Grid.Row="0" IsChecked="{Binding IsKeepOriginal}" />
-        <ToggleButton Grid.Column="1" Grid.Row="1" IsChecked="{Binding IsCover}" />
-        <ToggleButton Grid.Column="1" Grid.Row="2" IsChecked="{Binding IsLogging}" />   
-        <ToggleButton Grid.Column="1" Grid.Row="3" IsChecked="{Binding IsAdmin}" />
+        <ToggleButton Grid.Column="1" Grid.Row="1" IsChecked="{Binding IsAdmin}" />
+        <ToggleButton Grid.Column="1" Grid.Row="2" IsChecked="{Binding IsLogging}" />
+        <ToggleButton Grid.Column="1" Grid.Row="3" IsChecked="{Binding IsCover}" />        
+        
     </Grid>
 </UserControl>

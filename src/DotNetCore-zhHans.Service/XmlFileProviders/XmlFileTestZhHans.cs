@@ -12,7 +12,7 @@ namespace DotNetCoreZhHans.Service.XmlFileProviders
 
         public XmlFileTest EnTest { get; init; }
 
-        protected override void Test(string path)
+        protected override void TestChinese(string path)
         {
             IsDotNetCoreZhHans = IsDotNetCoreZhHans
                 || path.Contains("<dotNetCoreZhHans version=", StringComparison.Ordinal);

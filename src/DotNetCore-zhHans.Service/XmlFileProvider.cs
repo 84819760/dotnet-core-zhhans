@@ -16,6 +16,7 @@ namespace DotNetCoreZhHans.Service
     {
         private readonly CancellationToken token;
         private readonly ConfigManager config;
+        private readonly bool isCover;
 
         public event Action<string> SendAddXmlFilePath;
         public event Action<string> SendScanPath;
@@ -27,6 +28,7 @@ namespace DotNetCoreZhHans.Service
         {
             this.config = config;
             this.token = token;
+            isCover = config.IsCover;
         }
 
         public Task ScanFiles() => Task.Run(GetXmlFilePaths, token);
@@ -49,8 +51,9 @@ namespace DotNetCoreZhHans.Service
 
         private IEnumerable<string> GetXmlFiles(string directory) => Directory
             .EnumerateFiles(directory, "*.xml")
-            .Where(ExistDll)
+            .Where(IsExistsDll)
             .Where(TryIsDoc)
+            .Where(IsExistsZhHansXml)
             .Select(SendPath)
             .Select(SendFilePath);
 
@@ -60,6 +63,20 @@ namespace DotNetCoreZhHans.Service
             .SelectMany(GetFiles);
 
         private bool TryIsDoc(string path) => TryGet(path, IsDoc, () => false);
+
+        private bool IsExistsZhHansXml(string path)
+        {
+            if (isCover) return true;
+            var zhPath = GetZhHansXmlPath(path);
+            return !File.Exists(zhPath);
+        }
+
+        private static string GetZhHansXmlPath(string path)
+        {
+            var dir = Path.GetDirectoryName(path);
+            var xmlFileName = GetTargetFileName(path, ".xml");
+            return Path.Combine(dir, "zh-hans", xmlFileName);
+        }
 
         private bool IsDoc(string path) => File.ReadLines(path).Take(2).Contains("<doc>");
 
@@ -89,11 +106,15 @@ namespace DotNetCoreZhHans.Service
             }
         }
 
-        private static bool ExistDll(string path)
+        private static bool IsExistsDll(string path)
         {
-            var fileName = $"{Path.GetFileNameWithoutExtension(path)}.dll";
+            var fileName = GetTargetFileName(path, ".dll");
             var dllFile = Path.Combine(Path.GetDirectoryName(path), fileName);
             return File.Exists(dllFile);
         }
+
+        private static string GetTargetFileName(string path, string extensionName) => 
+            $"{Path.GetFileNameWithoutExtension(path)}{extensionName}";
+       
     }
 }

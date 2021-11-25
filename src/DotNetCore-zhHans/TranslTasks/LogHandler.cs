@@ -12,6 +12,7 @@ namespace DotNetCorezhHans.TranslTasks
     {
         private readonly Channel<Data> channel = Channel.CreateUnbounded<Data>();
         private readonly string logDir = CreateLoggingDirectory();
+        private readonly IndexProvider indexProvider = new();
         private volatile int errorCount;
         private readonly Task task;
 
@@ -31,8 +32,7 @@ Index : {Index}
         private static string CreateLoggingDirectory()
         {
             var path = Directory.GetCurrentDirectory();
-            path = Path.Combine(path, "log", DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss"));
-            return path;
+            return Path.Combine(path, "log", DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss"));
         }
 
         public CancellationTokenSource CancellationTokenSource { get; } = new();
@@ -47,10 +47,10 @@ Index : {Index}
             await task;
         }
 
-        internal void AddError(Exception exception, IFileProgress file, int fileIndex)
+        internal void AddError(Exception exception, IFilePath file, int index)
         {
             errorCount++;
-            channel.Writer.TryWrite(new(errorCount, file.Path, exception, fileIndex));
+            channel.Writer.TryWrite(new(errorCount, $"({index})\t{file.Path}", exception, indexProvider.GetId()));
         }
 
         private Task WhileWrite() => Task.Run(async () =>

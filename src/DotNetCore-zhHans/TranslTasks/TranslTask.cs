@@ -7,7 +7,6 @@ using DotNetCorezhHans.Base;
 using DotNetCorezhHans.Base.Interfaces;
 using DotNetCorezhHans.Messages;
 using DotNetCoreZhHans.Service;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NearCoreExtensions;
 
 namespace DotNetCorezhHans.TranslTasks
@@ -111,7 +110,7 @@ namespace DotNetCorezhHans.TranslTasks
                 {
                     item.CreateAndAdd(null, title, ex.Message, item.Path, ex, true);
                     ShowError(item, index);
-                }      
+                }
             }
             return default;
         }
@@ -147,7 +146,10 @@ namespace DotNetCorezhHans.TranslTasks
         private FileHandler CreateFileHandler(IFileProgress file) => new(UpdateValue, this)
         {
             File = file,
+            ErrorAction = AddError,
         };
+
+        private void AddError(Exception exception, IFilePath file, int index) => logHandler?.AddError(exception, file, index);
 
         private void UpdateValue(Action action) => App.Invoke(action);
 

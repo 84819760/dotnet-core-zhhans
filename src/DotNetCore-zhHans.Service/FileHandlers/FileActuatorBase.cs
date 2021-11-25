@@ -32,13 +32,19 @@ namespace DotNetCoreZhHans.Service.FileHandlers
             return TestIsChinese(test, transmits);
         }
 
-
         /// <summary>
-        /// 测试是否为中文内容
+        /// 测试是否为中文或非英语内容
         /// </summary>
         private static async Task TestIsChinese(XmlFileTest test, ITransmitData transmits)
         {
             if (!test.IsChinese) await TestZhHansFile(test, transmits);
+            else AddError(test, transmits);
+        }
+
+        private static void AddError(XmlFileTest test, ITransmitData transmits)
+        {
+            var error = new Exception($"检测到非英语内容,执行跳过：({test.SkipReason.Trim()})");
+            transmits.AddError(error, new FilePath() { Path = test.FilePath }, 0);
         }
 
         /// <summary>
@@ -70,7 +76,7 @@ namespace DotNetCoreZhHans.Service.FileHandlers
         /// <summary>
         /// 导入检查
         /// </summary>
-        private static Task ImportCheck(XmlFileTestZhHans test, ITransmitData  transmits)
+        private static Task ImportCheck(XmlFileTestZhHans test, ITransmitData transmits)
         {
             if (!transmits.Config.EnableImport) return Task.CompletedTask;
             throw new NotImplementedException("导入功能未实现");
@@ -101,6 +107,8 @@ namespace DotNetCoreZhHans.Service.FileHandlers
         public ReaderWriterLockSlim DbLock => Transmits.DbLock;
 
         public Exception Interrupt { get => Transmits.Interrupt; set => Transmits.Interrupt = value; }
+
+        public void AddError(Exception exception, IFilePath file, int index) => Transmits.AddError(exception, file, index);
 
         #endregion
     }

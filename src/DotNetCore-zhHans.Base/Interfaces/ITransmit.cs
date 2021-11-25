@@ -32,6 +32,8 @@ namespace DotNetCorezhHans.Base.Interfaces
     /// </summary>
     public interface ITransmitData : ITransmitDataBase
     {
-        IFileProgress File { get; }     
+        IFileProgress File { get; }
+
+        void AddError(Exception exception, IFilePath file, int index);
     }
 }
