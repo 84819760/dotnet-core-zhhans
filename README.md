@@ -31,6 +31,7 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\ReferenceAss
 
 客户端需要升级到1.0.0.3版本，否则会出现意外退出现象。
 ```
+[数据库及二进制文件下载](http://www.wyj55.cn/download/DotNetCorezhHans/DotNetCorezhHans1.0.0.0.7z)
 
 # 免责声明
 本软件为免费提供，源码根据开源协议提供，本人不承担使用软件或源码导致的任何后果，本人承诺不会植入任何非法内容。
