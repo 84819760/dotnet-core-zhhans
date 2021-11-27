@@ -34,7 +34,8 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\ReferenceAss
 # 数据库及二进制文件下载
 [下载](http://www.wyj55.cn/download/DotNetCorezhHans/DotNetCorezhHans1.0.0.0.7z)
 
-# .NET官网汉化包
+# .NET官方汉化包
+在官方汉化包的基础上，加个了个小程序自动拷贝。
 [下载](http://www.wyj55.cn/download/DotNetCorezhHans/Dotnet-Intellisense1.0.0.0.7z)
 
 # 免责声明
