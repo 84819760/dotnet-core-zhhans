@@ -34,6 +34,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetCore-zhHans.Boot", "D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "问题", "问题", "{A0A316F7-1837-4994-85E7-DD7B354F714D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dotnet-Intellisense", "Dotnet-Intellisense\Dotnet-Intellisense.csproj", "{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -176,6 +178,18 @@ Global
 		{C7C9570A-110B-476D-8A90-3693954CDC03}.Release|x64.Build.0 = Release|Any CPU
 		{C7C9570A-110B-476D-8A90-3693954CDC03}.Release|x86.ActiveCfg = Release|x86
 		{C7C9570A-110B-476D-8A90-3693954CDC03}.Release|x86.Build.0 = Release|x86
+		{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}.Debug|x64.Build.0 = Debug|Any CPU
+		{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}.Debug|x86.Build.0 = Debug|Any CPU
+		{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}.Release|x64.ActiveCfg = Release|Any CPU
+		{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}.Release|x64.Build.0 = Release|Any CPU
+		{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}.Release|x86.ActiveCfg = Release|Any CPU
+		{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

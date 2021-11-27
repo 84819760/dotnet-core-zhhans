@@ -1,0 +1,40 @@
+﻿<Window x:Class="Dotnet_Intellisense.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Dotnet_Intellisense"
+        mc:Ignorable="d"
+        d:DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Loaded="Window_Loaded"        
+        Title=".Net官方汉化包" Height="400" Width="300" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5 5"/>
+        </Style>
+    </Window.Resources>
+    <Grid x:Name="Grid1" IsEnabled="{Binding Enabled}">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <ListBox x:Name="ListBox1" Grid.Column="0" ItemsSource="{Binding DataModels}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <CheckBox IsChecked="{Binding IsSelect}"
+                              Content="{Binding Name}"
+                              VerticalAlignment="Center"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="{Binding ProgressTitle}" />
+
+        <StackPanel Grid.Row="2">
+            <Button x:Name="Button1" Content="全反选" Click="SelectAll" />
+            <Button x:Name="Button2" Content="执行" Click="Run" />
+        </StackPanel>
+    </Grid>
+</Window>
