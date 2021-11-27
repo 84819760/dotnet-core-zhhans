@@ -35,7 +35,7 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\ReferenceAss
 [下载](http://www.wyj55.cn/download/DotNetCorezhHans/DotNetCorezhHans1.0.0.0.7z)
 
 # .NET官方汉化包
-在官方汉化包的基础上，加个了个小程序自动拷贝。
+在官方汉化包的基础上，加个了个小程序自动拷贝。   
 [下载](http://www.wyj55.cn/download/DotNetCorezhHans/Dotnet-Intellisense1.0.0.0.7z)
 
 # 免责声明
