@@ -30,7 +30,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="{Binding ProgressTitle}" />
+        <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="{Binding ProgressTitle}" xml:space="preserve" />
 
         <StackPanel Grid.Row="2">
             <Button x:Name="Button1" Content="全反选" Click="SelectAll" />

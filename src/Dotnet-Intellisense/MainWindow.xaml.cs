@@ -21,7 +21,7 @@ namespace Dotnet_Intellisense
 
         public bool Enabled { get; set; } = true;
 
-        public string? ProgressTitle { get; set; } = " 使用.Net官方包替换本地文件，作为汉化工具的补充。问题反馈QQ群:438789123";
+        public string? ProgressTitle { get; set; } = $" 使用.Net官方包替换本地文件，作为汉化工具的补充。\r\n问题反馈QQ群:438789123 ";
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {

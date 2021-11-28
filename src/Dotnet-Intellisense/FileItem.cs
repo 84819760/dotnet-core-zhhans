@@ -94,7 +94,7 @@ namespace Dotnet_Intellisense
             CreateDirectory(ZipFile!);
             var zipFile = Path.Combine(tempPath, $"{Guid.NewGuid()}.zip");
             var hd = new HttpDownload(Data.Url, zipFile);
-            hd.ProgressEvent += p => Notice?.Invoke($"下载{Name}({p}%)");
+            hd.ProgressEvent += p => Notice?.Invoke($"下载{Name} ({p}%)");
             var isOk = await hd.Download();
             InitZipFile(isOk, zipFile);
         }
