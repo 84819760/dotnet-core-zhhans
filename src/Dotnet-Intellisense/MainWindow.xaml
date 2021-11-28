@@ -33,7 +33,7 @@
         <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="{Binding ProgressTitle}" xml:space="preserve" />
 
         <StackPanel Grid.Row="2">
-            <Button x:Name="Button1" Content="全反选" Click="SelectAll" />
+            <Button x:Name="Button1" Content="反选" Click="SelectAll" />
             <Button x:Name="Button2" Content="执行" Click="Run" />
         </StackPanel>
     </Grid>
