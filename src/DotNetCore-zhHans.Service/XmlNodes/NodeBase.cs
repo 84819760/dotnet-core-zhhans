@@ -15,6 +15,7 @@ namespace DotNetCoreZhHans.Service.XmlNodes
     internal abstract class NodeBase
     {
         private readonly IndexProvider indexProvider;
+        private const int maxCount = 2000;
         private string qriginalValue;
         private string queryValue;
 
@@ -80,8 +81,11 @@ namespace DotNetCoreZhHans.Service.XmlNodes
 
         public virtual void SetTranslValue(string value) => TranslValue = value;
 
-        protected virtual string GetQueryValue() => GetNodes()
-            .Select(TestQueryValue).Join();
+        protected virtual string GetQueryValue()
+        {
+            var res = GetNodes().Select(TestQueryValue).Join();
+            return res.Length > maxCount ? $"{res[..maxCount]}..." : res;
+        }
 
         private string TestQueryValue(NodeBase node)
         {
@@ -117,7 +121,7 @@ namespace DotNetCoreZhHans.Service.XmlNodes
         public override string ToString() => $"{GetType().Name} : {Key} ,{XmlNode.OuterXml}";
 
 
-        public virtual XmlNode CreateElement(string name = null) => 
+        public virtual XmlNode CreateElement(string name = null) =>
             XmlDoc.CreateElement(name ?? Name);
 
         public virtual XmlNode GetXmlNode()

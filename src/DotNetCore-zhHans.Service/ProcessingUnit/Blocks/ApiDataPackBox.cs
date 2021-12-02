@@ -12,7 +12,7 @@ namespace DotNetCoreZhHans.Service.ProcessingUnit
         private int count;
 
         public ApiDataPackBox(ApiRequestItem apiRequestItem, ITransmitData transmits)
-        {          
+        {
             maxCount = apiRequestItem.ApiConfig.MaxChar;
             Api = apiRequestItem;
             this.transmits = transmits;
@@ -22,14 +22,17 @@ namespace DotNetCoreZhHans.Service.ProcessingUnit
 
         public bool TryAdd(NodeCacheData data)
         {
-            count += data.Length;
-            IsComplete = count > maxCount;
-            if (IsComplete) return false;
+            if (list.Count > 0)
+            {
+                count += data.Length;
+                IsComplete = count > maxCount;
+                if (IsComplete) return false;
+            }
             list.Add(data);
             return true;
         }
 
-        public ApiRequestItem Api{ get; }
+        public ApiRequestItem Api { get; }
 
         public NodeCacheDataGroup NodeCacheDataGroup => new(list.ToArray(), transmits);
 
