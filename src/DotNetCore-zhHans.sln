@@ -34,7 +34,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetCore-zhHans.Boot", "D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "问题", "问题", "{A0A316F7-1837-4994-85E7-DD7B354F714D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dotnet-Intellisense", "Dotnet-Intellisense\Dotnet-Intellisense.csproj", "{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dotnet-Intellisense", "Dotnet-Intellisense\Dotnet-Intellisense.csproj", "{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetCore-zhHans.Db.Import", "DotNetCore-zhHans.Db.Import\DotNetCore-zhHans.Db.Import.csproj", "{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -190,6 +192,18 @@ Global
 		{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}.Release|x64.Build.0 = Release|Any CPU
 		{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}.Release|x86.ActiveCfg = Release|Any CPU
 		{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}.Release|x86.Build.0 = Release|Any CPU
+		{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}.Debug|x64.Build.0 = Debug|Any CPU
+		{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}.Debug|x86.Build.0 = Debug|Any CPU
+		{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}.Release|x64.ActiveCfg = Release|Any CPU
+		{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}.Release|x64.Build.0 = Release|Any CPU
+		{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}.Release|x86.ActiveCfg = Release|Any CPU
+		{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
