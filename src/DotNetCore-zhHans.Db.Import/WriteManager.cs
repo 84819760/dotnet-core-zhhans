@@ -41,9 +41,7 @@ namespace DotNetCore_zhHans.Db.Import
             importHandler.Show($"执行写入:{datas.Length}");
             await targetDbContext.Write(datas);
             importHandler.Show("");
-        }
-
-    
+        }    
 
         #region ITargetBlock<TranslData>   
 

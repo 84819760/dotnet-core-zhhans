@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -9,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DotNetCore_zhHans.Db.Import
 {
     internal class ImportHandler : IAsyncDisposable
-    {       
+    {
         private readonly MainWindowViewModel mainWindowViewModel;
         private readonly ProgressManager progressManager;
         private readonly WriteManager writeManager;
@@ -52,17 +53,20 @@ namespace DotNetCore_zhHans.Db.Import
             .AsNoTracking()
             .AsAsyncEnumerable();
 
-        public async void Run()
+        public async Task Run()
         {
             SetCount();
             await foreach (var item in GetTranslDatas())
+            {
                 await Run(item);
+                Debug.Print(item.Id.ToString());
+            }
         }
 
         private async Task Run(TranslData item)
         {
-            //if (await TargetDbContext.IsExists(item.Original)) return;
-            //await writeManager.SendAsync(item);
+            if (await TargetDbContext.IsExists(item.Original)) return;
+            await writeManager.SendAsync(item);
         }
     }
 }

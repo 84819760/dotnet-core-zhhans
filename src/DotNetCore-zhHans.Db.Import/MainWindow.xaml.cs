@@ -27,7 +27,13 @@ namespace DotNetCore_zhHans.Db.Import
 
         public MainWindowViewModel ViewModel { get; } = new();
 
-        private void Button_Click(object sender, RoutedEventArgs e) => ViewModel.Start();
+        async private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            button!.IsEnabled = false;
+            await ViewModel.Start();
+            button!.IsEnabled = true;
+        }
     }
 
     public class MainWindowViewModel : INotifyPropertyChanged
@@ -46,8 +52,12 @@ namespace DotNetCore_zhHans.Db.Import
 
         public string? Title { get; set; }
 
-        internal void Start() =>
-            new ImportHandler(this, @"D:\tmp\TranslData.db", @"TranslData.db").Run();
+        internal Task Start()
+        {
+            var source = @"D:\tmp\TranslData.db";
+            var target = @"D:\tmp\TranslData2.db";
+            return Task.Run(() => new ImportHandler(this, source, target).Run());
+        }
     }
 }
 
