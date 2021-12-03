@@ -6,8 +6,15 @@
         xmlns:local="clr-namespace:DotNetCore_zhHans.Db.Import"
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel,IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="数据同步" Height="200" Width="200">
     <Grid>
-
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <ProgressBar 
+                  Value="{Binding Current}"
+                  Maximum="{Binding Count}"  
+                  Height="10" Width="100" Margin="5 5"/>
+            <Button Content="开始" Click="Button_Click"/>
+        </StackPanel>
     </Grid>
 </Window>

@@ -13,14 +13,16 @@ namespace DotNetCore_zhHans.Db.Import
     {
         private readonly ActionBlock<TranslData[]> actionBlock;
         private readonly BatchBlock<TranslData> batchBlock;
+        private readonly ImportHandler importHandler;
         private readonly DbContext targetDbContext;
 
-        public WriteManager(DbContext targetDbContext)
+        public WriteManager(ImportHandler importHandler)
         {
-            this.targetDbContext = targetDbContext;
+            targetDbContext = importHandler.TargetDbContext;
             batchBlock = new(10240);
             actionBlock = new(Write);
             batchBlock.LinkTo(actionBlock);
+            this.importHandler = importHandler;
         }
 
         public async ValueTask DisposeAsync()
@@ -36,26 +38,12 @@ namespace DotNetCore_zhHans.Db.Import
 
         private async Task Write(TranslData[] datas)
         {
-            using var bt = await targetDbContext.Database.BeginTransactionAsync();
-            try
-            {
-                var rows = datas.Select(Create).ToArray();
-                await targetDbContext.TranslDatas.AddRangeAsync(rows!);
-                await bt.CommitAsync();
-                await targetDbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                await bt.RollbackAsync();
-                MessageBox.Show(ex.Message);
-            }
+            importHandler.Show($"执行写入:{datas.Length}");
+            await targetDbContext.Write(datas);
+            importHandler.Show("");
         }
 
-        private TranslData Create(TranslData data)
-        {
-            data.TranslSource = targetDbContext.FindTranslSource(data.TranslSource.Name);
-            return data;
-        }
+    
 
         #region ITargetBlock<TranslData>   
 

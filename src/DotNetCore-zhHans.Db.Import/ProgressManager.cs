@@ -10,7 +10,7 @@ namespace DotNetCore_zhHans.Db.Import
         private readonly BroadcastBlock<int> broadcastBlock = new(x => x);
         private readonly MainWindowViewModel mainWindowViewModel;
         private readonly CancellationToken token;
-        private readonly int count;
+        private readonly double count;
 
         public ProgressManager(MainWindowViewModel mainWindowViewModel)
         {

@@ -28,19 +28,42 @@ namespace DotNetCore_zhHans.Db.Import
             optionsBuilder.UseSqlite(conn.ConnectionString);
         }
 
-        public TranslSource FindTranslSource(string name) => TranslSources
-            .Local.FirstOrDefault(x => x.Name == name) ?? AddTranslSource(name);
+        public async Task<TranslSource> FindTranslSource(string name) => TranslSources
+            .Local.FirstOrDefault(x => x.Name == name) ?? await AddTranslSource(name);
 
-        private TranslSource AddTranslSource(string name)
+        private async Task<TranslSource> AddTranslSource(string name)
         {
             var res = new TranslSource() { Name = name };
             TranslSources.Add(res);
-            SaveChanges();
+            await SaveChangesAsync();
             return res;
         }
 
         public Task<bool> IsExists(string original) => TranslDatas
             .AsNoTracking()
             .AnyAsync(x => x.Original == original);
+
+        public async Task Write(TranslData[] datas)
+        {
+            using var bt = await Database.BeginTransactionAsync();
+            //try
+            //{
+            //    var rows = datas.Select(Create).ToArray();
+            //    await targetDbContext.TranslDatas.AddRangeAsync(rows!);
+            //    await bt.CommitAsync();
+            //    await targetDbContext.SaveChangesAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    await bt.RollbackAsync();
+            //    MessageBox.Show(ex.Message);
+            //}
+        }
+
+        private TranslData Create(TranslData data)
+        {
+            //data.TranslSource = targetDbContext.FindTranslSource(data.TranslSource.Name);
+            //return data;
+        }
     }
 }

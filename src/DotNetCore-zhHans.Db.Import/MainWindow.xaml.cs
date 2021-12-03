@@ -22,18 +22,17 @@ namespace DotNetCore_zhHans.Db.Import
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = ViewModel;
         }
+
+        public MainWindowViewModel ViewModel { get; } = new();
+
+        private void Button_Click(object sender, RoutedEventArgs e) => ViewModel.Start();
     }
 
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
-        //private readonly ImportHandler importHandler;
-
-        public MainWindowViewModel()
-        {
-            //importHandler = new(this);
-        }
 
         public CancellationTokenSource CancellationTokenSource { get; set; } = new();
 
@@ -41,11 +40,14 @@ namespace DotNetCore_zhHans.Db.Import
 
         public CancellationToken Token => CancellationTokenSource.Token;
 
-        public int Count { get; set; }
+        public double Count { get; set; }
 
-        public int Current { get; set; }
+        public double Current { get; set; }
 
+        public string? Title { get; set; }
 
+        internal void Start() =>
+            new ImportHandler(this, @"D:\tmp\TranslData.db", @"TranslData.db").Run();
     }
 }
 

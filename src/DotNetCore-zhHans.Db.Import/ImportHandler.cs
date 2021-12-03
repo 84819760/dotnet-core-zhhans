@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using DotNetCorezhHans.Db.Models;
@@ -10,47 +9,60 @@ using Microsoft.EntityFrameworkCore;
 namespace DotNetCore_zhHans.Db.Import
 {
     internal class ImportHandler : IAsyncDisposable
-    {
+    {       
         private readonly MainWindowViewModel mainWindowViewModel;
         private readonly ProgressManager progressManager;
         private readonly WriteManager writeManager;
-        private readonly DbContext sourceDbContext;
-        private readonly DbContext targetDbContext;
 
         public ImportHandler(MainWindowViewModel mainWindowViewModel
             , string sourceFile
             , string targetFile)
         {
             this.mainWindowViewModel = mainWindowViewModel;
-            sourceDbContext = new(sourceFile);
-            targetDbContext = new(targetFile);
+            SourceDbContext = new(sourceFile);
+            TargetDbContext = new(targetFile);
             progressManager = new(mainWindowViewModel);
-            writeManager = new(targetDbContext);
-            Run();
+            writeManager = new(this);
         }
+
+        internal DbContext SourceDbContext { get; }
+
+        internal DbContext TargetDbContext { get; }
+
+        internal ReaderWriterLockSlim LockSlim { get; } = new();
+
+        public bool IsCancell => mainWindowViewModel.IsCancell;
+
+        public CancellationToken Token => mainWindowViewModel.Token;
 
         public async ValueTask DisposeAsync()
         {
             await progressManager.DisposeAsync();
             await writeManager.DisposeAsync();
-            await sourceDbContext.DisposeAsync();
-            await targetDbContext.DisposeAsync();
+            await SourceDbContext.DisposeAsync();
+            await TargetDbContext.DisposeAsync();
         }
 
-        private void SetCount() => mainWindowViewModel.Count = sourceDbContext.Count;
+        internal void Show(string value) => mainWindowViewModel.Title = value;
 
-        private IAsyncEnumerable<TranslData> GetTranslDatas() => sourceDbContext.TranslDatas.AsNoTracking().AsAsyncEnumerable();
+        private void SetCount() => mainWindowViewModel.Count = SourceDbContext.Count;
 
-        private async void Run()
+        private IAsyncEnumerable<TranslData> GetTranslDatas() => SourceDbContext.TranslDatas
+            .Include(x => x.TranslSource)
+            .AsNoTracking()
+            .AsAsyncEnumerable();
+
+        public async void Run()
         {
             SetCount();
-            await foreach (var item in GetTranslDatas()) await Run(item);
+            await foreach (var item in GetTranslDatas())
+                await Run(item);
         }
 
         private async Task Run(TranslData item)
         {
-            if (await targetDbContext.IsExists(item.Original)) return;
-            await writeManager.SendAsync(item);
+            //if (await TargetDbContext.IsExists(item.Original)) return;
+            //await writeManager.SendAsync(item);
         }
     }
 }
