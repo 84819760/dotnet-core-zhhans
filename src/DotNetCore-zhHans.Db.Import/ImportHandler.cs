@@ -5,68 +5,90 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using DotNetCorezhHans.Db.Models;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
-namespace DotNetCore_zhHans.Db.Import
+namespace DotNetCore_zhHans.Db.Import;
+
+internal class ImportHandler : IAsyncDisposable
 {
-    internal class ImportHandler : IAsyncDisposable
+    private readonly ProgressManager progressManager;
+    private readonly WriteManager writeManager;
+    private volatile int count;
+
+    public ImportHandler(MainWindowViewModel mainWindowViewModel
+        , string sourceFile
+        , string targetFile)
     {
-        private readonly MainWindowViewModel mainWindowViewModel;
-        private readonly ProgressManager progressManager;
-        private readonly WriteManager writeManager;
+        ViewModel = mainWindowViewModel;
+        SourceDbContext = new(sourceFile);
+        TargetDbContext = new(targetFile);
+        progressManager = new(this);
+        writeManager = new(this);
+        Init();
+    }
 
-        public ImportHandler(MainWindowViewModel mainWindowViewModel
-            , string sourceFile
-            , string targetFile)
+    private void Init()
+    {
+        ViewModel.WriteTitle = "写入 : 0 行";
+        ViewModel.Current = 0;
+        ViewModel.Count = SourceDbContext.Count;
+        ViewModel.UpdateCurrent(0);
+    }
+
+    internal DbContext SourceDbContext { get; }
+
+    internal DbContext TargetDbContext { get; }
+
+    internal MainWindowViewModel ViewModel { get; }
+
+    internal ReaderWriterLockSlim LockSlim { get; } = new();
+
+    public bool IsCancell => ViewModel.IsCancell;
+
+    public CancellationToken Token => ViewModel.Token;
+
+    public async ValueTask DisposeAsync()
+    {
+        await progressManager.DisposeAsync();
+        await writeManager.DisposeAsync();
+        await SourceDbContext.DisposeAsync();
+        await TargetDbContext.DisposeAsync();
+        SqliteConnection.ClearAllPools();
+    }
+
+    internal void UpdateCurrent(int value) => ViewModel.UpdateCurrent(value);
+    internal void UpdateWriteTitle(int value) => ViewModel.UpdateWriteTitle(value);
+    internal void UpdateWriteTitle(string value) => ViewModel.UpdateWriteTitle(value);
+
+
+    private IAsyncEnumerable<TranslData> GetTranslDatas() => SourceDbContext
+        .TranslDatas
+        .Include(x => x.TranslSource)
+        .AsNoTracking()
+        .AsAsyncEnumerable();
+
+    public async Task Run()
+    {
+        var items = GetTranslDatas();
+        await foreach (var item in items)
         {
-            this.mainWindowViewModel = mainWindowViewModel;
-            SourceDbContext = new(sourceFile);
-            TargetDbContext = new(targetFile);
-            progressManager = new(mainWindowViewModel);
-            writeManager = new(this);
+            if (IsCancell) break;
+            await Run(item);
         }
+        await DisposeAsync();
+    }
 
-        internal DbContext SourceDbContext { get; }
+    private async Task Run(TranslData item)
+    {
+        var isExists = await TargetDbContext.IsExists(item.Original);
+        if (!isExists) await writeManager.SendAsync(item);
+        SetRead();
+    }
 
-        internal DbContext TargetDbContext { get; }
-
-        internal ReaderWriterLockSlim LockSlim { get; } = new();
-
-        public bool IsCancell => mainWindowViewModel.IsCancell;
-
-        public CancellationToken Token => mainWindowViewModel.Token;
-
-        public async ValueTask DisposeAsync()
-        {
-            await progressManager.DisposeAsync();
-            await writeManager.DisposeAsync();
-            await SourceDbContext.DisposeAsync();
-            await TargetDbContext.DisposeAsync();
-        }
-
-        internal void Show(string value) => mainWindowViewModel.Title = value;
-
-        private void SetCount() => mainWindowViewModel.Count = SourceDbContext.Count;
-
-        private IAsyncEnumerable<TranslData> GetTranslDatas() => SourceDbContext.TranslDatas
-            .Include(x => x.TranslSource)
-            .AsNoTracking()
-            .AsAsyncEnumerable();
-
-        public async Task Run()
-        {
-            SetCount();
-            await foreach (var item in GetTranslDatas())
-            {
-                await Run(item);
-                Debug.Print(item.Id.ToString());
-            }
-        }
-
-        private async Task Run(TranslData item)
-        {
-            if (await TargetDbContext.IsExists(item.Original)) return;
-            await writeManager.SendAsync(item);
-        }
+    private async void SetRead()
+    {
+        count++;
+        await progressManager.SendAsync(count);
     }
 }

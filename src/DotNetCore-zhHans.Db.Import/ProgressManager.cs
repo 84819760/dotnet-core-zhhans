@@ -1,47 +1,37 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
-namespace DotNetCore_zhHans.Db.Import
+namespace DotNetCore_zhHans.Db.Import;
+
+internal class ProgressManager : TargetBlockBase<int>
 {
-    internal class ProgressManager : IAsyncDisposable
+    private readonly BroadcastBlock<int> broadcastBlock = new(x => x);
+    private readonly ImportHandler importHandler;
+    private readonly CancellationToken token;
+
+    public ProgressManager(ImportHandler importHandler)
     {
-        private readonly BroadcastBlock<int> broadcastBlock = new(x => x);
-        private readonly MainWindowViewModel mainWindowViewModel;
-        private readonly CancellationToken token;
-        private readonly double count;
-
-        public ProgressManager(MainWindowViewModel mainWindowViewModel)
-        {
-            this.mainWindowViewModel = mainWindowViewModel;
-            token = mainWindowViewModel.Token;
-            count = mainWindowViewModel.Count;
-            TaskRun();
-        }
-
-        public bool IsCancell => token.IsCancellationRequested;
-
-        public async ValueTask DisposeAsync()
-        {
-            broadcastBlock.Complete();
-            await broadcastBlock.Completion;
-        }
-
-        private void TaskRun() => Task.Run(async () =>
-        {
-            while (!IsCancell)
-            {
-                await Task.Delay(1000);
-                var value = await broadcastBlock.ReceiveAsync();
-                SetProgress(value);
-            }
-        }, token);
-
-        private void SetProgress(int value)
-        {
-            var progress = (int)((double)value / count * 100);
-            mainWindowViewModel.Current = progress;
-        }
+        this.importHandler = importHandler;
+        token = importHandler.Token;
+        TaskRun();
     }
+
+    public override ITargetBlock<int> TargetBlock => broadcastBlock;
+
+    public override ValueTask DisposeAsync() => SetComplete(broadcastBlock);
+
+    private void TaskRun() => Task.Run(async () =>
+    {
+        while (await IsContinue())
+        {
+            await Task.Delay(100);
+            var value = await broadcastBlock.ReceiveAsync();
+            importHandler.UpdateCurrent(value);
+        }
+    }, token);
+
+    private async ValueTask<bool> IsContinue() =>
+        !token.IsCancellationRequested
+        && await broadcastBlock.OutputAvailableAsync();
 }

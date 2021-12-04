@@ -13,5 +13,19 @@ namespace DotNetCore_zhHans.Db.Import
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            if (e.Args.Length > 2)
+            {
+                Source = e.Args[0];
+                Target = e.Args[1];
+                Caller = e.Args[2];
+            }
+            base.OnStartup(e);
+        }
+
+        public static string Source { get; private set; } = @"D:\tmp\TranslData.db";
+        public static string Target { get; private set; } = @"D:\tmp\TranslData2.db";
+        public static string Caller { get; private set; } = "cmd";
     }
 }
