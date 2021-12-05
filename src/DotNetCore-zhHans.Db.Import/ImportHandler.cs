@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 using DotNetCorezhHans.Db.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 
 namespace DotNetCore_zhHans.Db.Import;
 
@@ -42,11 +41,7 @@ internal class ImportHandler : IAsyncDisposable
 
     internal MainWindowViewModel ViewModel { get; }
 
-    internal ReaderWriterLockSlim LockSlim { get; } = new();
-
     public bool IsCancell => ViewModel.IsCancell;
-
-    public CancellationToken Token => ViewModel.Token;
 
     public async ValueTask DisposeAsync()
     {

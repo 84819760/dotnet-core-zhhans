@@ -8,12 +8,10 @@ internal class ProgressManager : TargetBlockBase<int>
 {
     private readonly BroadcastBlock<int> broadcastBlock = new(x => x);
     private readonly ImportHandler importHandler;
-    private readonly CancellationToken token;
 
     public ProgressManager(ImportHandler importHandler)
     {
         this.importHandler = importHandler;
-        token = importHandler.Token;
         TaskRun();
     }
 
@@ -29,9 +27,9 @@ internal class ProgressManager : TargetBlockBase<int>
             var value = await broadcastBlock.ReceiveAsync();
             importHandler.UpdateCurrent(value);
         }
-    }, token);
+    });
 
     private async ValueTask<bool> IsContinue() =>
-        !token.IsCancellationRequested
+        !importHandler.IsCancell
         && await broadcastBlock.OutputAvailableAsync();
 }

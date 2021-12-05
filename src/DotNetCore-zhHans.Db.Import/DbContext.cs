@@ -39,7 +39,7 @@ internal class DbContext : Microsoft.EntityFrameworkCore.DbContext
         .AsNoTracking()
         .AnyAsync(x => x.Original == original);
 
-    internal async Task AddFactory(TranslData[] datas)
+    internal async Task AddFactory(IEnumerable<TranslData> datas)
     {
         var items = datas.Select(CreateTranslData);
         await TranslDatas.AddRangeAsync(items);
