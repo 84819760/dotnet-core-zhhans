@@ -29,10 +29,7 @@ internal class ImportHandler : IAsyncDisposable
 
     private void Init()
     {
-        ViewModel.WriteTitle = "写入 : 0 行";
-        ViewModel.Current = 0;
-        ViewModel.Count = SourceDbContext.Count;
-        ViewModel.UpdateCurrent(0);
+        ViewModel.ProgressMaximum = SourceDbContext.Count;
     }
 
     internal DbContext SourceDbContext { get; }
@@ -51,11 +48,6 @@ internal class ImportHandler : IAsyncDisposable
         await TargetDbContext.DisposeAsync();
         SqliteConnection.ClearAllPools();
     }
-
-    internal void UpdateCurrent(int value) => ViewModel.UpdateCurrent(value);
-    internal void UpdateWriteTitle(int value) => ViewModel.UpdateWriteTitle(value);
-    internal void UpdateWriteTitle(string value) => ViewModel.UpdateWriteTitle(value);
-
 
     private IAsyncEnumerable<TranslData> GetTranslDatas() => SourceDbContext
         .TranslDatas

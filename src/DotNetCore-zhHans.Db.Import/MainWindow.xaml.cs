@@ -38,12 +38,12 @@ public partial class MainWindow : Window
 
     private async void SetEnd()
     {
-        button1.IsEnabled = false;
-        button1.Content = "停止中";
-        await ViewModel.DisposeAsync();
-        button1.Content = "已结束";
-        ViewModel.Current = ViewModel.Count;
-        ViewModel.WindowsProgress = 1;
+        //button1.IsEnabled = false;
+        //button1.Content = "停止中";
+        //await ViewModel.DisposeAsync();
+        //button1.Content = "已结束";
+        //ViewModel.Current = ViewModel.Count;
+        //ViewModel.WindowsProgress = 1;
     }
 }
 
@@ -51,43 +51,52 @@ public class MainWindowViewModel : INotifyPropertyChanged, IAsyncDisposable
 {
     public event PropertyChangedEventHandler? PropertyChanged;
     private ImportHandler importHandler = null!;
-    private int writeCount = 0;
+
+    public MainWindowViewModel() => PropertyChanged += PropertyChangedHandler;
 
     public CancellationTokenSource CancellationTokenSource { get; } = new();
 
     public bool IsCancell => CancellationTokenSource.IsCancellationRequested;
 
-    public double Count { get; set; } = 100;
+    public double ProgressMaximum { get; set; } = 1;
 
-    public double Current { get; set; }
+    public double ProgressValue { get; set; } = 0;
 
-    public string WriteTitle { get; set; } = "写入 : 0 行";
-
-    public string CurrentString { get; set; } = "读取:0(0%)";
+    public double Progress { get; set; } = 0;
 
     public double WindowsProgress { get; set; }
 
-    internal void UpdateCurrent(int value)
+    public int WriteCount { get; set; }
+
+    public int CacheCount { get; set; }
+
+    private void PropertyChangedHandler(object? sender, PropertyChangedEventArgs e)
     {
-        //if (IsCancell) return;
-        Current = value;
-        var ps = Current / Count;
-        WindowsProgress = ps;
-        SetCurrentString((int)(ps * 100));
+        var prop = e.PropertyName;
+
     }
 
-    internal void UpdateWriteTitle(int vlaue)
-    {
-        writeCount += vlaue;
-        WriteTitle = $"写入 : {writeCount} 行";
-    }
+    //internal void UpdateCurrent(int value)
+    //{
+    //    //if (IsCancell) return;
+    //    Current = value;
+    //    var ps = Current / Count;
+    //    WindowsProgress = ps;
+    //    SetCurrentString((int)(ps * 100));
+    //}
 
-    internal void UpdateWriteTitle(string value) => WriteTitle = value;
+    //internal void UpdateWriteTitle(int vlaue)
+    //{
+    //    writeCount += vlaue;
+    //    WriteTitle = $"写入 : {writeCount} 行";
+    //}
 
-    private void SetCurrentString(double progress = 0) =>
-        CurrentString = $"读取:{Current}({progress}%)";
+    //internal void UpdateWriteTitle(string value) => WriteTitle = value;
 
-    public Task Task { get; private set; } = null!;     
+    //private void SetCurrentString(double progress = 0) =>
+    //    CurrentString = $"读取:{Current}({progress}%)";
+
+    public Task Task { get; private set; } = null!;
 
     internal Task Start() => Task = Task.Run(CreateImportHandler);
 

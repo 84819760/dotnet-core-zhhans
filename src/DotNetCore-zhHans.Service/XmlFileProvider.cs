@@ -51,11 +51,12 @@ namespace DotNetCoreZhHans.Service
 
         private IEnumerable<string> GetXmlFiles(string directory) => Directory
             .EnumerateFiles(directory, "*.xml")
-            .Where(IsExistsDll)
-            .Where(TryIsDoc)
-            .Where(IsExistsZhHansXml)
-            .Select(SendPath)
+            .Where(TestFile)
             .Select(SendFilePath);
+
+        private bool TestFile(string path) => IsExistsDll(path) 
+            && TryIsDoc(path) 
+            && IsExistsZhHansXml(path);
 
         private IEnumerable<string> GetDirectories(string directory) => Directory
             .EnumerateDirectories(directory)
@@ -113,8 +114,7 @@ namespace DotNetCoreZhHans.Service
             return File.Exists(dllFile);
         }
 
-        private static string GetTargetFileName(string path, string extensionName) => 
+        private static string GetTargetFileName(string path, string extensionName) =>
             $"{Path.GetFileNameWithoutExtension(path)}{extensionName}";
-       
     }
 }

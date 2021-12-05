@@ -25,7 +25,7 @@ internal class ProgressManager : TargetBlockBase<int>
         {
             await Task.Delay(100);
             var value = await broadcastBlock.ReceiveAsync();
-            importHandler.UpdateCurrent(value);
+            //importHandler.UpdateCurrent(value);
         }
     });
 

@@ -11,9 +11,11 @@ namespace DotNetCore_zhHans.Db.Import;
 internal class WriteManager : TargetBlockBase<TranslData>
 {
     private readonly BatchBlock<TranslData> batchBlock;
+    private const int boundedCapacity = cache * 10;
     private readonly ImportHandler importHandler;
     private const int cache = 1000;
     private volatile bool isCancell;
+    private volatile int cacheCount;
     private readonly Task task;
 
     public WriteManager(ImportHandler importHandler)
@@ -24,11 +26,17 @@ internal class WriteManager : TargetBlockBase<TranslData>
         task = Task.Run(Loop);
     }
 
+    public override Task<bool> SendAsync(TranslData value)
+    {
+        cacheCount++;
+        return batchBlock.SendAsync(value);
+    }
+
     private void SetCancell() => importHandler.ViewModel.CancellationTokenSource
         .Token.Register(() => isCancell = true);
 
     private static BatchBlock<TranslData> CreateBatchBlock() =>
-        new(cache, new GroupingDataflowBlockOptions() { BoundedCapacity = cache * 10 });
+        new(cache, new GroupingDataflowBlockOptions() { BoundedCapacity = boundedCapacity });
 
     public override ITargetBlock<TranslData> TargetBlock => batchBlock;
 
@@ -44,10 +52,17 @@ internal class WriteManager : TargetBlockBase<TranslData>
     private async Task Write(IEnumerable<TranslData> datas)
     {
         if (isCancell) return;
+        var len = datas.Count();
         using var dbContext = new DbContext(TargetDbContext);
         await dbContext.AddFactory(datas);
-        importHandler.UpdateWriteTitle(datas.Count());
-        Debug.Print($"写入:{datas.Count()}, 缓存:{batchBlock.OutputCount * cache}");
+        //importHandler.UpdateWriteTitle(len);
+        //Debug.Print($"写入:{len}, 缓存:{GetCacheCount(len)}");
+    }
+
+    private int GetCacheCount(int count)
+    {
+        cacheCount -= count;
+        return cacheCount > boundedCapacity ? boundedCapacity : cacheCount;
     }
 
     private async Task Loop()

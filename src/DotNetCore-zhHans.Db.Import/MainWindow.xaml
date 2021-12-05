@@ -8,10 +8,9 @@
         mc:Ignorable="d"     
         ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
-        Title="数据同步" Height="150" Width="250" Loaded="Window_Loaded">
+        Title="数据同步" Height="130" Width="300" Loaded="Window_Loaded">
     <Window.Resources>
         <Style TargetType="TextBlock">
-            <Setter Property="Width" Value="100"/>
             <Setter Property="FontSize" Value="10"/>
             <Setter Property="TextAlignment" Value="Center"/>
         </Style>
@@ -22,21 +21,31 @@
             ProgressValue="{Binding WindowsProgress}"/>
     </Window.TaskbarItemInfo>
     <Grid>
-        <StackPanel HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-            <ProgressBar
-                  Value="{Binding Current}"
-                  Maximum="{Binding Count}"  
-                  Height="5" Width="100" Margin="5 5"/>
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                <TextBlock Text="{Binding CurrentString}" Margin="0 0 5 0" />
-                <TextBlock Text="{Binding WriteTitle}"  />
-            </StackPanel>
-            <Button x:Name="button1" 
-                    Content="停止"
-                    Click="Button_Click"
-                    Width="50"  
-                    Margin="0 10 0 0"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Bottom"
+                    Margin="0 10">
+            <TextBlock Text="{Binding ProgressValue,StringFormat=\{0\}\\}" />
+            <TextBlock Text="{Binding ProgressMaximum}" />
+        </StackPanel>
+        <Grid Grid.Row="1" >
+            <ProgressBar Height="15" Margin="15 0"                         
+                         Maximum="{Binding ProgressMaximum}"
+                         Value="{Binding ProgressValue}" Visibility="Visible" Opacity="0.9"/>
+            <TextBlock Height="13" Text="{Binding Progress,StringFormat=\{0\}%}"/>
+        </Grid>
+        <StackPanel Grid.Row="2" 
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Center"
+                    Margin="0 10">
+            <TextBlock Text="{Binding WriteCount,StringFormat=写入:\{0\}}" Margin="10 0"/>
+            <TextBlock Text="{Binding CacheCount,StringFormat=缓存:\{0\}}" Margin="10 0"/>
         </StackPanel>
     </Grid>
 </Window>
