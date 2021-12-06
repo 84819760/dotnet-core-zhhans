@@ -15,8 +15,8 @@ internal class WriteManager : TargetBlockBase<TranslData>
     private readonly ImportHandler importHandler;
     private const int cache = 1000;
     private volatile bool isCancell;
-    private volatile int cacheCount;
     private readonly Task task;
+    private volatile int cacheCount;
 
     public WriteManager(ImportHandler importHandler)
     {
@@ -24,7 +24,13 @@ internal class WriteManager : TargetBlockBase<TranslData>
         batchBlock = CreateBatchBlock();
         SetCancell();
         task = Task.Run(Loop);
+        WriteProgress.Maximum = boundedCapacity;
+        WriteProgress.ChangedHandler();
     }
+
+    public ProgressData WriteProgress => ViewModel.WriteProgress;
+
+    public MainWindowViewModel ViewModel => importHandler.ViewModel;
 
     public override Task<bool> SendAsync(TranslData value)
     {
@@ -52,17 +58,17 @@ internal class WriteManager : TargetBlockBase<TranslData>
     private async Task Write(IEnumerable<TranslData> datas)
     {
         if (isCancell) return;
-        var len = datas.Count();
+        cacheCount -= datas.Count();
         using var dbContext = new DbContext(TargetDbContext);
         await dbContext.AddFactory(datas);
-        //importHandler.UpdateWriteTitle(len);
-        //Debug.Print($"写入:{len}, 缓存:{GetCacheCount(len)}");
+        SetWriteProgress();
     }
 
-    private int GetCacheCount(int count)
+    private void SetWriteProgress()
     {
-        cacheCount -= count;
-        return cacheCount > boundedCapacity ? boundedCapacity : cacheCount;
+        cacheCount = cacheCount < 0 ? 0 : cacheCount;
+        WriteProgress.Value = cacheCount;
+        WriteProgress.ChangedHandler();
     }
 
     private async Task Loop()

@@ -15,7 +15,7 @@ public partial class MainWindow : Window
         DataContext = ViewModel;
     }
 
-    public MainWindowViewModel ViewModel { get; } = new();
+    internal MainWindowViewModel ViewModel { get; } = new();
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
@@ -47,54 +47,18 @@ public partial class MainWindow : Window
     }
 }
 
-public class MainWindowViewModel : INotifyPropertyChanged, IAsyncDisposable
+internal class MainWindowViewModel : NotifyPropertyChanged, IAsyncDisposable
 {
-    public event PropertyChangedEventHandler? PropertyChanged;
-    private ImportHandler importHandler = null!;
 
-    public MainWindowViewModel() => PropertyChanged += PropertyChangedHandler;
+    private ImportHandler importHandler = null!;
 
     public CancellationTokenSource CancellationTokenSource { get; } = new();
 
     public bool IsCancell => CancellationTokenSource.IsCancellationRequested;
 
-    public double ProgressMaximum { get; set; } = 1;
+    public ProgressData ReadProgress { get; } = new();
 
-    public double ProgressValue { get; set; } = 0;
-
-    public double Progress { get; set; } = 0;
-
-    public double WindowsProgress { get; set; }
-
-    public int WriteCount { get; set; }
-
-    public int CacheCount { get; set; }
-
-    private void PropertyChangedHandler(object? sender, PropertyChangedEventArgs e)
-    {
-        var prop = e.PropertyName;
-
-    }
-
-    //internal void UpdateCurrent(int value)
-    //{
-    //    //if (IsCancell) return;
-    //    Current = value;
-    //    var ps = Current / Count;
-    //    WindowsProgress = ps;
-    //    SetCurrentString((int)(ps * 100));
-    //}
-
-    //internal void UpdateWriteTitle(int vlaue)
-    //{
-    //    writeCount += vlaue;
-    //    WriteTitle = $"写入 : {writeCount} 行";
-    //}
-
-    //internal void UpdateWriteTitle(string value) => WriteTitle = value;
-
-    //private void SetCurrentString(double progress = 0) =>
-    //    CurrentString = $"读取:{Current}({progress}%)";
+    public ProgressData WriteProgress { get; } = new();
 
     public Task Task { get; private set; } = null!;
 

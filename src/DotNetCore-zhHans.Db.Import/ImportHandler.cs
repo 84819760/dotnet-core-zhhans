@@ -11,9 +11,7 @@ namespace DotNetCore_zhHans.Db.Import;
 
 internal class ImportHandler : IAsyncDisposable
 {
-    private readonly ProgressManager progressManager;
     private readonly WriteManager writeManager;
-    private volatile int count;
 
     public ImportHandler(MainWindowViewModel mainWindowViewModel
         , string sourceFile
@@ -22,14 +20,9 @@ internal class ImportHandler : IAsyncDisposable
         ViewModel = mainWindowViewModel;
         SourceDbContext = new(sourceFile);
         TargetDbContext = new(targetFile);
-        progressManager = new(this);
         writeManager = new(this);
-        Init();
-    }
-
-    private void Init()
-    {
-        ViewModel.ProgressMaximum = SourceDbContext.Count;
+        ViewModel.ReadProgress.AddToMaximum(SourceDbContext.Count);
+        ViewModel.WriteProgress.AddToMaximum(1);
     }
 
     internal DbContext SourceDbContext { get; }
@@ -42,7 +35,6 @@ internal class ImportHandler : IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        await progressManager.DisposeAsync();
         await writeManager.DisposeAsync();
         await SourceDbContext.DisposeAsync();
         await TargetDbContext.DisposeAsync();
@@ -68,14 +60,8 @@ internal class ImportHandler : IAsyncDisposable
 
     private async Task Run(TranslData item)
     {
+        ViewModel.ReadProgress.AddToValue();
         var isExists = await TargetDbContext.IsExists(item.Original);
         if (!isExists) await writeManager.SendAsync(item);
-        SetRead();
-    }
-
-    private async void SetRead()
-    {
-        count++;
-        await progressManager.SendAsync(count);
     }
 }

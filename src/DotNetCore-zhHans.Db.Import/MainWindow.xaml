@@ -11,7 +11,7 @@
         Title="数据同步" Height="130" Width="300" Loaded="Window_Loaded">
     <Window.Resources>
         <Style TargetType="TextBlock">
-            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="TextAlignment" Value="Center"/>
         </Style>
     </Window.Resources>
@@ -22,30 +22,51 @@
     </Window.TaskbarItemInfo>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        
         <StackPanel Orientation="Horizontal" 
                     HorizontalAlignment="Center" 
                     VerticalAlignment="Bottom"
                     Margin="0 10">
-            <TextBlock Text="{Binding ProgressValue,StringFormat=\{0\}\\}" />
-            <TextBlock Text="{Binding ProgressMaximum}" />
+            <TextBlock Text="{Binding ReadProgress.Value,StringFormat={}{0:N0}}" />
+            <TextBlock Text="/"/>
+            <TextBlock Text="{Binding ReadProgress.Maximum,StringFormat={}{0:N0}}" />
         </StackPanel>
+        
         <Grid Grid.Row="1" >
             <ProgressBar Height="15" Margin="15 0"                         
-                         Maximum="{Binding ProgressMaximum}"
-                         Value="{Binding ProgressValue}" Visibility="Visible" Opacity="0.9"/>
-            <TextBlock Height="13" Text="{Binding Progress,StringFormat=\{0\}%}"/>
+                         Maximum="{Binding ReadProgress.Maximum}"
+                         Value="{Binding ReadProgress.Value}" 
+                         Opacity="0.9"/>
+            <TextBlock Height="13" 
+                       Text="{Binding ReadProgress.Progress,StringFormat=读取行 : {0:P2}}"/>
         </Grid>
-        <StackPanel Grid.Row="2" 
-                    VerticalAlignment="Top"
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Center"
-                    Margin="0 10">
-            <TextBlock Text="{Binding WriteCount,StringFormat=写入:\{0\}}" Margin="10 0"/>
-            <TextBlock Text="{Binding CacheCount,StringFormat=缓存:\{0\}}" Margin="10 0"/>
-        </StackPanel>
+
+        <Grid Grid.Row="2" Margin="0 5">
+            <ProgressBar Height="15" Margin="15 0"                         
+                         Maximum="{Binding WriteProgress.Maximum}"
+                         Value="{Binding WriteProgress.Value}" Visibility="Visible" Opacity="0.9"/>
+            <TextBlock Height="13" 
+                       Text="{Binding WriteProgress.Progress,StringFormat=缓冲区 : {0:P2}}"/>
+        </Grid>
+
+
+        <Grid Grid.Row="3" Margin="0 5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock  Grid.Column="0" HorizontalAlignment="Right"
+                    Text="{Binding WriteCount,StringFormat=写入:\{0\}}"/>
+            
+            <TextBlock  Grid.Column="2" HorizontalAlignment="Left"
+                Text="{Binding CacheCount,StringFormat=缓存:\{0\}}"/>
+        </Grid>
     </Grid>
 </Window>
