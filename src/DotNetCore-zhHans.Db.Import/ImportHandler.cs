@@ -60,7 +60,7 @@ internal class ImportHandler : IAsyncDisposable
         await Delay();
     }
 
-    private Task Delay() => ViewModel.WriteProgress.Progress > 0.30 
-        ? Task.Delay(1) 
+    private Task Delay() => ViewModel.WriteProgress.Progress > 0.30
+        ? Task.Delay(1)
         : Task.CompletedTask;
 }

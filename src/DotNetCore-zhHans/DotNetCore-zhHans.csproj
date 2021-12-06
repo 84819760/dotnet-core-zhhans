@@ -7,7 +7,7 @@
     <AssemblyName>DotNetCorezhHans</AssemblyName>
     <RootNamespace>DotNetCorezhHans</RootNamespace>
     <Platforms>AnyCPU;x64;x86</Platforms>
-    <AssemblyVersion>1.0.0.6</AssemblyVersion>
+    <AssemblyVersion>1.0.0.7</AssemblyVersion>
     <SignAssembly>false</SignAssembly>
     <ApplicationIcon>j12.ico</ApplicationIcon>
   </PropertyGroup>
@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotNetCore-zhHans.Base\DotNetCore-zhHans.Base.csproj" />
+    <ProjectReference Include="..\DotNetCore-zhHans.Db.Import\DotNetCore-zhHans.Db.Import.csproj" />
     <ProjectReference Include="..\DotNetCore-zhHans.Service\DotNetCore-zhHans.Service.csproj" />
     <ProjectReference Include="..\NearExtend.WpfPrism\NearExtend.WpfPrism.csproj" />
   </ItemGroup>
