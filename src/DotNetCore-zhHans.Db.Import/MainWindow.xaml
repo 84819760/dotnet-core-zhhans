@@ -47,16 +47,10 @@
         <UniformGrid Grid.Row="2" Columns="3">
             <TextBlock Text="{Binding TimeSpan}" />
             <TextBlock Text="{Binding WriteCount,StringFormat=写入:{0:N0}}"/>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition/>                  
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="缓冲区" HorizontalAlignment="Right"/>
-                <TextBlock Grid.Column="1" Text=":"/>
+            <UniformGrid Columns="2">
+                <TextBlock Grid.Column="0" Text="缓冲区:" HorizontalAlignment="Right"/>
                 <TextBlock Grid.Column="2" Text="{Binding WriteProgress.Progress,StringFormat={}{0:P0}}"  HorizontalAlignment="Left"/>
-            </Grid>
+            </UniformGrid>
         </UniformGrid>       
     </Grid>
 </Window>

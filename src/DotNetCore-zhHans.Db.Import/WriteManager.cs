@@ -11,7 +11,7 @@ namespace DotNetCore_zhHans.Db.Import;
 internal class WriteManager : TargetBlockBase<TranslData>
 {
     private readonly BatchBlock<TranslData> batchBlock;
-    private const int boundedCapacity = cache * 10;
+    private const int boundedCapacity = cache * 30;
     private readonly ImportHandler importHandler;
     private const int cache = 1000;
     private volatile bool isCancell;

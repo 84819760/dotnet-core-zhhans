@@ -24,8 +24,8 @@ namespace DotNetCore_zhHans.Db.Import
             base.OnStartup(e);
         }
 
-        public static string Source { get; private set; } = @"E:\tmp\TranslData.db";
-        public static string Target { get; private set; } = @"E:\tmp\TranslData2.db";
+        public static string Source { get; private set; } = @"D:\tmp\TranslData.db";
+        public static string Target { get; private set; } = @"D:\tmp\TranslData2.db";
         public static string Caller { get; private set; } = "cmd";
     }
 }

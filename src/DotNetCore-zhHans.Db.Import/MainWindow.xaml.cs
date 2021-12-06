@@ -18,30 +18,31 @@ public partial class MainWindow : Window
 
     internal MainWindowViewModel ViewModel { get; } = new();
 
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-        ViewModel.CancellationTokenSource.Cancel();
-        SetEnd();
-    }
-
-    protected override void OnClosing(CancelEventArgs e)
+    protected override async void OnClosing(CancelEventArgs e)
     {
         if (ViewModel.Task.IsCompleted) return;
-        if (e != null) e.Cancel = true;
-        MessageBox.Show("先停止才能关闭");
+        e.Cancel = true;
+        if (!ViewModel.IsCancell)
+        {
+            ViewModel.CancellationTokenSource.Cancel();         
+            Title = "等待线程停止";
+            await SetEnd();
+        }       
     }
 
     private async void Window_Loaded(object sender, RoutedEventArgs e)
     {
         await ViewModel.Start();
-        SetEnd();
+        await SetEnd();
     }
-
-    private async void SetEnd()
+    
+    private async Task SetEnd()
     {
         await ViewModel.DisposeAsync();
         ViewModel.WriteProgress.Value = 0;
         Title = "完成";
+        if (ViewModel.IsCancell) Close();
+        else MessageBox.Show("完成");
     }
 }
 
@@ -49,11 +50,6 @@ internal class MainWindowViewModel : NotifyPropertyChanged, IAsyncDisposable
 {
     private ImportHandler importHandler = null!;
     private DateTime dateTime;
-
-    public MainWindowViewModel()
-    {
-
-    }
 
     public CancellationTokenSource CancellationTokenSource { get; } = new();
 
@@ -87,5 +83,5 @@ internal class MainWindowViewModel : NotifyPropertyChanged, IAsyncDisposable
         TimeSpan = $"{timeSpan.Minutes}分{timeSpan.Seconds}秒";
     }
 
-    public ValueTask DisposeAsync() => importHandler.DisposeAsync();
+    public ValueTask DisposeAsync() => (importHandler?.DisposeAsync()).GetValueOrDefault();
 }
