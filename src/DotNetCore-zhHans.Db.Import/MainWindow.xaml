@@ -20,7 +20,7 @@
             ProgressState="Normal"             
             ProgressValue="{Binding ReadProgress.Progress}"/>
     </Window.TaskbarItemInfo>
-    <Grid VerticalAlignment="Center" Margin="10 0">
+    <Grid VerticalAlignment="Center" Margin="20 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -47,7 +47,16 @@
         <UniformGrid Grid.Row="2" Columns="3">
             <TextBlock Text="{Binding TimeSpan}" />
             <TextBlock Text="{Binding WriteCount,StringFormat=写入:{0:N0}}"/>
-            <TextBlock Text="{Binding WriteProgress.Progress,StringFormat=缓冲:{0:P0}}"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>                  
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="缓冲区" HorizontalAlignment="Right"/>
+                <TextBlock Grid.Column="1" Text=":"/>
+                <TextBlock Grid.Column="2" Text="{Binding WriteProgress.Progress,StringFormat={}{0:P0}}"  HorizontalAlignment="Left"/>
+            </Grid>
         </UniformGrid>       
     </Grid>
 </Window>
