@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using DotNetCorezhHans.Base.Interfaces;
 using DotNetCorezhHans.Db.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
+using Microsoft.Data.Sqlite;
 
 namespace DotNetCorezhHans.Db
 {
@@ -13,6 +15,9 @@ namespace DotNetCorezhHans.Db
     {
         private readonly ReaderWriterLockSlim dbLock;
         private readonly ITransmitData transmitData;
+
+        static ZhDbContext() => AppDomain.CurrentDomain
+            .ProcessExit += (_, _) => SqliteConnection.ClearAllPools();
 
         public ZhDbContext(ITransmitData transmitData)
         {

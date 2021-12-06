@@ -28,7 +28,7 @@ namespace DotNetCoreZhHans.Service.ProcessingUnit
         public override async Task Complete()
         {
             await Complete(apiDataPackBlock, completionBlock, updateXmlBlock);
-            dbContext.Dispose();
+            await dbContext.DisposeAsync();
         }
 
         protected override ITargetBlock<RootNode> TargetBlock => default;
