@@ -5,6 +5,7 @@ using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Windows;
 
+
 namespace DotNetCore_zhHans.Db.Import;
 
 public partial class MainWindow : Window
@@ -38,19 +39,21 @@ public partial class MainWindow : Window
 
     private async void SetEnd()
     {
-        //button1.IsEnabled = false;
-        //button1.Content = "停止中";
-        //await ViewModel.DisposeAsync();
-        //button1.Content = "已结束";
-        //ViewModel.Current = ViewModel.Count;
-        //ViewModel.WindowsProgress = 1;
+        await ViewModel.DisposeAsync();
+        ViewModel.WriteProgress.Value = 0;
+        Title = "完成";
     }
 }
 
 internal class MainWindowViewModel : NotifyPropertyChanged, IAsyncDisposable
 {
-
     private ImportHandler importHandler = null!;
+    private DateTime dateTime;
+
+    public MainWindowViewModel()
+    {
+
+    }
 
     public CancellationTokenSource CancellationTokenSource { get; } = new();
 
@@ -58,7 +61,11 @@ internal class MainWindowViewModel : NotifyPropertyChanged, IAsyncDisposable
 
     public ProgressData ReadProgress { get; } = new();
 
-    public ProgressData WriteProgress { get; } = new();
+    public ProgressData WriteProgress { get; } = new() { Digits = 2 };
+
+    public string TimeSpan { get; set; } = "0分0秒";
+
+    public int WriteCount { get; set; }
 
     public Task Task { get; private set; } = null!;
 
@@ -66,8 +73,18 @@ internal class MainWindowViewModel : NotifyPropertyChanged, IAsyncDisposable
 
     private async Task CreateImportHandler()
     {
+        dateTime = DateTime.Now;
+        var time = new System.Timers.Timer(1000) { AutoReset = true, Enabled = true };
+        time.Elapsed += Timer_Elapsed;
         importHandler = new ImportHandler(this, App.Source, App.Target);
         await importHandler.Run();
+        time.Enabled = false;
+    }
+
+    private void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+    {
+        var timeSpan = DateTime.Now - dateTime;
+        TimeSpan = $"{timeSpan.Minutes}分{timeSpan.Seconds}秒";
     }
 
     public ValueTask DisposeAsync() => importHandler.DisposeAsync();

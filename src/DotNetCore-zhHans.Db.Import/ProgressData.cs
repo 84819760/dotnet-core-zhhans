@@ -10,6 +10,8 @@ internal class ProgressData : NotifyPropertyChanged
 
     public double Progress { get; set; }
 
+    public int Digits { get; init; } = 4;
+
     public string? Title { get; set; }
 
     public void AddToMaximum(double vlaue = 1)
@@ -24,5 +26,5 @@ internal class ProgressData : NotifyPropertyChanged
         ChangedHandler();
     }
 
-    public void ChangedHandler() => Progress = Math.Round(Value / Maximum, 4);
+    public void ChangedHandler() => Progress = Math.Round(Value / Maximum, Digits);
 }

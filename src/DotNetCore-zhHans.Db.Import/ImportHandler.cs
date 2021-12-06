@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using DotNetCorezhHans.Db.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
 
 namespace DotNetCore_zhHans.Db.Import;
 
@@ -63,5 +62,10 @@ internal class ImportHandler : IAsyncDisposable
         ViewModel.ReadProgress.AddToValue();
         var isExists = await TargetDbContext.IsExists(item.Original);
         if (!isExists) await writeManager.SendAsync(item);
+        await Delay();
     }
+
+    private Task Delay() => ViewModel.WriteProgress.Progress > 0.99 
+        ? Task.Delay(1) 
+        : Task.CompletedTask;
 }

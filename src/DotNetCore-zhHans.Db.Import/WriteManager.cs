@@ -58,9 +58,11 @@ internal class WriteManager : TargetBlockBase<TranslData>
     private async Task Write(IEnumerable<TranslData> datas)
     {
         if (isCancell) return;
-        cacheCount -= datas.Count();
+        var count = datas.Count();
+        cacheCount -= count;
         using var dbContext = new DbContext(TargetDbContext);
         await dbContext.AddFactory(datas);
+        ViewModel.WriteCount += count;
         SetWriteProgress();
     }
 
