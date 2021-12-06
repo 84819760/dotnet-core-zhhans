@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DotNetCorezhHans.Db.Models;
+﻿using DotNetCorezhHans.Db.Models;
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 
 namespace DotNetCore_zhHans.Db.Import;
 

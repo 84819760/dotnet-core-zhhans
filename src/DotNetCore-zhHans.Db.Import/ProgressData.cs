@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DotNetCore_zhHans.Db.Import;
+﻿namespace DotNetCore_zhHans.Db.Import;
 
 internal class ProgressData : NotifyPropertyChanged
 {

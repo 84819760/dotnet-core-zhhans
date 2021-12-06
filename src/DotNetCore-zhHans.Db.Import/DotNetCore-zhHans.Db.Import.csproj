@@ -6,8 +6,7 @@
     <RootNamespace>DotNetCore_zhHans.Db.Import</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <UseWindowsForms>True</UseWindowsForms>
-    <ImplicitUsings>disable</ImplicitUsings>
+    <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationIcon>5.ico</ApplicationIcon>	 
   </PropertyGroup>
 
