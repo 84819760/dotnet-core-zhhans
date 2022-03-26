@@ -13,5 +13,8 @@ namespace DotNetCore_zhHans.Boot
     /// </summary>
     public partial class App : Application
     {
+        public static string[] Args { get; private set; } = null!;
+
+        protected override void OnStartup(StartupEventArgs e) => Args = e.Args ?? Array.Empty<string>();
     }
 }

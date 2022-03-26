@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "DotNetCore-zhHans.Boot": {
+      "commandName": "Project"
+    }
+  }
+}
