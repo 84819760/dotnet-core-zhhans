@@ -49,9 +49,55 @@ namespace DotNetCoreZhHans.Service.FileHandlers.FileActuators
         protected XmlDocument CreateXmlDocument()
         {
             var xmlDoc = new XmlDocument();
-            xmlDoc.Load(Transmits.File.Path);
+            NetstandardTest(xmlDoc);
             memberNodeCount = GetMemberNode(xmlDoc).Count();
             return xmlDoc;
+        }
+
+        private void NetstandardTest(XmlDocument doc)
+        {
+            try
+            {
+                doc.Load(Transmits.File.Path);
+            }
+            catch (Exception ex)
+            {
+                if (IsNetstandard()) ReplaceFile(ex);
+                throw;
+            }
+        }
+
+        private bool IsNetstandard()
+        {
+            var path = Transmits.File.Path.ToLower();
+            return new[] { "netstandard.library", @"\ref\" }.All(x => path.Contains(x));
+        }
+
+        private void ReplaceFile(Exception ex)
+        {
+            var dir = Environment.CurrentDirectory;
+            var path = GetNetstandardXmlPath(dir) ?? GetNetstandardXmlPath(Path.Combine(dir, "lib"));
+            ReplaceFile(path);
+            throw new Exception($"读取文件失败:{ex.Message}\r\n使用官方文件netstandard2.1替换");
+        }
+
+        private void ReplaceFile(string netstandardXmlPath)
+        {
+            var dir = Path.GetDirectoryName(Transmits.File.Path);
+            dir = Path.Combine(dir, "zh-hans");
+            Directory.CreateDirectory(dir);
+
+            var fileName = Path.GetFileName(Transmits.File.Path);
+            var targetFile = Path.Combine(dir, fileName);
+
+            System.IO.File.Copy(netstandardXmlPath, targetFile);
+        }
+
+        private static string GetNetstandardXmlPath(string dir)
+        {
+            var path = Path.Combine(dir, "netstandard.xml");
+            if (System.IO.File.Exists(path)) return path;
+            return default;
         }
 
         private IEnumerable<RootNode> GetXmlNodes(XmlDocument doc) => GetMemberNode(doc)?
