@@ -38,6 +38,9 @@ public partial class MainWindow : Window
     //检查
     private Action? TestUpdate() => TestArgs("--update-file-check", () => viewModel.Update());
 
+    //移动文件
+    private Action? TestUpdateFile() => TestArgs("--update-file-move", () => viewModel.Update());
+
     //首次使用
     private Action? TestInit() => IsFirstExec ? default : viewModel.Init;
 
