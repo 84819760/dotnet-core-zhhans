@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using DotNetCorezhHans.Base;
 using DotNetCorezhHans.ViewModels;
 using NearExtend.WpfPrism;
 

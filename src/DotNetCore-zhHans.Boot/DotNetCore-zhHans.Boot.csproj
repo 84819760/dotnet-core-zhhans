@@ -8,7 +8,7 @@
 	 <Platforms>AnyCPU;x64;x86</Platforms>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>j12.ico</ApplicationIcon>  
-    <AssemblyName>DotNetCore-zhHans</AssemblyName>
+    <AssemblyName>DotNetCoreZhHans</AssemblyName>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 

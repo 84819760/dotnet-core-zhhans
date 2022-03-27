@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using DotNetCorezhHans;
 using DotNetCorezhHans.Base;
 using DotNetCorezhHans.Base.Interfaces;
 using DotNetCoreZhHans.Service.FileHandlers;

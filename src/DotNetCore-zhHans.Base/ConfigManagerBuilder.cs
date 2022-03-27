@@ -1,8 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace DotNetCorezhHans.Base
 {
-    internal class ConfigManagerBuilder
+    public class ConfigManagerBuilder
     {
         private const string target = "DotNetCore-zhHans.Config.json";
         private static readonly string[] ignores = new[]
@@ -30,8 +31,9 @@ namespace DotNetCorezhHans.Base
 
         internal static ConfigManager CreateInstance()
         {
-            if (!File.Exists(target)) CreateJson();
-            var json = File.ReadAllText(target);
+            var path = RootConfigFilePath;
+            if (!File.Exists(path)) CreateJson();
+            var json = File.ReadAllText(path);
             return Extensions.Deserialize<ConfigManager>(json);
         }
 
@@ -46,22 +48,43 @@ namespace DotNetCorezhHans.Base
             Save(instance);
         }
 
+        /// <summary>
+        /// 配置文件路径
+        /// </summary>
+        public static string RootConfigFilePath
+        {
+            get
+            {
+                var dir = Path.GetDirectoryName(typeof(ConfigManagerBuilder).Assembly.Location);
+                var pdir = Directory.GetParent(dir).FullName;
+                var test = Path.Combine(pdir, "DotNetCoreZhHans.exe");
+                if (!File.Exists(test))
+                {
+                    throw new Exception("创建配置文件失败!找不到引导程序");
+                }
+                return Path.Combine(pdir, target);
+            }
+        }
+       
         public static void Save(object value)
         {
+            var path = RootConfigFilePath;
             var json = Extensions.Serialize(value);
-            File.WriteAllText(target, json);
+            File.WriteAllText(path, json);
         }
 
         private static ConfigManager GetInstance() => new()
         {
             IsCover = false,
-            IsKeepOriginal = true,
+            IsKeepOriginal = false,
             Ignores = ignores,
-            UpdateUrl = "http://www.wyj55.cn/download/DotNetCorezhHans/Update.json",
+            UpdateUrl = "http://www.wyj55.cn/download/DotNetCorezhHans20/Update.json",
+            PackagesUrl= "http://www.wyj55.cn/download/DotNetCorezhHans20/pack/_pack.json",
             Directorys = new()
             {
-                "C:\\Program Files\\dotnet\\packs\\",                
+                "C:\\Program Files\\dotnet\\packs\\",
                 "%UserProFile%\\.nuget\\packages\\",
+                "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\ReferenceAssemblies\\Microsoft\\Framework\\"
             },
             ApiConfigs = new()
             {

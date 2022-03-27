@@ -1,5 +1,6 @@
 ﻿using System;
 using DotNetCorezhHans.Base;
+using DotNetCorezhHans.Extends;
 using NearExtend.WpfPrism;
 
 
@@ -13,7 +14,7 @@ namespace DotNetCorezhHans.ViewModels
         public VersionUpdateViewModel()
         {
             Data = new() { Information = "加载中...请稍后！" };
-            if (IsDesignMode) return;          
+            if (IsDesignMode) return;
             SetData();
         }
 
@@ -30,7 +31,7 @@ namespace DotNetCorezhHans.ViewModels
 
         public string ButtonContent { get; set; } = "加载中";
 
-        public int Progress { get; set; }    
+        public int Progress { get; set; }
 
         private VersionUpdateProvider GetVersionUpdateProvider() => updateProvider ??= new()
         {
@@ -39,7 +40,7 @@ namespace DotNetCorezhHans.ViewModels
             SetTitle = SetTitle,
         };
 
-        public void CallMethod() => action?.Invoke();
+        public void CallMethod() => UpdateFile.Run();
 
         private async void DownloadFile()
         {

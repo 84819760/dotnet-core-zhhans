@@ -11,21 +11,22 @@ public partial class MainWindow : Window
 
     private readonly ViewModel viewModel = new();
 
-    private bool ExistsExe => File.Exists(exe);
+    private bool IsFirstExec => File.Exists(exe);
 
     public MainWindow()
     {
         DataContext = viewModel;
         var exec = TestPack() ?? TestUpdate() ?? TestInit();
-        if (exec is null)
-        {
-            if (ExistsExe) Process.Start(exe);
-            Environment.Exit(0);
-        }
-        else
+        if (exec is not null)
         {
             InitializeComponent();
             exec();
+        }
+
+        if (IsFirstExec)
+        {
+            Process.Start(exe);
+            Environment.Exit(0);
         }
     }
 
@@ -34,13 +35,13 @@ public partial class MainWindow : Window
     //打包命令
     private Action? TestPack() => TestArgs("--pack", () => viewModel.CreatePack());
 
-    //更新
-    private Action? TestUpdate() => TestArgs("--update", () => viewModel.Update());
+    //检查
+    private Action? TestUpdate() => TestArgs("--update-file-check", () => viewModel.Update());
 
     //首次使用
-    private Action? TestInit() => ExistsExe ? default : viewModel.Init;
+    private Action? TestInit() => IsFirstExec ? default : viewModel.Init;
 
-    private Action? TestArgs(string cmd, Action action) =>
+    private static Action? TestArgs(string cmd, Action action) =>
         App.Args.Any(x => x?.ToLower() == cmd) ? action : default;
 }
 
@@ -74,7 +75,14 @@ public partial class ViewModel
 
     internal void WindowClosed() => cancellation.Cancel();
 
+    //下载、解压、移动到lib ，db初始化
     public void Init() => new ExecInit(this).Run();
-    public void CreatePack() => new ExecPack(this).Run();
+
+    //下载、解压、退出，
     internal void Update() => new ExecUpdate(this).Run();
+
+    //更新文件
+    internal void UpdateFile() => new ExecUpdate(this).Run();
+
+    public void CreatePack() => new ExecPack(this).Run();
 }

@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Linq;
-using System.Text.Json;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using DotNetCorezhHans.Base;
 using DotNetCorezhHans.ViewModels;
 using DotNetCorezhHans.Views;
 using Prism.Ioc;
-using System.Threading.Tasks;
-using System.IO;
 
 namespace DotNetCorezhHans
 {
@@ -16,9 +14,9 @@ namespace DotNetCorezhHans
     {
         private static string version;
 
-        public readonly static ConfigManager Config = ConfigManager.Instance;
+        public static ConfigManager Config { get; private set; }
 
-        public static bool IsAdmin { get; set; } = Config.IsAdmin;
+        public static bool IsAdmin { get; set; }
 
         public static Task<InfoData> InfoDataTask { get; private set; }
 
@@ -28,16 +26,36 @@ namespace DotNetCorezhHans
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            MessageBox.Show(Directory.GetCurrentDirectory());
-            ShowUpdate(e.Args?.FirstOrDefault());
+            var args = e.Args ?? Array.Empty<string>();
+            Share.Show("DotNetCorezhHansMain", e.Args);
+            ShowUpdate(args);
             if (IsAdmin) UacHelper.RunAdmin();
             InfoDataTask = Task.Run(() => InfoData.GetInfoData(Config.UpdateUrl));
             base.OnStartup(e);
         }
 
-        private static void ShowUpdate(string v)
+        private static void ShowUpdate(string[] args)
         {
-            if (v is "update") MessageBoxShow("更新完成!");
+            if (args.Any(x => x == "--update-ok"))
+            {
+                MessageBoxShow("更新完成!");
+                return;
+            }
+            else if (!args.Any(x => x == "--run"))
+            {
+                MessageBoxShow("启动参数异常,无法启动。");
+                Environment.Exit(0);
+            }
+            try
+            {
+                Config = ConfigManager.Instance;
+                IsAdmin = Config.IsAdmin;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show(ex.Message);
+                Environment.Exit(0);
+            }
         }
 
         protected override Window CreateShell() => Container.Resolve<MainWindow>();

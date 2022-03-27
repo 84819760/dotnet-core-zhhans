@@ -10,6 +10,7 @@ namespace DotNetCore_zhHans.Boot;
 partial class ExecPack : ExecBase
 {
     public ExecPack(ViewModel viewModel) : base(viewModel) { }
+
     protected override void InitZip() { }
 
     public override async void Run()
@@ -30,7 +31,7 @@ partial class ExecPack : ExecBase
         SevenZipBase.SetLibraryPath("7z.dll");
         var files = fileProvider.GetFileInfos();
         await RunPack(files, dir);
-        var json = JsonSerializer.Serialize(files.Where(x => x.SourceName != "7z.dll"), Share.JsonOptions);
+        var json = JsonSerializer.Serialize(files, Share.JsonOptions);
         File.WriteAllText(@"_pack/_pack.json", json);
     }
 
@@ -69,6 +70,8 @@ partial class ExecPack : ExecBase
     {
         if (fileInfo.SourceName != "7z.dll") return false;
         fileInfo.ExtensionName = ".zip";
+        fileInfo.Index = 1024;
+        fileInfo.Cmd = "ZipInit";
         var (source, pack) = fileInfo.GetFullPath(dir, "_pack");
         await new ZipHelper().Zip(source, pack);
         return true;

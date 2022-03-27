@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DotNetCore-zhHans": {
+      "commandName": "Project",
+      "commandLineArgs": "--run"
+    }
+  }
+}

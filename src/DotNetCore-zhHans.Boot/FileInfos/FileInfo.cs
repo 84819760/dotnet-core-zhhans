@@ -6,6 +6,10 @@ public class FileInfo
 
     public string? ExtensionName { get; set; } = null!;
 
+    public int Index { get; set; }
+
+    public string? Cmd { get; set; }
+
     public string? Md5 { get; set; } = null!;
 
     private bool IsJson => Path.GetExtension(SourceName) == ".json";

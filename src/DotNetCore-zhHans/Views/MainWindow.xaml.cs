@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using DotNetCorezhHans.Base;
+using DotNetCorezhHans.Extends;
 using DotNetCorezhHans.Messages;
 using NearExtend.WpfPrism;
 
@@ -59,7 +62,8 @@ namespace DotNetCorezhHans.Views
             var data = await App.InfoDataTask;
             if (data.TestVersion(App.Version)) return;
             var isUpdate = MessageBox.Show("检测到更新，是否进入升级界面？", "软件更新", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
-            if (isUpdate) pageState.Publish(PageControlType.Surprised);
+            if (isUpdate) UpdateFile.Run();
+            // pageState.Publish(PageControlType.Surprised);
         }
     }
 }

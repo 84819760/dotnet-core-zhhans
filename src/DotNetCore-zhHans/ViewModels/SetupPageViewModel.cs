@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using DotNetCorezhHans.Base;
 using DotNetCorezhHans.Messages;
 using NearExtend.WpfPrism;
 

@@ -1,7 +1,5 @@
-﻿using System.IO.Compression;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Windows;
-using SevenZip;
 
 namespace DotNetCore_zhHans.Boot;
 
@@ -9,34 +7,10 @@ namespace DotNetCore_zhHans.Boot;
 /// 首次更新
 /// </summary>
 partial class ExecInit : ExecBase
-{
-    protected readonly string url = "http://www.wyj55.cn/download/DotNetCorezhHans20";
-
+{  
     public ExecInit(ViewModel viewModel) : base(viewModel) { }
 
-    protected override void InitZip() { }
-
-    public record class DirectoryData(string LibDirectory, string DownloadDirectory)
-    {
-        public FileInfo FileInfo { get; set; } = null!;
-
-        public string LibFile => Path.Combine(LibDirectory, FileInfo.SourceName);
-
-        public string UnZipFile => Path.Combine(DownloadDirectory, $"{FileInfo.SourceName}");
-
-        public string DownloadFile =>
-            Path.Combine(DownloadDirectory, $"{FileInfo.SourceName}{FileInfo.ExtensionName}");
-
-        public bool IsExists => File.Exists(LibFile);
-
-        public bool TestMd5 => Share.GetMd5(LibFile) == FileInfo.Md5;
-
-        public void Move()
-        {
-            File.Move(UnZipFile, LibFile, true);
-            File.Delete(DownloadFile);
-        }
-    }
+    protected override void InitZip() { }      
 
     async public override void Run()
     {
@@ -65,18 +39,7 @@ partial class ExecInit : ExecBase
         finally { }
 
         MessageBox.Show("完成");
-    }
-
-    private async Task Init7z()
-    {
-        var name = "7z.dll";
-        var zipName = $"{name}.zip";
-        var url = $"{this.url}/pack/{zipName}";
-        var tmpPath = Path.Combine(Directory.GetCurrentDirectory(), zipName);
-        var libFile = Path.Combine(CreateSubDirectory("lib"), name);
-        await DownloadAndUnZip(url, tmpPath, libFile);
-        base.InitZip();
-    }
+    }   
 
     private async Task InitDb()
     {
@@ -84,7 +47,7 @@ partial class ExecInit : ExecBase
         var libFile = Path.Combine(CreateSubDirectory("lib"), name);
         if (File.Exists(libFile)) return;
         var zipName = $"{name}.7z";
-        var url = $"{this.url}/{zipName}";
+        var url = $"{UrlRoot}/{zipName}";
         var tmpPath = Path.Combine(Directory.GetCurrentDirectory(), "_tmp", zipName);
         await DownloadAndUnZip(url, tmpPath, libFile
             , dv =>
@@ -99,12 +62,10 @@ partial class ExecInit : ExecBase
             });
     }
 
-
-
     private async Task Run(DirectoryData data)
     {
         if (data.IsExists && data.TestMd5) return;
-        var url = $"{this.url}/pack/{data.FileInfo.UrlName}";
+        var url = $"{UrlRoot}/pack/{data.FileInfo.UrlName}";
 
         await DownloadFile(url, data.DownloadFile, CancellationToken, x => vm.SubProgress = x);
         await UnZip(data);
@@ -130,9 +91,8 @@ partial class ExecInit : ExecBase
 
     private async Task<FileInfo[]> DownloadPackJson()
     {
-        var url = $"{this.url}/pack/_pack.json";
         using var hc = new HttpClient();
-        var json = await hc.GetStringAsync(url);
+        var json = await hc.GetStringAsync(UrlPack);
         return JsonSerializer.Deserialize<FileInfo[]>(json) ?? Array.Empty<FileInfo>();
     }
 }

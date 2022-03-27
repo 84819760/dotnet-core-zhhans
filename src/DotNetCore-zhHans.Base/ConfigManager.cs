@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using DotNetCorezhHans.Base;
-using NearCoreExtensions;
-
-namespace DotNetCorezhHans
+namespace DotNetCorezhHans.Base
 {
     public class ConfigManager : INotifyPropertyChanged
     {
@@ -55,7 +48,9 @@ namespace DotNetCorezhHans
 
         public string UpdateUrl { get; init; }
 
-        public static ConfigManager Instance => 
+        public string PackagesUrl { get; init; }
+
+        public static ConfigManager Instance =>
             instance ??= ConfigManagerBuilder.CreateInstance();
 
         public void Save() => ConfigManagerBuilder.Save(this);

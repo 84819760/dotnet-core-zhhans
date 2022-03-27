@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DotNetCorezhHans;
+using DotNetCorezhHans.Base;
 using NearCoreExtensions;
 
 namespace DotNetCoreZhHans.Service
