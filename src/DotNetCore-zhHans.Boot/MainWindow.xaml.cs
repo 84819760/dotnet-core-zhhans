@@ -7,7 +7,7 @@ namespace DotNetCore_zhHans.Boot;
 public partial class MainWindow : Window
 {
     private readonly string exe = Path.Combine
-        (Directory.GetCurrentDirectory(), "lib", "DotNetCorezhHans.Manager.exe");
+        (Directory.GetCurrentDirectory(), "lib", "DotNetCorezhHansMain.exe");
 
     private readonly ViewModel viewModel = new();
 
@@ -32,10 +32,10 @@ public partial class MainWindow : Window
     private void Window_Closed(object sender, EventArgs e) => viewModel.WindowClosed();
 
     //打包命令
-    private Action? TestPack() => TestArgs("pack", () => viewModel.CreatePack());
+    private Action? TestPack() => TestArgs("--pack", () => viewModel.CreatePack());
 
     //更新
-    private Action? TestUpdate() => TestArgs("pack", () => viewModel.Update());
+    private Action? TestUpdate() => TestArgs("--update", () => viewModel.Update());
 
     //首次使用
     private Action? TestInit() => ExistsExe ? default : viewModel.Init;
@@ -44,37 +44,33 @@ public partial class MainWindow : Window
         App.Args.Any(x => x?.ToLower() == cmd) ? action : default;
 }
 
-
+[AddINotifyPropertyChangedInterface]
 public partial class ViewModel
 {
     public readonly CancellationTokenSource cancellation = new();
 
-    [AddNotifyProperty]
-    private string title = "标题";
+
+    public string Title { get; set; } = "标题";
 
     /// <summary>
     /// 自行细节
     /// </summary>
-    [AddNotifyProperty]
-    private string details = "自行细节";
+    public string Details { get; set; } = "加载配置";
 
     /// <summary>
     /// 初始化下载
     /// </summary>
-    [AddNotifyProperty]
-    private string context = "初始化下载";
+    public string Context { get; set; } = "初始化下载";
 
     /// <summary>
-    /// 更新进度
+    /// 主进度
     /// </summary>
-    [AddNotifyProperty]
-    private double updateProgress;
+    public double Progress { get; set; }
 
     /// <summary>
     /// 下载进度
     /// </summary>
-    [AddNotifyProperty]
-    private double downloadProgress;
+    public double SubProgress { get; set; }
 
     internal void WindowClosed() => cancellation.Cancel();
 

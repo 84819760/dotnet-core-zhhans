@@ -7,8 +7,8 @@ internal class DbContext : Microsoft.EntityFrameworkCore.DbContext
 {
     private readonly Dictionary<string, TranslSource> map = new();
 
-    static DbContext() => AppDomain.CurrentDomain
-        .ProcessExit += (_, _) => SqliteConnection.ClearAllPools();
+    //static DbContext() => AppDomain.CurrentDomain
+    //    .ProcessExit += (_, _) => SqliteConnection.ClearAllPools();
 
     public DbContext() => FilePath = "默认路径";
 

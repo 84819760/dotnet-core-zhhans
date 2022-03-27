@@ -36,7 +36,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "问题", "问题", "{A0A316
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dotnet-Intellisense", "Dotnet-Intellisense\Dotnet-Intellisense.csproj", "{F935A4BD-7AB2-4451-84F9-A29FEBB3F6CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetCore-zhHans.Db.Import", "DotNetCore-zhHans.Db.Import\DotNetCore-zhHans.Db.Import.csproj", "{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetCore-zhHans.Db.Import", "DotNetCore-zhHans.Db.Import\DotNetCore-zhHans.Db.Import.csproj", "{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -172,8 +172,8 @@ Global
 		{C7C9570A-110B-476D-8A90-3693954CDC03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7C9570A-110B-476D-8A90-3693954CDC03}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{C7C9570A-110B-476D-8A90-3693954CDC03}.Debug|x64.Build.0 = Debug|Any CPU
-		{C7C9570A-110B-476D-8A90-3693954CDC03}.Debug|x86.ActiveCfg = Debug|x86
-		{C7C9570A-110B-476D-8A90-3693954CDC03}.Debug|x86.Build.0 = Debug|x86
+		{C7C9570A-110B-476D-8A90-3693954CDC03}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C7C9570A-110B-476D-8A90-3693954CDC03}.Debug|x86.Build.0 = Debug|Any CPU
 		{C7C9570A-110B-476D-8A90-3693954CDC03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7C9570A-110B-476D-8A90-3693954CDC03}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C7C9570A-110B-476D-8A90-3693954CDC03}.Release|x64.ActiveCfg = Release|Any CPU

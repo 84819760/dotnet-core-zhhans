@@ -8,6 +8,7 @@ using DotNetCorezhHans.ViewModels;
 using DotNetCorezhHans.Views;
 using Prism.Ioc;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace DotNetCorezhHans
 {
@@ -27,6 +28,7 @@ namespace DotNetCorezhHans
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            MessageBox.Show(Directory.GetCurrentDirectory());
             ShowUpdate(e.Args?.FirstOrDefault());
             if (IsAdmin) UacHelper.RunAdmin();
             InfoDataTask = Task.Run(() => InfoData.GetInfoData(Config.UpdateUrl));

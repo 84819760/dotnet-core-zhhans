@@ -16,8 +16,8 @@ namespace DotNetCorezhHans.Db
         private readonly ReaderWriterLockSlim dbLock;
         private readonly ITransmitData transmitData;
 
-        static ZhDbContext() => AppDomain.CurrentDomain
-            .ProcessExit += (_, _) => SqliteConnection.ClearAllPools();
+        //static ZhDbContext() => AppDomain.CurrentDomain
+        //    .ProcessExit += (_, _) => SqliteConnection.ClearAllPools();
 
         public ZhDbContext(ITransmitData transmitData)
         {

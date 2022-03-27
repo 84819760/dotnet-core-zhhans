@@ -5,19 +5,18 @@ namespace DotNetCore_zhHans.Boot;
 abstract class ExecBase
 {
     private const HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseHeadersRead;
-    protected readonly string url = "http://www.wyj55.cn/download/DotNetCorezhHans10";
+    protected readonly ViewModel vm;
 
-    public ExecBase(ViewModel viewModel) => ViewModel = viewModel;
+    public ExecBase(ViewModel viewModel) => vm = viewModel;
+    public CancellationToken CancellationToken => vm.cancellation.Token;
 
-    public ViewModel ViewModel { get; }
-
-    public CancellationToken CancellationToken => ViewModel.cancellation.Token;
+    protected virtual void InitZip() => ZipHelper.Init();
 
     public abstract void Run();
 
-    protected async Task<(string file, Exception? exception)> DownloadFile(string url, string file
+    protected static async Task<(string file, Exception? exception)> DownloadFile(string url, string file
       , CancellationToken token
-      , Action<(long? length, long received)>? action = null)
+      , Action<double>? action = null)
     {
         Debug.Print($"下载:{url}");
         var fileTmp = $"{file}.tmp";
@@ -37,7 +36,7 @@ abstract class ExecBase
 
     private static async Task ExecDownload(string url, string file
      , CancellationToken token
-     , Action<(long? length, long received)>? action = null)
+     , Action<double>? action = null)
     {
         using var fileStream = File.Create(file);
         using var hc = new HttpClient();
@@ -54,8 +53,33 @@ abstract class ExecBase
         while ((count = await responseStream.ReadAsync(buffer, token).ConfigureAwait(false)) != 0)
         {
             position += count;
-            action?.Invoke((length, position));
+            if (length.HasValue) action?.Invoke((double)position / length.Value);
             await fileStream.WriteAsync(buffer.AsMemory(0, count));
         }
+    }
+
+    /// <summary>
+    /// 在当前目录下创建子目录
+    /// </summary>
+    protected static string CreateSubDirectory(string dirName)
+    {
+        var dir = Path.Combine(Directory.GetCurrentDirectory(), dirName);
+        Directory.CreateDirectory(dir);
+        return dir;
+    }
+
+    /// <summary>
+    /// 下载并解压
+    /// </summary>
+    /// <param name="url"></param>
+    /// <param name="tmpPath">临时文件位置</param>
+    /// <param name="outPath">解压输出位置</param>
+    protected async Task DownloadAndUnZip(string url, string tmpPath, string outPath
+       , Action<double>? downloadProgress = null
+       , Action<double>? unzipProgress = null)
+    {
+        await DownloadFile(url, tmpPath, CancellationToken, downloadProgress);
+        await new ZipHelper(unzipProgress).UnZip(tmpPath, outPath);
+        File.Delete(tmpPath);
     }
 }

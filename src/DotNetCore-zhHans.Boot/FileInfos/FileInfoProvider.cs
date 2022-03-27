@@ -5,12 +5,14 @@ namespace DotNetCore_zhHans.Boot;
 
 class FileInfoProvider
 {
-    public string DirectoryPath { get; init; } = null!;
+    public FileInfoProvider(string directoryPath) => DirectoryPath = directoryPath;
+
+    public string DirectoryPath { get; }
 
     public FileInfo[] GetFileInfos()
     {
         return Directory.GetFiles(DirectoryPath)
-            .Where(x => ".xml.exe.dll.json".Contains(Path.GetExtension(x)))
+            .Where(x => Path.GetExtension(x) != ".pdb")
             .Where(x => !x.Contains("DotNetCore-zhHans.Config.json"))
             .Select(CreateFileInfo).ToArray();
 

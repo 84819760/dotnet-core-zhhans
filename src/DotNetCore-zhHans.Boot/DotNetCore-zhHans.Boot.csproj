@@ -5,6 +5,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <RootNamespace>DotNetCore_zhHans.Boot</RootNamespace>
     <Nullable>enable</Nullable>
+	 <Platforms>AnyCPU;x64;x86</Platforms>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>j12.ico</ApplicationIcon>  
     <AssemblyName>DotNetCore-zhHans</AssemblyName>
@@ -20,9 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ShadowCode" Version="1.0.0" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
+    <PackageReference Include="Squid-Box.SevenZipSharp.Lite" Version="1.5.0.366" />
   </ItemGroup>
-
 
 	<ItemGroup>
 	  <Compile Update="Properties\Settings.Designer.cs">
@@ -32,8 +33,10 @@
 	  </Compile>
 	</ItemGroup>
 
-
 	<ItemGroup>
+	  <None Update="7z.dll">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Properties\Settings.settings">
 	    <Generator>SettingsSingleFileGenerator</Generator>
 	    <LastGenOutput>Settings.Designer.cs</LastGenOutput>

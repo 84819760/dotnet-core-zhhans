@@ -4,7 +4,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
       <UseWPF>true</UseWPF>
 	  <UseWindowsForms>true</UseWindowsForms>
-    <AssemblyName>DotNetCorezhHans.Manager</AssemblyName>
+    <AssemblyName>DotNetCorezhHansMain</AssemblyName>
     <RootNamespace>DotNetCorezhHans</RootNamespace>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <AssemblyVersion>1.0.0.8</AssemblyVersion>

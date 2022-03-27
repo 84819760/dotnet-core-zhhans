@@ -32,7 +32,7 @@ internal class ImportHandler : IAsyncDisposable
         await writeManager.DisposeAsync();
         await SourceDbContext.DisposeAsync();
         await TargetDbContext.DisposeAsync();
-        SqliteConnection.ClearAllPools();
+        //SqliteConnection.ClearAllPools();
     }
 
     private IAsyncEnumerable<TranslData> GetTranslDatas() => SourceDbContext
