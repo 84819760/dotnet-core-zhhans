@@ -9,21 +9,20 @@ public partial class MainWindow : Window
     private readonly string exe = Path.Combine
         (Directory.GetCurrentDirectory(), "lib", "DotNetCorezhHansMain.exe");
 
-    private readonly ViewModel viewModel = new();
+    private readonly ViewModel viewModel = new ViewModel().Init();
 
-    private bool IsFirstExec => File.Exists(exe);
+    private bool IsExistsExec => File.Exists(exe);
 
     public MainWindow()
     {
         DataContext = viewModel;
-        var exec = TestPack() ?? TestUpdate() ?? TestInit();
+        var exec = TestPack() ?? TestUpdate() ?? TestUpdateFile() ?? TestInit();
         if (exec is not null)
         {
             InitializeComponent();
             exec();
         }
-
-        if (IsFirstExec)
+        else if (IsExistsExec)
         {
             Process.Start(exe);
             Environment.Exit(0);
@@ -42,7 +41,7 @@ public partial class MainWindow : Window
     private Action? TestUpdateFile() => TestArgs("--update-file-move", () => viewModel.Update());
 
     //首次使用
-    private Action? TestInit() => IsFirstExec ? default : viewModel.Init;
+    private Action? TestInit() => IsExistsExec ? default : viewModel.InitFile;
 
     private static Action? TestArgs(string cmd, Action action) =>
         App.Args.Any(x => x?.ToLower() == cmd) ? action : default;
@@ -53,6 +52,16 @@ public partial class ViewModel
 {
     public readonly CancellationTokenSource cancellation = new();
 
+    public ViewModel() { }
+
+    public ViewModel Init()
+    {
+        Title = Details = Context = "";
+        Length = null;
+        Progress = SubProgress = 0;
+        IsIndeterminate = false;
+        return this;
+    }
 
     public string Title { get; set; } = "标题";
 
@@ -69,17 +78,21 @@ public partial class ViewModel
     /// <summary>
     /// 主进度
     /// </summary>
-    public double Progress { get; set; }
+    public double Progress { get; set; } = 0.5;
 
     /// <summary>
     /// 下载进度
     /// </summary>
-    public double SubProgress { get; set; }
+    public double SubProgress { get; set; } = 0.5;
+
+    public bool IsIndeterminate { get; set; }
+
+    public string? Length { get; set; } = "100kb";
 
     internal void WindowClosed() => cancellation.Cancel();
 
     //下载、解压、移动到lib ，db初始化
-    public void Init() => new ExecInit(this).Run();
+    public void InitFile() => new ExecInit(this).Run();
 
     //下载、解压、退出，
     internal void Update() => new ExecUpdate(this).Run();

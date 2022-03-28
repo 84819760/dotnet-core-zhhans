@@ -12,11 +12,17 @@ public class FileInfo
 
     public string? Md5 { get; set; } = null!;
 
+    public string PackUrl { get; init; } = null!;
+
     private bool IsJson => Path.GetExtension(SourceName) == ".json";
+
+    public string? ShowMsg { get; set; }
+
+    private string? GetMD5Value(string directory)=> Share.GetMd5(Path.Combine(directory, SourceName));
 
     public FileInfo InitMd5(string directory)
     {
-        Md5 = Share.GetMd5(Path.Combine(directory, SourceName));
+        Md5 = GetMD5Value(directory);
         return this;
     }
 
@@ -31,4 +37,8 @@ public class FileInfo
     }
 
     public string UrlName => $"{SourceName}{ExtensionName}";
+
+    public string DownloadUrl => $"{PackUrl}/{UrlName}";
+
+    public bool TestMd5(string libDir) => Md5 == GetMD5Value(libDir);
 }

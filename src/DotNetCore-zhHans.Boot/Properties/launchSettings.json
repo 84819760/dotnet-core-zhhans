@@ -1,7 +1,8 @@
 {
   "profiles": {
     "DotNetCore-zhHans.Boot": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "--pack"
     }
   }
 }

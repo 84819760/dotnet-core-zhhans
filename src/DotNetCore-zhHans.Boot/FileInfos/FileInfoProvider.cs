@@ -17,6 +17,10 @@ class FileInfoProvider
             .Select(CreateFileInfo).ToArray();
 
         FileInfo CreateFileInfo(string path) =>
-            new FileInfo() { SourceName = Path.GetFileName(path) }.InitMd5(DirectoryPath);
+            new FileInfo()
+            {
+                SourceName = Path.GetFileName(path),
+                PackUrl= "http://www.wyj55.cn/download/DotNetCorezhHans20/packs"
+            }.InitMd5(DirectoryPath);
     }
 }

@@ -4,19 +4,20 @@ using System.Windows;
 
 static class Share
 {
-    public static string GetMd5(string filePath)
+    public static string? GetMd5(string filePath)
     {
         try
         {
+            if (!File.Exists(filePath)) return default;
             using var file = File.OpenRead(filePath);
             var md5 = MD5.Create();
             var hashValues = md5.ComputeHash(file);
             var hashStr = hashValues.Select(x => x.ToString("X2"));
             return string.Join("", hashStr);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            throw;
+            return ex.Message;
         }
     }
 
@@ -26,12 +27,12 @@ static class Share
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
         ReferenceHandler = ReferenceHandler.IgnoreCycles,
         DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
         PropertyNameCaseInsensitive = true,
         ReadCommentHandling = JsonCommentHandling.Skip,
         AllowTrailingCommas = true,
-        NumberHandling = JsonNumberHandling.AllowReadingFromString |
-                    JsonNumberHandling.WriteAsString,
+        IgnoreReadOnlyProperties = true,
+        IgnoreReadOnlyFields = true,
     };
 
     public static void Show(string title, string[] args)

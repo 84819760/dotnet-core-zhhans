@@ -1,6 +1,4 @@
 ﻿using System.IO.Compression;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
 using SevenZip;
 namespace DotNetCore_zhHans.Boot;
 using func = Func<string, string, Task>;

@@ -16,7 +16,7 @@ namespace DotNetCore_zhHans.Boot
         public static string[] Args { get; private set; } = null!;
 
         protected override void OnStartup(StartupEventArgs e)
-        {                      
+        {
             Args = e.Args ?? Array.Empty<string>();
             Share.Show("Boot", Args);
         }

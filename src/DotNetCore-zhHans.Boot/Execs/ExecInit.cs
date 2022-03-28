@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using System.Windows;
+﻿using System.Windows;
 
 namespace DotNetCore_zhHans.Boot;
 
@@ -7,92 +6,67 @@ namespace DotNetCore_zhHans.Boot;
 /// 首次更新
 /// </summary>
 partial class ExecInit : ExecBase
-{  
+{
     public ExecInit(ViewModel viewModel) : base(viewModel) { }
-
-    protected override void InitZip() { }      
-
-    async public override void Run()
+    public async override void Run()
     {
-        var vm = base.vm;
+        var list = (await GetPackJson()).ToList();
+        TryAddDb(list);
+
         vm.Title = "初始化组件";
         vm.Context = "下载组件";
+        vm.IsIndeterminate = true;
 
-        await Init7z();
-        var dirData = new DirectoryData(CreateSubDirectory("lib"), CreateSubDirectory("_tmp"));
-        var datas = await DownloadPackJson();
-        var count = datas.Length;
-        for (int i = 0; i < count; i++)
-        {
-            if (CancellationToken.IsCancellationRequested) return;
-            var item = datas[i];
-            vm.Progress = (double)(i + 1) / count;
-            vm.Details = item.SourceName;
-            await Run(dirData with { FileInfo = item });
-        }
-        await InitDb();
-        vm.Context = "下载完成";
-        try
-        {
-            Directory.Delete(dirData.DownloadDirectory);
-        }
-        finally { }
-
+        await CreateDownloadAndUnZip(list).DownloadFileAsync();
         MessageBox.Show("完成");
-    }   
+        RunMain();
+    }
 
-    private async Task InitDb()
+    protected override string? GetUrl((FileInfo info, double progress) v)
+    {
+        vm.Details = v.info.SourceName;
+        vm.Progress = v.progress;
+
+        if (v.info.TestMd5(LibDirectory)) return default;
+        if (v.info.ShowMsg is { Length: > 0 }) vm.Context = v.info.ShowMsg;
+        return base.GetUrl(v);
+    }
+
+    protected override void FileDownloadLengthChange((FileInfo info, long length) v)
+    {
+        vm.IsIndeterminate = v.length is 0;
+        vm.Length = DownloadHelper.FormatSize(v.length);
+    }
+
+    protected override void FileDownloadProgressChange((FileInfo info, double progress) v) =>
+        vm.SubProgress = v.progress;
+
+    protected override void UnZipProgressChange((FileInfo info, double progress) v)
+    {
+        vm.Details = $"解压:{v.info.SourceName}";
+        vm.SubProgress = v.progress;
+    }
+
+    protected override void Complete((FileInfo info, string file) v)
+    {
+        var libFile = Path.Combine(LibDirectory, v.info.SourceName);
+        File.Move(v.file, libFile, true);
+    }
+
+    private void TryAddDb(List<FileInfo> list)
     {
         var name = "TranslData.db";
-        var libFile = Path.Combine(CreateSubDirectory("lib"), name);
-        if (File.Exists(libFile)) return;
-        var zipName = $"{name}.7z";
-        var url = $"{UrlRoot}/{zipName}";
-        var tmpPath = Path.Combine(Directory.GetCurrentDirectory(), "_tmp", zipName);
-        await DownloadAndUnZip(url, tmpPath, libFile
-            , dv =>
-            {
-                vm.Context = "下载数据库";
-                vm.Details = "初始化数据库";
-                vm.SubProgress = dv;
-            }, zv =>
-            {
-                vm.Context = "解压数据库";
-                vm.SubProgress = zv;
-            });
-    }
-
-    private async Task Run(DirectoryData data)
-    {
-        if (data.IsExists && data.TestMd5) return;
-        var url = $"{UrlRoot}/pack/{data.FileInfo.UrlName}";
-
-        await DownloadFile(url, data.DownloadFile, CancellationToken, x => vm.SubProgress = x);
-        await UnZip(data);
-    }
-
-    private async Task UnZip(DirectoryData data)
-    {
-        if (IsJson(data)) return;
-        await new ZipHelper(p =>
+        var target = Path.Combine(LibDirectory, name);
+        if (File.Exists(target)) return;
+        list.Add(new()
         {
-            vm.SubProgress = p;
-            vm.Details = $"解压:{data.FileInfo.SourceName}";
-        }).UnZip(data.DownloadFile, data.UnZipFile);
-        data.Move();
+            ExtensionName = ".7z",
+            PackUrl = "http://www.wyj55.cn/download/DotNetCorezhHans20/",
+            SourceName = name,
+            Md5 = Guid.NewGuid().ToString(),
+            ShowMsg = "下载数据库"
+        });
     }
 
-    private static bool IsJson(DirectoryData data)
-    {
-        if (!data.DownloadFile.EndsWith(".json")) return false;
-        data.Move();
-        return true;
-    }
 
-    private async Task<FileInfo[]> DownloadPackJson()
-    {
-        using var hc = new HttpClient();
-        var json = await hc.GetStringAsync(UrlPack);
-        return JsonSerializer.Deserialize<FileInfo[]>(json) ?? Array.Empty<FileInfo>();
-    }
 }

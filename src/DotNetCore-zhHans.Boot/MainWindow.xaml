@@ -7,6 +7,19 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type = local:ViewModel ,IsDesignTimeCreatable=True}"
         Title="{Binding Title}" Height="200" Width="300" Closed="Window_Closed" WindowStartupLocation="CenterScreen" >
+    <Window.Resources>
+        <Style x:Key="marginBase" TargetType="FrameworkElement">
+            <Setter Property="Margin" Value="15,2" />
+        </Style>
+        <Style TargetType="TextBlock" x:Key="subTextBlock" BasedOn="{StaticResource marginBase}">
+            <Setter Property="Grid.Row" Value="1" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+        </Style>
+        <Style TargetType="ProgressBar" BasedOn="{StaticResource marginBase}">
+            <Setter Property="Height" Value="15" />
+            <Setter Property="Maximum" Value="1"/>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="5*"/>
@@ -14,15 +27,15 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="6*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" FontSize="10" Text="{Binding Details}" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextWrapping="Wrap" Margin="10 5"/>
-        <ProgressBar Grid.Row="1" Height="15" VerticalAlignment="Bottom" Margin="15,2" Value="{Binding SubProgress}" Maximum="1"  />
-        <TextBlock Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="15,2" Text="{Binding SubProgress, StringFormat={}{0:P1}}" />
+        <ProgressBar Value="{Binding SubProgress}" Grid.Row="1"  VerticalAlignment="Bottom" IsIndeterminate="{Binding IsIndeterminate}"  />
+        <TextBlock   Text="{Binding Details}" Grid.Row="0" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextWrapping="Wrap" Margin="10 5" />
+        <TextBlock   Text="{Binding SubProgress, StringFormat={}{0:P1}}" Style ="{StaticResource subTextBlock}"  HorizontalAlignment="Center" />
+        <TextBlock   Text="{Binding Length}" Style ="{StaticResource subTextBlock}"  HorizontalAlignment="Right" Margin="17,2" FontSize="8" />
 
+        <ProgressBar Value="{Binding Progress}" Grid.Row="2" VerticalAlignment="Top"  />
+        <TextBlock   Text="{Binding Progress, StringFormat={}{0:P1}}" Grid.Row="2" Style="{StaticResource marginBase}" VerticalAlignment="Top" HorizontalAlignment="Center"   />
 
-        <ProgressBar Grid.Row="2" Height="15" VerticalAlignment="Top" Margin="15,2" Value="{Binding Progress}" Maximum="1" />
-        <TextBlock Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="15,2" Text="{Binding Progress, StringFormat={}{0:P1}}"  />
-
-        <TextBlock Grid.Row="3" FontSize="25" Text="{Binding Context}" HorizontalAlignment ="Center" VerticalAlignment="Center" Margin="0,-10,0,0"/>
+        <TextBlock   Text="{Binding Context}" Grid.Row="3" FontSize="25"  HorizontalAlignment ="Center" VerticalAlignment="Center" Margin="0,-10,0,0"/>
 
     </Grid>
 </Window>
