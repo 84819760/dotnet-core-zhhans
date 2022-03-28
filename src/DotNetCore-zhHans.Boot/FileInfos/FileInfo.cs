@@ -18,7 +18,7 @@ public class FileInfo
 
     public string? ShowMsg { get; set; }
 
-    private string? GetMD5Value(string directory)=> Share.GetMd5(Path.Combine(directory, SourceName));
+    private string? GetMD5Value(string directory) => Share.GetMd5(Path.Combine(directory, SourceName));
 
     public FileInfo InitMd5(string directory)
     {
@@ -40,5 +40,9 @@ public class FileInfo
 
     public string DownloadUrl => $"{PackUrl}/{UrlName}";
 
-    public bool TestMd5(string libDir) => Md5 == GetMD5Value(libDir);
+    public bool TestMd5(string libDir)
+    {
+        if (Index != 0) return false;
+        return Md5 == GetMD5Value(libDir);
+    }
 }

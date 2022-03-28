@@ -2,7 +2,7 @@
 > 2.0.0 以下版本需要手动更新！    
 
 [EXE文件及数据库](http://www.wyj55.cn/DotNetCoreZhHans.html)   
-
+更新如果遇到问题，请删除\lib\DotNetCorezhHansMain.exe，重新打开即可。
 
 # API选择
 
