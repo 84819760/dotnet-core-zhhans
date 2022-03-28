@@ -22,7 +22,7 @@ namespace DotNetCorezhHans
 
         public static string Version => version ??= Assembly
             .GetExecutingAssembly().GetName()
-            .Version.ToString();
+            .Version.ToString(3);
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -40,12 +40,7 @@ namespace DotNetCorezhHans
             {
                 MessageBoxShow("更新完成!");
                 return;
-            }
-            else if (!args.Any(x => x == "--run"))
-            {
-                MessageBoxShow("启动参数异常,无法启动。");
-                Environment.Exit(0);
-            }
+            }         
             try
             {
                 Config = ConfigManager.Instance;

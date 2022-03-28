@@ -1,17 +1,18 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace DotNetCore_zhHans.Boot.Execs
 {
     partial class ExecUpdateFile : ExecBase
     {
-        private const string exe = "DotNetCoreZhHans.exe";
+
         public ExecUpdateFile(ViewModel viewModel) : base(viewModel)
         {
         }
 
         public override async void Run()
         {
-            vm.Title = "移动文件";
+            vm.Title = $"移动文件 {App.Version}";
             vm.Details = "获取更新配置";
             vm.Context = "移动文件";
             vm.IsIndeterminate = true;
@@ -26,49 +27,67 @@ namespace DotNetCore_zhHans.Boot.Execs
                         .ToList();
 
                 files.Select((x, i) => (file: x, index: i, count: files.Count))
-                      .ToList().ForEach(Move);
+                          .ToList().ForEach(async x => await Move(x));
+
                 Start();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show($"{ex}", "更新失败");
+                var dir = GetTargetDirectory("c:\\DotNetCorezhHansMain.exe", false);
+                var target = Path.Combine(dir, "DotNetCorezhHansMain.exe");
+                File.Delete(target);
             }
         }
 
-        private void Move((string file, int index, int count) v)
+        private async Task Move((string file, int index, int count) v)
         {
             var (file, index, count) = v;
-            vm.Progress = (double)index / count;
-            vm.Details = Path.GetFileName(file);
-            var pdir = Directory.GetParent(CurrentDirectory)!.FullName;
-
-            if (Path.GetFileName(file) == exe)
+            Exception? exception = null;
+            for (int i = 0; i < 3; i++)
             {
-                pdir = Directory.GetParent(pdir)!.FullName;
-                var target = Path.Combine(pdir, exe);
-                File.Copy(file, target, true);
+                try
+                {
+                    Move(file, index, count);
+                    exception = null;
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    await Task.Delay(3000);
+                    exception = ex;
+                }
             }
-            else
+            if (exception is not null)
             {
-                var target = Path.Combine(pdir, exe);
-                File.Move(file, target, true);
+                throw exception;
             }
         }
 
-        private void Start()
+        private void Move(string file, int index, int count)
         {
-            var dir = CurrentDirectory;
-            if (CurrentDirectory.Contains("_download"))
-            {
-                dir = Directory.GetParent(dir)!.FullName;
-            }
+            vm.Progress = (double)index / count;
+            vm.Details = Path.GetFileName(file);
+            var isRootExe = IsRootExe(file);
+            var target = Path.Combine(GetTargetDirectory(file, isRootExe), vm.Details);
 
-            if (CurrentDirectory.Contains("lib"))
-            {
-                dir = Directory.GetParent(dir)!.FullName;
-            }
-            Environment.CurrentDirectory = dir;
-            Process.Start(Path.Combine(dir, exe),"--updateOk");
+            if (isRootExe) File.Copy(file, target, true);
+            else File.Move(file, target, true);
+        }
+
+        private static bool IsRootExe(string file) => Path.GetFileName(file) == Share.RootExe;
+
+        private string GetTargetDirectory(string file, bool isRootExe)
+        {
+            var pDir = Directory.GetParent(CurrentDirectory)!.FullName;
+            if (isRootExe) pDir = Directory.GetParent(pDir)!.FullName;
+            return pDir;
+        }
+
+        public static void Start()
+        {
+            var dir = Share.GetRootDirectory();
+            Process.Start(Path.Combine(dir, Share.RootExe), "--updateOk");
             Environment.Exit(0);
         }
     }

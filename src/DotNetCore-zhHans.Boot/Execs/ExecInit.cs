@@ -13,7 +13,7 @@ partial class ExecInit : ExecBase
         var list = (await GetJsonFileInfos()).ToList();
         TryAddDb(list);
 
-        vm.Title = "初始化组件";
+        vm.Title = $"初始化组件 {App.Version}";
         vm.Context = "下载组件";
         vm.IsIndeterminate = true;
 

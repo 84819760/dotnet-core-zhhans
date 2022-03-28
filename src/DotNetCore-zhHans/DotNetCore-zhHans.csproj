@@ -1,53 +1,55 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-      <UseWPF>true</UseWPF>
-	  <UseWindowsForms>true</UseWindowsForms>
-    <AssemblyName>DotNetCorezhHansMain</AssemblyName>
-    <RootNamespace>DotNetCorezhHans</RootNamespace>
-    <Platforms>AnyCPU;x64;x86</Platforms>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <SignAssembly>false</SignAssembly>
-    <ApplicationIcon>j12.ico</ApplicationIcon>
-  </PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DefineConstants>ShowPath1</DefineConstants>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<UseWindowsForms>true</UseWindowsForms>
+		<AssemblyName>DotNetCorezhHansMain</AssemblyName>
+		<RootNamespace>DotNetCorezhHans</RootNamespace>
+		<Platforms>AnyCPU;x64;x86</Platforms>
+
+		<SignAssembly>false</SignAssembly>
+		<ApplicationIcon>j12.ico</ApplicationIcon>
+		<Version>2.0.0</Version>
+		<Nullable>disable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
-    <Compile Remove="CustomControls\**" />
-    <Compile Remove="Services\**" />
-    <EmbeddedResource Remove="CustomControls\**" />
-    <EmbeddedResource Remove="Services\**" />
-    <None Remove="CustomControls\**" />
-    <None Remove="Services\**" />
-    <Page Remove="CustomControls\**" />
-    <Page Remove="Services\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="TranslData.db.bak" />
-    <None Remove="Views\SetterPage.xaml1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="j12.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="MaterialDesignThemes" Version="4.2.1" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.37" />
-    <PackageReference Include="NearCoreExtensions" Version="1.0.8" />
-    <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
-    <PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DotNetCore-zhHans.Base\DotNetCore-zhHans.Base.csproj" />
-    <ProjectReference Include="..\DotNetCore-zhHans.Db.Import\DotNetCore-zhHans.Db.Import.csproj" />
-    <ProjectReference Include="..\DotNetCore-zhHans.Service\DotNetCore-zhHans.Service.csproj" />
-    <ProjectReference Include="..\NearExtend.WpfPrism\NearExtend.WpfPrism.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="netstandard.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+		<Compile Remove="CustomControls\**" />
+		<Compile Remove="Services\**" />
+		<EmbeddedResource Remove="CustomControls\**" />
+		<EmbeddedResource Remove="Services\**" />
+		<None Remove="CustomControls\**" />
+		<None Remove="Services\**" />
+		<Page Remove="CustomControls\**" />
+		<Page Remove="Services\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="TranslData.db.bak" />
+		<None Remove="Views\SetterPage.xaml1" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="..\DotNetCore-zhHans.Boot\Helpers\Share.cs" Link="Extends\Share.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="j12.ico" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="MaterialDesignThemes" Version="4.2.1" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.37" />
+		<PackageReference Include="NearCoreExtensions" Version="1.0.8" />
+		<PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+		<PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\DotNetCore-zhHans.Base\DotNetCore-zhHans.Base.csproj" />
+		<ProjectReference Include="..\DotNetCore-zhHans.Db.Import\DotNetCore-zhHans.Db.Import.csproj" />
+		<ProjectReference Include="..\DotNetCore-zhHans.Service\DotNetCore-zhHans.Service.csproj" />
+		<ProjectReference Include="..\NearExtend.WpfPrism\NearExtend.WpfPrism.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="netstandard.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 </Project>

@@ -1,9 +1,15 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Text.Encodings.Web;
-using System.Windows;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 static class Share
 {
+    public const string RootExe = "DotNetCoreZhHans.exe";
+
     public static string? GetMd5(string filePath)
     {
         try
@@ -34,6 +40,17 @@ static class Share
         IgnoreReadOnlyProperties = true,
         IgnoreReadOnlyFields = true,
     };
+
+
+
+    public static string GetRootDirectory(bool isSetCurrentDirectory = false)
+    {
+        var dir = Directory.GetCurrentDirectory();
+        if (dir.Contains(@"\lib\_download"))
+            dir = Directory.GetParent(dir)!.Parent!.FullName;
+        if (isSetCurrentDirectory) Environment.CurrentDirectory = dir;
+        return dir;
+    }
 
     public static void Show(string title, string[] args)
     {

@@ -1,3 +1,9 @@
+# 下载
+> 2.0.0 以下版本需要手动更新！    
+
+[EXE文件及数据库](http://www.wyj55.cn/DotNetCoreZhHans.html)   
+
+
 # API选择
 
 提供商  | 单次最大请求 | QPS | 每月免费额度 | 免费额度超出后果
@@ -29,12 +35,10 @@ C:\Program Files\dotnet\packs\
 C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\ReferenceAssemblies\Microsoft\Framework
 %UserProFile%\.nuget\packages\
 
-客户端需要升级到1.0.0.3版本，否则会出现意外退出现象。
+客户端需要升级到2.0.0版本，否则会出现意外退出现象。
 ```
 
 ---
-# 数据库及二进制文件下载
-[下载](http://www.wyj55.cn/download/DotNetCorezhHans/DotNetCorezhHans1.0.0.0.7z)
 
 # .NET官方汉化包
 在官方汉化包的基础上，加个了个小程序自动拷贝。   

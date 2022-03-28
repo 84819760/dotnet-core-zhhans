@@ -8,7 +8,7 @@ partial class ExecUpdate : ExecBase
 
     public async override void Run()
     {
-        vm.Title = "更新";
+        vm.Title = $"更新 {App.Version}";
         vm.Details = "获取更新配置";
         vm.Context = "更新";
         var list = (await GetJsonFileInfos()).ToList();

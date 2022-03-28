@@ -14,7 +14,7 @@ partial class ExecPack : ExecBase
     public async override void Run()
     {
         await Task.Run(RunPack);
-        MessageBox.Show("打包完成");
+        MessageBox.Show($"打包完成 {App.Version}");
         Environment.Exit(0);
     }
 
