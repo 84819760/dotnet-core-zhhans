@@ -2,7 +2,7 @@
   "profiles": {
     "DotNetCore-zhHans.Boot": {
       "commandName": "Project",
-      "commandLineArgs": "--pack"
+      "commandLineArgs": "--update-file-move"
     }
   }
 }

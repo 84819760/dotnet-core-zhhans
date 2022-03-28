@@ -52,10 +52,8 @@ partial class ExecPack : ExecBase
         if (Isjson(fileInfo, source, pack) || await Is7zdll(fileInfo, source, pack)) return;
         fileInfo.ExtensionName = ".7z";
         fileInfo.Index = fileInfo.SourceName == "DotNetCoreZhHans.exe" ? -1024 : 0;
-
-
         await new ZipHelper(v => vm.SubProgress = v)
-            .Zip(source, pack);
+            .Zip(source, $"{pack}{ fileInfo.ExtensionName}");
     }
 
     private static bool Isjson(FileInfo fileInfo, string source, string pack)
@@ -71,7 +69,7 @@ partial class ExecPack : ExecBase
         fileInfo.ExtensionName = ".zip";
         fileInfo.Index = 1024;
         fileInfo.Cmd = "ZipInit";
-        await new ZipHelper().Zip(source, pack);
+        await new ZipHelper().Zip(source, $"{pack}{ fileInfo.ExtensionName}");
         return true;
     }
 }

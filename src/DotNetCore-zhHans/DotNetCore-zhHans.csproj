@@ -7,11 +7,15 @@
     <AssemblyName>DotNetCorezhHansMain</AssemblyName>
     <RootNamespace>DotNetCorezhHans</RootNamespace>
     <Platforms>AnyCPU;x64;x86</Platforms>
-    <AssemblyVersion>1.0.0.8</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <SignAssembly>false</SignAssembly>
     <ApplicationIcon>j12.ico</ApplicationIcon>
   </PropertyGroup>
-  <ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>ShowPath1</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
     <Compile Remove="CustomControls\**" />
     <Compile Remove="Services\**" />
     <EmbeddedResource Remove="CustomControls\**" />

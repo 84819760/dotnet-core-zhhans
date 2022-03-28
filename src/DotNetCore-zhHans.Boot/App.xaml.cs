@@ -18,6 +18,10 @@ namespace DotNetCore_zhHans.Boot
         protected override void OnStartup(StartupEventArgs e)
         {
             Args = e.Args ?? Array.Empty<string>();
+            if (Args.Any(x=> x == "--updateOk"))
+            {
+               MessageBox.Show("更新完成");
+            }
             Share.Show("Boot", Args);
         }
     }

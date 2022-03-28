@@ -54,7 +54,7 @@ static class DownloadHelper
         using var fileStream = File.Create(file);
         long position = 0;
         var count = 0;
-        var buffer = new byte[10240];
+        var buffer = new byte[8192];
 
         while ((count = await stream.ReadAsync(buffer, token).ConfigureAwait(false)) != 0)
         {

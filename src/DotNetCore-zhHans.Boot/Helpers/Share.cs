@@ -37,8 +37,9 @@ static class Share
 
     public static void Show(string title, string[] args)
     {
+#if ShowPath
         var ps = string.Join("\r\n", args);
         MessageBox.Show($"路径 : {Directory.GetCurrentDirectory()} \r\n命令:\r\n{ps}", title);
-
+#endif 
     }
 }

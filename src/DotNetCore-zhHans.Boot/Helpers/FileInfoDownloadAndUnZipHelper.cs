@@ -63,6 +63,7 @@ class FileInfoDownloadAndUnZipHelper
         for (int i = 0; i < 3; i++)
         {
             if (token.IsCancellationRequested) return;
+
             var ex = await DownloadHelper.DownloadFile(url, downloadFile, token
             , p => FileDownloadProgressChange?.Invoke((fileInfo, p))
             , l => FileDownloadLengthChange?.Invoke((fileInfo, l)));

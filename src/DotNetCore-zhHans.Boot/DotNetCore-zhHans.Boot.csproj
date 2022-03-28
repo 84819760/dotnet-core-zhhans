@@ -10,7 +10,13 @@
     <ApplicationIcon>j12.ico</ApplicationIcon>  
     <AssemblyName>DotNetCoreZhHans</AssemblyName>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Version>2.0.0</Version>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>ShowPath1</DefineConstants>
+  </PropertyGroup>
+
 
   <ItemGroup>
     <None Remove="j12.ico" />

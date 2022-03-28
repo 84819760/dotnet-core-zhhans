@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using DotNetCore_zhHans.Boot.Execs;
+
 namespace DotNetCore_zhHans.Boot;
 
 /// <summary>
@@ -24,7 +26,7 @@ public partial class MainWindow : Window
         }
         else if (IsExistsExec)
         {
-            Process.Start(exe);
+            Process.Start(exe, "--run");
             Environment.Exit(0);
         }
     }
@@ -38,7 +40,7 @@ public partial class MainWindow : Window
     private Action? TestUpdate() => TestArgs("--update-file-check", () => viewModel.Update());
 
     //移动文件
-    private Action? TestUpdateFile() => TestArgs("--update-file-move", () => viewModel.Update());
+    private Action? TestUpdateFile() => TestArgs("--update-file-move", () => viewModel.UpdateFile());
 
     //首次使用
     private Action? TestInit() => IsExistsExec ? default : viewModel.InitFile;
@@ -98,7 +100,7 @@ public partial class ViewModel
     internal void Update() => new ExecUpdate(this).Run();
 
     //更新文件
-    internal void UpdateFile() => new ExecUpdate(this).Run();
+    internal void UpdateFile() => new ExecUpdateFile(this).Run();
 
     public void CreatePack() => new ExecPack(this).Run();
 }

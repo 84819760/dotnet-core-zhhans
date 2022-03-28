@@ -10,7 +10,7 @@ partial class ExecInit : ExecBase
     public ExecInit(ViewModel viewModel) : base(viewModel) { }
     public async override void Run()
     {
-        var list = (await GetPackJson()).ToList();
+        var list = (await GetJsonFileInfos()).ToList();
         TryAddDb(list);
 
         vm.Title = "初始化组件";
@@ -20,31 +20,6 @@ partial class ExecInit : ExecBase
         await CreateDownloadAndUnZip(list).DownloadFileAsync();
         MessageBox.Show("完成");
         RunMain();
-    }
-
-    protected override string? GetUrl((FileInfo info, double progress) v)
-    {
-        vm.Details = v.info.SourceName;
-        vm.Progress = v.progress;
-
-        if (v.info.TestMd5(LibDirectory)) return default;
-        if (v.info.ShowMsg is { Length: > 0 }) vm.Context = v.info.ShowMsg;
-        return base.GetUrl(v);
-    }
-
-    protected override void FileDownloadLengthChange((FileInfo info, long length) v)
-    {
-        vm.IsIndeterminate = v.length is 0;
-        vm.Length = DownloadHelper.FormatSize(v.length);
-    }
-
-    protected override void FileDownloadProgressChange((FileInfo info, double progress) v) =>
-        vm.SubProgress = v.progress;
-
-    protected override void UnZipProgressChange((FileInfo info, double progress) v)
-    {
-        vm.Details = $"解压:{v.info.SourceName}";
-        vm.SubProgress = v.progress;
     }
 
     protected override void Complete((FileInfo info, string file) v)

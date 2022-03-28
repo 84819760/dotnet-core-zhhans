@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Text.Json.Nodes;
+using System.Windows;
 
 namespace DotNetCore_zhHans.Boot;
 
@@ -75,7 +76,7 @@ abstract class ExecBase
             .FirstOrDefault(x => x.EndsWith("DotNetCore-zhHans.Config.json"));
     }
 
-    protected async Task<FileInfo[]> GetPackJson()
+    protected async Task<FileInfo[]> GetJsonFileInfos()
     {
         using var hc = new HttpClient();
         var json = await hc.GetStringAsync(UrlPack);
@@ -86,13 +87,29 @@ abstract class ExecBase
 
     protected virtual string? GetUrl((FileInfo info, double progress) v)
     {
+        vm.Details = v.info.SourceName;
+        vm.Progress = v.progress;
+
+        if (v.info.TestMd5(LibDirectory)) return default;
+        if (v.info.ShowMsg is { Length: > 0 }) vm.Context = v.info.ShowMsg;
+
         InitZip();
         return v.info.DownloadUrl;
     }
 
-    protected virtual void FileDownloadLengthChange((FileInfo info, long length) v) { }
-    protected virtual void FileDownloadProgressChange((FileInfo info, double progress) v) { }
-    protected virtual void UnZipProgressChange((FileInfo info, double progress) v) { }
+    protected virtual void FileDownloadLengthChange((FileInfo info, long length) v)
+    {
+        vm.IsIndeterminate = v.length is 0;
+        vm.Length = DownloadHelper.FormatSize(v.length);
+    }
+    protected virtual void FileDownloadProgressChange((FileInfo info, double progress) v) =>
+        vm.SubProgress = v.progress;
+
+    protected virtual void UnZipProgressChange((FileInfo info, double progress) v)
+    {
+        vm.Details = $"解压:{v.info.SourceName}";
+        vm.SubProgress = v.progress;
+    }
     protected virtual void Complete((FileInfo info, string file) v) { }
 
     protected FileInfoDownloadAndUnZipHelper CreateDownloadAndUnZip(IEnumerable<FileInfo> files) =>
@@ -108,8 +125,12 @@ abstract class ExecBase
     protected void RunMain()
     {
         var exe = Path.Combine(LibDirectory, "DotNetCorezhHansMain.exe");
-        Process.Start(exe, "--run");
-        Environment.Exit(0);
+        if (File.Exists(exe))
+        {
+            Process.Start(exe, "--run");
+            Environment.Exit(0);
+        }
+        MessageBox.Show("找不到主程序");
     }
 
 }
