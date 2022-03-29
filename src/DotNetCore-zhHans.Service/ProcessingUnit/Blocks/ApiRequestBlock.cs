@@ -45,7 +45,8 @@ namespace DotNetCoreZhHans.Service.ProcessingUnit
                 api.Master = Transmits.Progress.Master;
                 var resValue = await api.SendRequest(group.QueryValue, Token);
                 var datas = await group.SetResponse(resValue, api, Token);
-                await SendNext(datas, resValue, group);
+                var isOffline = api.ApiConfig.Name == "离线翻译";
+                await SendNext(datas, resValue, group, isOffline);
             }
             catch (Exception)
             {
@@ -55,12 +56,13 @@ namespace DotNetCoreZhHans.Service.ProcessingUnit
          
         }
 
-        private async Task SendNext(NodeCacheData[] datas, string response, NodeCacheDataGroup group)
+        private async Task SendNext(NodeCacheData[] datas, string response, NodeCacheDataGroup group
+            , bool isOffline)
         {
             foreach (var item in datas)
             {
                 if (Token.IsCancellationRequested) return;
-                if (item.IsResponseValue && item.IsCheckPassed)
+                if (item.IsResponseValue && item.IsCheckPassed && !isOffline)
                     await dbContextUnit.SendAsync(item);
                 await updateXmlBlock.SendAsync(item);
             }

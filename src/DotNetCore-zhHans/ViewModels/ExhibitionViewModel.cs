@@ -86,12 +86,12 @@ namespace DotNetCorezhHans.ViewModels
             data.SetComplete();
         });
 
-        private static bool TestApis()
-        {
-            var res = App.GetConfigManager().ApiConfigs.Count(x => x.Enable) is 0;
-            if (res) MessageBox.Show("至少配置并且开启一个翻译API");
-            return res;
-        }
+        private static bool TestApis() => false;
+        //{
+        //    var res = App.GetConfigManager().ApiConfigs.Count(x => x.Enable) is 0;
+        //    if (res) MessageBox.Show("至少配置并且开启一个翻译API");
+        //    return res;
+        //}
 
         private void SetValue(PackIconKind iconKind, bool isIndicator, int progressValue)
         {

@@ -38,6 +38,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dotnet-Intellisense", "Dotn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetCore-zhHans.Db.Import", "DotNetCore-zhHans.Db.Import\DotNetCore-zhHans.Db.Import.csproj", "{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslateApi.Offline", "TranslateApi.Offline\TranslateApi.Offline.csproj", "{536883FD-2961-439E-A7A8-92C1480C42C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -96,6 +98,10 @@ Global
 		{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE824410-84B7-4E4A-AB54-9053B5D5D5CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{536883FD-2961-439E-A7A8-92C1480C42C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{536883FD-2961-439E-A7A8-92C1480C42C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{536883FD-2961-439E-A7A8-92C1480C42C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{536883FD-2961-439E-A7A8-92C1480C42C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +113,7 @@ Global
 		{D55C86B9-05F8-46BF-8BF9-919355F20C38} = {609E5EF8-6A1A-4226-9206-C31C83403C3B}
 		{D7455CF5-721A-4D8C-AAD0-30C014BE44A0} = {609E5EF8-6A1A-4226-9206-C31C83403C3B}
 		{8E1B2062-30B2-4F1C-A318-FF7C3426318D} = {609E5EF8-6A1A-4226-9206-C31C83403C3B}
+		{536883FD-2961-439E-A7A8-92C1480C42C7} = {609E5EF8-6A1A-4226-9206-C31C83403C3B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95B0D812-5189-4AB8-86CD-ECCDA63A5CD2}

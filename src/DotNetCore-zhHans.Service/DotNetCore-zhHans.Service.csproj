@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>DotNetCoreZhHans.Service</RootNamespace>
     <Platforms>AnyCPU;x64;x86</Platforms>
+	<Version>2.0.2</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -27,6 +28,7 @@
     <ProjectReference Include="..\Translate.Aliyun\TranslateApi.Aliyun.csproj" />
     <ProjectReference Include="..\Translate.Baidu\TranslateApi.Baidu.csproj" />
     <ProjectReference Include="..\Translate.Tencent\TranslateApi.Tencent.csproj" />
+    <ProjectReference Include="..\TranslateApi.Offline\TranslateApi.Offline.csproj" />
   </ItemGroup>
 
 </Project>

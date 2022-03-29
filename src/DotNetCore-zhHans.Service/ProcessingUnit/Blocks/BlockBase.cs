@@ -29,12 +29,17 @@ namespace DotNetCoreZhHans.Service.ProcessingUnit
         }
 
         protected ExecutionDataflowBlockOptions CreateExecutionDataflowBlockOption
-            (int boundedCapacity, int maxDegreeOfParallelism) => new()
+            (int boundedCapacity, int maxDegreeOfParallelism)
+        {
+            boundedCapacity = boundedCapacity > 0 ? boundedCapacity : 1;
+            maxDegreeOfParallelism = maxDegreeOfParallelism > 0 ? maxDegreeOfParallelism : 1;
+            return new()
             {
                 BoundedCapacity = boundedCapacity,
                 MaxDegreeOfParallelism = maxDegreeOfParallelism,
                 CancellationToken = Token
             };
+        }
 
         protected static async Task SetComplete(IDataflowBlock block)
         {

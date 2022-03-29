@@ -26,14 +26,16 @@ namespace DotNetCoreZhHans.Service.ApiRequests
             InitChannel();
         }
 
-        private void InitChannel()
+        private async void InitChannel()
         {
             var maps = GetMap();
-            foreach (var item in transmits.Config.ApiConfigs.Where(x => x.Enable))
+            var items = transmits.Config.ApiConfigs.Where(x => x.Enable).ToArray();
+            foreach (var item in items)
             {
                 var targetType = maps[item.Name];
                 Add(targetType, item).Wait();
             }
+            await AddOffline(items);
         }
 
         private async Task Add(Type type, ApiConfig apiConfig)
@@ -46,7 +48,14 @@ namespace DotNetCoreZhHans.Service.ApiRequests
             }
         }
 
-        public async Task<ApiRequestItem> GetApiItem() => 
+        private async Task AddOffline(ApiConfig[] items)
+        {
+            if (items.Length > 0) return;
+            var apiItem = new ApiRequestItem(this, new TranslateService_Offline(), transmits);
+            await channel.Writer.WriteAsync(apiItem, transmits.Token);
+        }
+
+        public async Task<ApiRequestItem> GetApiItem() =>
             await channel.Reader.ReadAsync(transmits.Token);
 
         private static TranslateServiceBase CreateInstance(Type type, ApiConfig apiConfig) =>
