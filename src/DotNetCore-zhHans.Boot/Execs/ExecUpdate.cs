@@ -17,9 +17,17 @@ partial class ExecUpdate : ExecBase
 
     protected override void Complete((FileInfo info, string file) v)
     {
+        ZipDllHandler(v.info, v.file);
         if (v.info.SourceName != "DotNetCoreZhHans.exe") return;
         Environment.CurrentDirectory = DownloadDirectory;
         Process.Start(v.file, "--update-file-move");
         Environment.Exit(0);
+    }
+
+    private void ZipDllHandler(FileInfo info, string file)
+    {
+        if (info.SourceName != "7z.dll") return;
+        var zipTarget= Path.Combine(LibDirectory, info.SourceName);
+        File.Copy(file, zipTarget, true);
     }
 }

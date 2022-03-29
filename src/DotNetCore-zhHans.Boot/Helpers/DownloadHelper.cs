@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.IO;
 using System.Net.Http;
 
@@ -7,6 +8,9 @@ namespace DotNetCore_zhHans.Boot;
 static class DownloadHelper
 {
     private const HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseHeadersRead;
+    private static readonly MemoryPool<byte> memoryPool = MemoryPool<byte>.Shared;
+    private const int bufferSize = 4096;
+
     public static async Task<Exception?> DownloadFile(string url, string file
         , CancellationToken token
         , Action<double>? progressReport = null
@@ -51,16 +55,16 @@ static class DownloadHelper
      , CancellationToken token
      , Action<double>? progressReport = null)
     {
-        using var fileStream = File.Create(file);
+        using var fileStream = File.Create(file, bufferSize * 1000);
         long position = 0;
         var count = 0;
-        var buffer = new byte[8192];
-
-        while ((count = await stream.ReadAsync(buffer, token).ConfigureAwait(false)) != 0)
+        using var buffer = memoryPool.Rent(bufferSize);
+        var memory = buffer.Memory;
+        while ((count = await stream.ReadAsync(memory, token).ConfigureAwait(false)) != 0)
         {
             position += count;
             if (length.HasValue) progressReport?.Invoke((double)position / length.Value);
-            await fileStream.WriteAsync(buffer.AsMemory(0, count));
+            await fileStream.WriteAsync(memory[..count]);
         }
     }
 

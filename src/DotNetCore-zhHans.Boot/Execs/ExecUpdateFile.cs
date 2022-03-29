@@ -5,10 +5,7 @@ namespace DotNetCore_zhHans.Boot.Execs
 {
     partial class ExecUpdateFile : ExecBase
     {
-
-        public ExecUpdateFile(ViewModel viewModel) : base(viewModel)
-        {
-        }
+        public ExecUpdateFile(ViewModel viewModel) : base(viewModel) { }
 
         public override async void Run()
         {
@@ -18,39 +15,29 @@ namespace DotNetCore_zhHans.Boot.Execs
             vm.IsIndeterminate = true;
             try
             {
-                var hashs = (await GetJsonFileInfos())
-                    .Select(x => x.SourceName)
-                    .ToHashSet();
-
-                var files = Directory.GetFiles(CurrentDirectory)
-                        .Where(x => hashs.Contains(Path.GetFileName(x)))
-                        .ToList();
-
-                files.Select((x, i) => (file: x, index: i, count: files.Count))
-                          .ToList().ForEach(async x => await Move(x));
-
+                var items = await GetJsonFileInfos();
+                items.Select((x, i) => (fileInfo: x, index: i)).ToList()
+                    .ForEach(async x => await Move(x.fileInfo, x.index, items.Length));
                 Start();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"{ex}", "更新失败");
-                var dir = GetTargetDirectory("c:\\DotNetCorezhHansMain.exe", false);
-                var target = Path.Combine(dir, "DotNetCorezhHansMain.exe");
-                File.Delete(target);
+                DeleteMain();
             }
         }
 
-        private async Task Move((string file, int index, int count) v)
+        private async Task Move(FileInfo fileInfo, int index, int length)
         {
-            var (file, index, count) = v;
+            vm.Progress = (double)index / length;
+            vm.Details = fileInfo.SourceName;
             Exception? exception = null;
             for (int i = 0; i < 3; i++)
             {
                 try
                 {
-                    Move(file, index, count);
+                     Move(fileInfo);
                     exception = null;
-                    break;
                 }
                 catch (Exception ex)
                 {
@@ -58,29 +45,37 @@ namespace DotNetCore_zhHans.Boot.Execs
                     exception = ex;
                 }
             }
-            if (exception is not null)
+            if (exception is null) return;
+            throw exception;
+        }
+
+        private void Move(FileInfo fileInfo)
+        {
+            var file = fileInfo.SourceName;
+            var sourceFile = Path.Combine(CurrentDirectory, file);
+            var targetFile = GetTargetDirectory(file);
+            if (fileInfo.Index == 0) File.Move(sourceFile, targetFile, true);
+            else File.Copy(sourceFile, targetFile, true);
+        }
+
+        private void DeleteMain()
+        {
+            try
             {
-                throw exception;
+                var pDir = Directory.GetParent(CurrentDirectory)!.FullName;
+                var target = Path.Combine(pDir, "DotNetCorezhHansMain.exe");
+                if (File.Exists(target)) File.Delete(target);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex}");
             }
         }
 
-        private void Move(string file, int index, int count)
-        {
-            vm.Progress = (double)index / count;
-            vm.Details = Path.GetFileName(file);
-            var isRootExe = IsRootExe(file);
-            var target = Path.Combine(GetTargetDirectory(file, isRootExe), vm.Details);
-
-            if (isRootExe) File.Copy(file, target, true);
-            else File.Move(file, target, true);
-        }
-
-        private static bool IsRootExe(string file) => Path.GetFileName(file) == Share.RootExe;
-
-        private string GetTargetDirectory(string file, bool isRootExe)
+        private string GetTargetDirectory(string fileName)
         {
             var pDir = Directory.GetParent(CurrentDirectory)!.FullName;
-            if (isRootExe) pDir = Directory.GetParent(pDir)!.FullName;
+            if (fileName == Share.RootExe) pDir = Directory.GetParent(pDir)!.FullName;
             return pDir;
         }
 
