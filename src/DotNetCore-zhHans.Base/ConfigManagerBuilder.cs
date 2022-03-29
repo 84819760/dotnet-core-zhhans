@@ -84,7 +84,8 @@ namespace DotNetCorezhHans.Base
             {
                 "C:\\Program Files\\dotnet\\packs\\",
                 "%UserProFile%\\.nuget\\packages\\",
-                "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\ReferenceAssemblies\\Microsoft\\Framework\\"
+                "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\ReferenceAssemblies\\Microsoft\\Framework\\",
+                "C:\\Program Files (x86)\\Microsoft SDKs\\",
             },
             ApiConfigs = new()
             {
