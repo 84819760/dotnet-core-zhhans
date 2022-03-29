@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 
 namespace DotNetCore_zhHans.Boot.Execs
@@ -36,11 +37,12 @@ namespace DotNetCore_zhHans.Boot.Execs
             {
                 try
                 {
-                     Move(fileInfo);
+                    Move(fileInfo);
                     exception = null;
+                    return;
                 }
                 catch (Exception ex)
-                {
+                {    
                     await Task.Delay(3000);
                     exception = ex;
                 }
@@ -53,7 +55,7 @@ namespace DotNetCore_zhHans.Boot.Execs
         {
             var file = fileInfo.SourceName;
             var sourceFile = Path.Combine(CurrentDirectory, file);
-            var targetFile = GetTargetDirectory(file);
+            var targetFile = Path.Combine(GetTargetDirectory(file),file);
             if (fileInfo.Index == 0) File.Move(sourceFile, targetFile, true);
             else File.Copy(sourceFile, targetFile, true);
         }
