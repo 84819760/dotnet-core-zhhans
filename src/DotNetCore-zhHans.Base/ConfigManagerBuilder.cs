@@ -65,7 +65,7 @@ namespace DotNetCorezhHans.Base
                 return Path.Combine(pdir, target);
             }
         }
-       
+
         public static void Save(object value)
         {
             var path = RootConfigFilePath;
@@ -77,9 +77,10 @@ namespace DotNetCorezhHans.Base
         {
             IsCover = false,
             IsKeepOriginal = false,
+            IsAdmin = true,
             Ignores = ignores,
             UpdateUrl = "http://www.wyj55.cn/download/DotNetCorezhHans20/Update.json",
-            PackagesUrl= "http://www.wyj55.cn/download/DotNetCorezhHans20/packs/_pack.json",
+            PackagesUrl = "http://www.wyj55.cn/download/DotNetCorezhHans20/packs/_pack.json",
             Directorys = new()
             {
                 "C:\\Program Files\\dotnet\\packs\\",
