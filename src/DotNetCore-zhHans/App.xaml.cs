@@ -28,6 +28,7 @@ namespace DotNetCorezhHans
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            DotNetCoreZhHansFileMove();
             DbTest();
             var args = e.Args ?? Array.Empty<string>();
             Share.Show("DotNetCorezhHansMain", e.Args);
@@ -35,6 +36,41 @@ namespace DotNetCorezhHans
             if (IsAdmin) UacHelper.RunAdmin();
             InfoDataTask = Task.Run(() => InfoData.GetInfoData(Config.UpdateUrl));
             base.OnStartup(e);
+        }
+
+        private static void DotNetCoreZhHansFileMove()
+        {
+            var currentDirectory = Directory.GetCurrentDirectory();
+            new[]
+            {
+                Path.Combine(currentDirectory, "lib"),
+                Path.Combine(currentDirectory, "lib", "_download"),
+            }.ToList()
+            .ForEach(async f => await Move(Path.Combine(f, "DotNetCoreZhHans.exe"), currentDirectory));
+
+        }
+
+        private static async Task Move(string source, string dir)
+        {
+            if (!File.Exists(source)) return;
+            var target = Path.Combine(dir, "DotNetCoreZhHans.exe");
+            Exception error = null;
+            for (int i = 0; i < 3; i++)
+            {
+                try
+                {
+
+                    File.Move(source, target, true);
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    await Task.Delay(1000);
+                    error = ex;
+                }
+            }
+            if (error is null) return;
+            throw error;
         }
 
         private static void DbTest()

@@ -1,4 +1,6 @@
-﻿namespace DotNetCore_zhHans.Boot;
+﻿using System.Windows;
+
+namespace DotNetCore_zhHans.Boot;
 
 partial class ExecUpdate : ExecBase
 {
@@ -17,17 +19,30 @@ partial class ExecUpdate : ExecBase
 
     private void End()
     {
-        Environment.CurrentDirectory = DownloadDirectory;
-        Process.Start("DotNetCoreZhHans.exe", "--update-file-move");
+        Process.Start(Path.Combine(CurrentDirectory, Share.RootExe), "--updateOk");
         Environment.Exit(0);
     }
 
-    protected override void Complete((FileInfo info, string file) v) => ZipDllHandler(v.info, v.file);
+    protected override async void Complete((FileInfo info, string file) v) => await MoveFile(v.info, v.file);
 
-    private void ZipDllHandler(FileInfo info, string file)
+    private async Task MoveFile(FileInfo info, string file)
     {
-        if (info.SourceName != "7z.dll") return;
-        var zipTarget= Path.Combine(LibDirectory, info.SourceName);
-        File.Copy(file, zipTarget, true);
+        var target = Path.Combine(LibDirectory, info.SourceName);
+        Exception? error = null;
+        for (int i = 0; i < 3; i++)
+        {
+            try
+            {
+                File.Move(file, target, true);
+                return;
+            }
+            catch (Exception ex)
+            {
+                await Task.Delay(1000);
+                error = ex;
+            }         
+        }
+        if (error is null) return;
+        throw error;
     }
 }

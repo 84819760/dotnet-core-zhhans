@@ -1,11 +1,9 @@
-﻿using System;
-using System.Buffers;
-using System.IO;
+﻿using System.Buffers;
 using System.Net.Http;
 
 namespace DotNetCore_zhHans.Boot;
 
-static class DownloadHelper
+public static class DownloadHelper
 {
     private const HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseHeadersRead;
     private static readonly MemoryPool<byte> memoryPool = MemoryPool<byte>.Shared;

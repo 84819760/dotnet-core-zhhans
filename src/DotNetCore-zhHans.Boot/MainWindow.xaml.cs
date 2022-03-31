@@ -1,6 +1,4 @@
 ﻿using System.Windows;
-using DotNetCore_zhHans.Boot.Execs;
-
 namespace DotNetCore_zhHans.Boot;
 
 /// <summary>
@@ -18,7 +16,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         DataContext = viewModel;
-        var exec = TestPack() ?? TestUpdate() ?? TestUpdateFile() ?? TestInit();
+        var exec = TestPack() ?? TestUpdate() ?? TestInit();
         if (exec is not null)
         {
             InitializeComponent();
@@ -38,9 +36,6 @@ public partial class MainWindow : Window
 
     //检查
     private Action? TestUpdate() => TestArgs("--update-file-check", () => viewModel.Update());
-
-    //移动文件
-    private Action? TestUpdateFile() => TestArgs("--update-file-move", () => viewModel.UpdateFile());
 
     //首次使用
     private Action? TestInit() => IsExistsExec ? default : viewModel.InitFile;
@@ -98,9 +93,6 @@ public partial class ViewModel
 
     //下载、解压、退出，
     internal void Update() => new ExecUpdate(this).Run();
-
-    //更新文件
-    internal void UpdateFile() => new ExecMoveFile(this).Run();
 
     public void CreatePack() => new ExecPack(this).Run();
 }

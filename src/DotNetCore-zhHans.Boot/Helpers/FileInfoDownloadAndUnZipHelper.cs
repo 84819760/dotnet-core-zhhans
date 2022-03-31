@@ -1,12 +1,9 @@
-﻿using System;
-using System.IO;
-
-namespace DotNetCore_zhHans.Boot;
+﻿namespace DotNetCore_zhHans.Boot;
 
 /// <summary>
 /// 负责下载和解压
 /// </summary>
-class FileInfoDownloadAndUnZipHelper
+public class FileInfoDownloadAndUnZipHelper
 {
     private const string unZipExtension = ".zip .7z";
     private readonly CancellationToken token;

@@ -10,8 +10,8 @@
 
 		<SignAssembly>false</SignAssembly>
 		<ApplicationIcon>j12.ico</ApplicationIcon>
-		<Version>2.0.7</Version>
-		<Nullable>disable</Nullable>
+		<Version>2.0.8</Version>
+		<Nullable>disable</Nullable>		
 	</PropertyGroup>
 
 	<ItemGroup>
