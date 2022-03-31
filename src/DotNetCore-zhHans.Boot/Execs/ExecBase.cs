@@ -133,4 +133,18 @@ abstract class ExecBase
         MessageBox.Show("找不到主程序");
     }
 
+    protected void TryAddDb(List<FileInfo> list)
+    {
+        var name = "TranslData.db";
+        var target = Path.Combine(LibDirectory, name);
+        if (File.Exists(target)) return;
+        list.Add(new()
+        {
+            ExtensionName = ".7z",
+            PackUrl = UrlRoot,
+            SourceName = name,
+            Md5 = Guid.NewGuid().ToString(),
+            ShowMsg = "下载数据库"
+        });
+    }
 }

@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace DotNetCore_zhHans.Boot;
+﻿namespace DotNetCore_zhHans.Boot;
 
 partial class ExecUpdate : ExecBase
 {
@@ -12,6 +10,7 @@ partial class ExecUpdate : ExecBase
         vm.Details = "获取更新配置";
         vm.Context = "更新";
         var list = (await GetJsonFileInfos()).ToList();
+        TryAddDb(list);
         await CreateDownloadAndUnZip(list).DownloadFileAsync();
     }
 
