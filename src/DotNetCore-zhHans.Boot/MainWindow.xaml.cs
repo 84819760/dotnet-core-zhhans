@@ -100,7 +100,7 @@ public partial class ViewModel
     internal void Update() => new ExecUpdate(this).Run();
 
     //更新文件
-    internal void UpdateFile() => new ExecUpdateFile(this).Run();
+    internal void UpdateFile() => new ExecMoveFile(this).Run();
 
     public void CreatePack() => new ExecPack(this).Run();
 }

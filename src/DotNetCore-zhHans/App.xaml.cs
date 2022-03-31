@@ -1,9 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using DotNetCorezhHans.Base;
+using DotNetCorezhHans.Extends;
 using DotNetCorezhHans.ViewModels;
 using DotNetCorezhHans.Views;
 using Prism.Ioc;
@@ -26,6 +28,7 @@ namespace DotNetCorezhHans
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            DbTest();
             var args = e.Args ?? Array.Empty<string>();
             Share.Show("DotNetCorezhHansMain", e.Args);
             ShowUpdate(args);
@@ -34,13 +37,20 @@ namespace DotNetCorezhHans
             base.OnStartup(e);
         }
 
+        private static void DbTest()
+        {
+            var target = Path.Combine(Directory.GetCurrentDirectory(), "lib", "TranslData.db");
+            if (File.Exists(target)) return;
+            UpdateFile.Run();
+        }
+
         private static void ShowUpdate(string[] args)
         {
             if (args.Any(x => x == "--update-ok"))
             {
                 MessageBoxShow("更新完成!");
                 return;
-            }         
+            }
             try
             {
                 Config = ConfigManager.Instance;

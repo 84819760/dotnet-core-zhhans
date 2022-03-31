@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Text.Json.Nodes;
 using System.Windows;
+using System.Xml.Linq;
 
 namespace DotNetCore_zhHans.Boot;
 
@@ -138,13 +139,15 @@ abstract class ExecBase
         var name = "TranslData.db";
         var target = Path.Combine(LibDirectory, name);
         if (File.Exists(target)) return;
-        list.Add(new()
-        {
-            ExtensionName = ".7z",
-            PackUrl = UrlRoot,
-            SourceName = name,
-            Md5 = Guid.NewGuid().ToString(),
-            ShowMsg = "下载数据库"
-        });
+        list.Add(CreateTranslData(name));
     }
+
+    protected FileInfo CreateTranslData(string name) => new()
+    {
+        ExtensionName = ".7z",
+        PackUrl = UrlRoot,
+        SourceName = name,
+        Md5 = Guid.NewGuid().ToString(),
+        ShowMsg = "下载数据库"
+    };
 }

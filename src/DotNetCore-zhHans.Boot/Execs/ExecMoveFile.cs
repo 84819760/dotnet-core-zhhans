@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace DotNetCore_zhHans.Boot.Execs
 {
-    partial class ExecUpdateFile : ExecBase
+    partial class ExecMoveFile : ExecBase
     {
-        public ExecUpdateFile(ViewModel viewModel) : base(viewModel) { }
+        public ExecMoveFile(ViewModel viewModel) : base(viewModel) { }
 
         public override async void Run()
         {
@@ -16,9 +17,11 @@ namespace DotNetCore_zhHans.Boot.Execs
             vm.IsIndeterminate = true;
             try
             {
-                var items = await GetJsonFileInfos();
-                items.Select((x, i) => (fileInfo: x, index: i)).ToList()
-                    .ForEach(async x => await Move(x.fileInfo, x.index, items.Length));
+                var items = (await GetJsonFileInfos()).ToList();
+                items.OrderByDescending(x => x.Index)
+                    .Select((x, i) => (fileInfo: x, index: i)).ToList()
+                    .ForEach(async x => await Move(x.fileInfo, x.index, items.Count));
+                TryMoveDb();
                 Start();
             }
             catch (Exception ex)
@@ -26,6 +29,19 @@ namespace DotNetCore_zhHans.Boot.Execs
                 MessageBox.Show($"{ex}", "更新失败");
                 DeleteMain();
             }
+        }
+
+        private void TryMoveDb()
+        {
+            var tDb = "TranslData.db";
+            if (!File.Exists(tDb)) return;
+            var source = Path.Combine(CurrentDirectory, tDb);
+            var target = Path.Combine(GetTargetDirectory(tDb), tDb);
+            try
+            {
+                File.Move(source, target, false);
+            }
+            finally { }           
         }
 
         private async Task Move(FileInfo fileInfo, int index, int length)
@@ -42,7 +58,7 @@ namespace DotNetCore_zhHans.Boot.Execs
                     return;
                 }
                 catch (Exception ex)
-                {    
+                {
                     await Task.Delay(3000);
                     exception = ex;
                 }
@@ -55,7 +71,7 @@ namespace DotNetCore_zhHans.Boot.Execs
         {
             var file = fileInfo.SourceName;
             var sourceFile = Path.Combine(CurrentDirectory, file);
-            var targetFile = Path.Combine(GetTargetDirectory(file),file);
+            var targetFile = Path.Combine(GetTargetDirectory(file), file);
             if (fileInfo.Index == 0) File.Move(sourceFile, targetFile, true);
             else File.Copy(sourceFile, targetFile, true);
         }

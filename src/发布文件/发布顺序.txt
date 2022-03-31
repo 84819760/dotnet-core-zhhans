@@ -1,3 +1,0 @@
-DotNetCore-zhHans
-DotNetCore-zhHans.Boot
-Packages

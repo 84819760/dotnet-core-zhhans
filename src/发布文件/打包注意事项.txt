@@ -1,0 +1,4 @@
+TranslData.db.7z (注意db)
+DotNetCore-zhHans
+DotNetCore-zhHans.Boot（注意调整发布选项）
+Packages

@@ -12,16 +12,17 @@ partial class ExecUpdate : ExecBase
         var list = (await GetJsonFileInfos()).ToList();
         TryAddDb(list);
         await CreateDownloadAndUnZip(list).DownloadFileAsync();
+        End();
     }
 
-    protected override void Complete((FileInfo info, string file) v)
+    private void End()
     {
-        ZipDllHandler(v.info, v.file);
-        if (v.info.SourceName != "DotNetCoreZhHans.exe") return;
         Environment.CurrentDirectory = DownloadDirectory;
-        Process.Start(v.file, "--update-file-move");
+        Process.Start("DotNetCoreZhHans.exe", "--update-file-move");
         Environment.Exit(0);
     }
+
+    protected override void Complete((FileInfo info, string file) v) => ZipDllHandler(v.info, v.file);
 
     private void ZipDllHandler(FileInfo info, string file)
     {
