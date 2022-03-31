@@ -10,7 +10,7 @@ public partial class App : Application
 {
     public static string[] Args { get; private set; } = null!;
 
-    public static readonly string? Version = 
+    public static readonly string? Version =
         $"{typeof(App).Assembly.GetName().Version?.ToString(3)}";
 
     protected override void OnStartup(StartupEventArgs e)
@@ -20,7 +20,7 @@ public partial class App : Application
         if (Args.Any(x => x == "--updateOk"))
         {
             Share.GetRootDirectory(true);
-            MessageBox.Show("更新完成");
+            MessageBox.Show("更新完成", Version);
         }
         Share.Show("Boot", Args);
     }

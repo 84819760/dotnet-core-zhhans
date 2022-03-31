@@ -18,7 +18,7 @@ partial class ExecInit : ExecBase
         vm.IsIndeterminate = true;
 
         await CreateDownloadAndUnZip(list).DownloadFileAsync();
-        MessageBox.Show("完成");
+        MessageBox.Show("初始化完成",App.Version);
         RunMain();
     }
 
