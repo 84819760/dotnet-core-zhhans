@@ -39,9 +39,9 @@
         <TextBox Grid.Row="1" Text="{Binding Data.Information}"  
                  Style="{x:Null}" BorderThickness="0"
                  IsReadOnly="True"
-                 Margin="20 20" FontSize="15" 
+                 Margin="1 1" FontSize="15" 
                  HorizontalAlignment="Center"                 
-                 Width="350" TextWrapping="Wrap"/>
+                 Width="400" TextWrapping="Wrap"/>
 
         <StackPanel Grid.Row="2">
             <GridSplitter Height="1" HorizontalAlignment="Stretch" />
