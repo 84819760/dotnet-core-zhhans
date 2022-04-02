@@ -9,7 +9,7 @@
 
 下载链接 : [url](http://www.wyj55.cn/DotNetCoreZhHans.html)   
 内置数据库已包含常用库的翻译数据，可以离线翻译。
-建议注册百度翻译API账号 注册地址:`（不是“百度云下”的翻译，是“百度翻译”注意注册的地址！！！！！）` https://fanyi-api.baidu.com/    
+建议注册百度翻译API账号 注册地址:`（不是“百度云下”的翻译，是“百度翻译”！！！！！）` https://fanyi-api.baidu.com/    
 到“开发者中心”>“开发者信息”拿到“APP ID”和“密钥” ，然后进入“配置”> “API选项” ，填写参数。Secretld 填  APP ID , SecretKye 填 密钥。更新如果遇到问题，请删除\lib\DotNetCorezhHansMain.exe，重新打开即可。
 
 > 要求x64系统，并且安装.NET6！
