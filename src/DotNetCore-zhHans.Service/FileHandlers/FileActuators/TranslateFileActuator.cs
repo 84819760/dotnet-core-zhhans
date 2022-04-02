@@ -70,7 +70,9 @@ namespace DotNetCoreZhHans.Service.FileHandlers.FileActuators
         private bool IsNetstandard()
         {
             var path = Transmits.File.Path.ToLower();
-            return new[] { "netstandard.library", @"\ref\" }.All(x => path.Contains(x));
+            var target = Path.GetFileName(Transmits.File.Path);
+            return target == "netstandard.xml" 
+                && new[] { "netstandard.library", @"\ref\" }.All(x => path.Contains(x));
         }
 
         private void ReplaceFile(Exception ex)
