@@ -12,6 +12,8 @@
 建议注册百度翻译API账号 注册地址: https://fanyi-api.baidu.com/    
 到“开发者中心”>“开发者信息”拿到“APP ID”和“密钥” ，然后进入“配置”> “API选项” ，填写参数。Secretld 填  APP ID , SecretKye 填 密钥。更新如果遇到问题，请删除\lib\DotNetCorezhHansMain.exe，重新打开即可。
 
+> 要求系统安装.NET6 和 x64！
+
 # .NET Framework 项目
 请将 “packages.config” 迁移到 “packagesReference”之后可用，在当前项目 "引用" 上点右键进行迁移。    
 ![image](imgs/02%20NET%20Framework%20%E9%A1%B9%E7%9B%AE%E8%BF%81%E7%A7%BB.png)
