@@ -9,6 +9,13 @@
 # .NET Framework 项目
 请将 “packages.config” 迁移到 “packagesReference”之后可用，在 在当前项目 "引用" 上点右键进行迁移。
 
+> 汉化前
+![image](imgs/01%20%E6%B1%89%E5%8C%96%E5%89%8D.png)
+> NF项目迁移“packagesReference”
+![image](imgs/02%20NET%20Framework%20%E9%A1%B9%E7%9B%AE%E8%BF%81%E7%A7%BB.png)
+> 汉化后
+![image](imgs/03%20%E6%B1%89%E5%8C%96%E5%90%8E.png)
+
 # API选择
 
 提供商  | 单次最大请求 | QPS | 每月免费额度 | 免费额度超出后果
