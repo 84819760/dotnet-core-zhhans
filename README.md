@@ -46,9 +46,8 @@
 ```
 %UserProFile%\.nuget\packages\
 C:\Program Files\dotnet\packs\
-C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\
 C:\Program Files (x86)\Microsoft SDKs\
-
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\
 客户端需要升级到2.0.0版本，否则会出现意外退出现象。
 ```
 
