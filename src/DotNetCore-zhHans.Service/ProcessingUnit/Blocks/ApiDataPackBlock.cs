@@ -12,7 +12,6 @@ namespace DotNetCoreZhHans.Service.ProcessingUnit
     /// </summary>
     internal class ApiDataPackBlock : UnitBase<NodeCacheData>
     {
-        private static readonly ReaderWriterLockSlim slim = new();
         private readonly ApiRequestProvider apiRequestProvider;
         private readonly ApiRequestBlock apiRequestBlock;
         private ApiDataPackBox apiPackage;
@@ -26,18 +25,7 @@ namespace DotNetCoreZhHans.Service.ProcessingUnit
 
         protected override ITargetBlock<NodeCacheData> TargetBlock => default;
 
-        public override async Task SendAsync(NodeCacheData value)
-        {
-            slim.EnterWriteLock();
-            try
-            {
-                await Send(value);
-            }
-            finally
-            {
-                slim.ExitWriteLock();
-            }
-        }
+        public override Task SendAsync(NodeCacheData value) => Send(value).WaitAsync(Token);
 
         private async Task Send(NodeCacheData value)
         {
