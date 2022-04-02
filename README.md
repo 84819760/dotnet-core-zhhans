@@ -18,6 +18,8 @@
 请将 “packages.config” 迁移到 “packagesReference”之后可用，在当前项目 "引用" 上点右键进行迁移。    
 ![image](imgs/02%20NET%20Framework%20%E9%A1%B9%E7%9B%AE%E8%BF%81%E7%A7%BB.png)
 
+# 使用    
+![image](imgs/%E4%BD%BF%E7%94%A8.gif)    
 
 # API选择
 
