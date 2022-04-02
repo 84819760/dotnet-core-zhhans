@@ -64,6 +64,7 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\ReferenceAss
 ---
 
 # 本人英语水平无限接近0，不要纠结源码中的命名
-
+不然我干嘛写这个？ ^__^
+---
 # 免责声明
 本软件为免费提供，源码根据开源协议提供，本人不承担使用软件或源码导致的任何后果。
