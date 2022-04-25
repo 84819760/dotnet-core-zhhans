@@ -1,25 +1,34 @@
-汉化前 :    
+>汉化前 :    
+
 ![image](imgs/01%20%E6%B1%89%E5%8C%96%E5%89%8D.png)    
 
-汉化后 :    
+> 汉化后 :    
+
 ![image](imgs/03%20%E6%B1%89%E5%8C%96%E5%90%8E.png)    
 
+---
 # 下载
 > 2.0.0 以下版本需要手动更新！    
 
 下载链接 : [url](http://www.wyj55.cn/DotNetCoreZhHans.html)   
 内置数据库已包含常用库的翻译数据，可以离线翻译。
-建议注册百度翻译API账号 注册地址: https://fanyi-api.baidu.com/    
+建议注册百度翻译API账号 注册地址:`（不是“百度云下”的翻译，是“百度翻译”！！！！！）` https://fanyi-api.baidu.com/    
 到“开发者中心”>“开发者信息”拿到“APP ID”和“密钥” ，然后进入“配置”> “API选项” ，填写参数。Secretld 填  APP ID , SecretKye 填 密钥。更新如果遇到问题，请删除\lib\DotNetCorezhHansMain.exe，重新打开即可。
 
 > 要求x64系统，并且安装.NET6！
+
+---
 
 # .NET Framework 项目
 请将 “packages.config” 迁移到 “packagesReference”之后可用，在当前项目 "引用" 上点右键进行迁移。    
 ![image](imgs/02%20NET%20Framework%20%E9%A1%B9%E7%9B%AE%E8%BF%81%E7%A7%BB.png)
 
+---    
+
 # 使用    
 ![image](imgs/%E4%BD%BF%E7%94%A8.gif)    
+
+---    
 
 # API选择
 
@@ -32,6 +41,7 @@
 
 > 建议选择百度
 [百度翻译注册网址](https://fanyi-api.baidu.com/)
+
 ---
 
 # 关于翻译中的”异常”
@@ -63,5 +73,8 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\ReferenceAss
 
 ---
 
+# 本人英语水平无限接近0，所以不要纠结源码中的命名！
+> 不然我干嘛写这个？ ^__^      
+---
 # 免责声明
 本软件为免费提供，源码根据开源协议提供，本人不承担使用软件或源码导致的任何后果。
