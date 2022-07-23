@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -60,10 +61,9 @@ namespace DotNetCorezhHans.Views
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var data = await App.InfoDataTask;
-            if (data.TestVersion(App.Version)) return;
+            if (data.Error != null || data.TestVersion(App.Version)) return;
             var isUpdate = MessageBox.Show("检测到更新，是否进入升级界面？", "软件更新", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
             if (isUpdate) UpdateFile.Run();
-            // pageState.Publish(PageControlType.Surprised);
         }
     }
 }

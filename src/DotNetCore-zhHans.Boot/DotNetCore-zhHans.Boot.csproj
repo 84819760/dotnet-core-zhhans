@@ -9,7 +9,7 @@
 		<ApplicationIcon>j12.ico</ApplicationIcon>
 		<AssemblyName>DotNetCoreZhHans</AssemblyName>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Version>2.0.9</Version>
+		<Version>2.0.15</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

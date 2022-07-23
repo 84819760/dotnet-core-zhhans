@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DotNetCorezhHans.Base
@@ -18,6 +14,8 @@ namespace DotNetCorezhHans.Base
 
         public string Md5 { get; set; }
 
+        public string Error { get; private set; }
+
         public static async Task<InfoData> GetInfoData(string url)
         {
             try
@@ -26,12 +24,16 @@ namespace DotNetCorezhHans.Base
                 var json = await hc.GetStringAsync(url);
                 return Extensions.Deserialize<InfoData>(json);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return new() { Information = "读取更新错误!" };
+                return new() { Information = "读取更新错误!", Error = ex.Message };
             }
         }
 
-        public bool TestVersion(string version) => Version == version;
+        public bool TestVersion(string version)
+        {
+            if (Error != null) return true;
+            return Version == version;
+        }
     }
 }

@@ -94,7 +94,7 @@ namespace DotNetCorezhHans.Base
                 {
                     Name = "百度",
                     IntervalTime = 1000,
-                    MaxChar = 6000,
+                    MaxChar = 1000,
                     ThreadCount = 1,
                 },
                 new ApiConfig()
