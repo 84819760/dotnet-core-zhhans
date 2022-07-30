@@ -77,7 +77,8 @@ namespace DotNetCorezhHans
         {
             var target = Path.Combine(Directory.GetCurrentDirectory(), "lib", "TranslData.db");
             if (File.Exists(target)) return;
-            UpdateFile.Run();
+            //UpdateFile.Run();
+            MessageBoxShow($"找不到数据库文件:{target}");
         }
 
         private static void ShowUpdate(string[] args)

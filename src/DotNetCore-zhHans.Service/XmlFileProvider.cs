@@ -54,9 +54,13 @@ namespace DotNetCoreZhHans.Service
             .Where(TestFile)
             .Select(SendFilePath);
 
-        private bool TestFile(string path) => IsExistsDll(path) 
-            && TryIsDoc(path) 
+        private bool TestFile(string path) => IsNotZhHans(path)
+            && IsExistsDll(path)
+            && TryIsDoc(path)
             && IsExistsZhHansXml(path);
+
+        private static bool IsNotZhHans(string path) => !path
+            .Contains(@"\zh-Hans\", StringComparison.InvariantCultureIgnoreCase);
 
         private IEnumerable<string> GetDirectories(string directory) => Directory
             .EnumerateDirectories(directory)

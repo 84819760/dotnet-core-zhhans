@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +7,6 @@ using System.Xml;
 using DotNetCorezhHans.Base.Interfaces;
 using DotNetCoreZhHans.Service.ProcessingUnit;
 using DotNetCoreZhHans.Service.XmlNodes;
-using TencentCloud.Mrs.V20200910.Models;
 
 namespace DotNetCoreZhHans.Service.FileHandlers.FileActuators
 {
@@ -25,7 +23,7 @@ namespace DotNetCoreZhHans.Service.FileHandlers.FileActuators
         public override async Task Run()
         {
             await using var unit = new RootUnit(Transmits);
-            var xmlDoc = CreateXmlDocument();
+            var xmlDoc = await CreateXmlDocument();
 
             foreach (var item in GetXmlNodes(xmlDoc))
             {
@@ -46,61 +44,80 @@ namespace DotNetCoreZhHans.Service.FileHandlers.FileActuators
             master.Title3 = "等待 : 0";
         }
 
-        protected XmlDocument CreateXmlDocument()
+        protected async Task<XmlDocument> CreateXmlDocument()
         {
             var xmlDoc = new XmlDocument();
-            NetstandardTest(xmlDoc);
+            await NetstandardTest(xmlDoc);
             memberNodeCount = GetMemberNode(xmlDoc).Count();
-            return xmlDoc;
+            return await Task.FromResult(xmlDoc);
         }
 
-        private void NetstandardTest(XmlDocument doc)
+        private async Task NetstandardTest(XmlDocument doc)
         {
+            string path;
             try
             {
-                doc.Load(Transmits.File.Path);
+                path = await GetXmlFilePath();
+                doc.Load(path);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                if (IsNetstandard()) ReplaceFile(ex);
+                //if (IsNetstandard()) ReplaceFile(ex);
                 throw;
             }
+            DeleteFile(path);
         }
 
-        private bool IsNetstandard()
+        private static void DeleteFile(string path)
         {
-            var path = Transmits.File.Path.ToLower();
-            var target = Path.GetFileName(Transmits.File.Path);
-            return target == "netstandard.xml" 
-                && new[] { "netstandard.library", @"\ref\" }.All(x => path.Contains(x));
+            if (!System.IO.File.Exists(path)) return;
+            System.IO.File.Delete(path);
         }
 
-        private void ReplaceFile(Exception ex)
+        private async Task<string> GetXmlFilePath()
         {
-            var dir = Environment.CurrentDirectory;
-            var path = GetNetstandardXmlPath(dir) ?? GetNetstandardXmlPath(Path.Combine(dir, "lib"));
-            ReplaceFile(path);
-            throw new Exception($"读取文件失败:{ex.Message}\r\n使用官方文件netstandard2.1替换");
+            var resPath = Environment.GetEnvironmentVariable("TEMP");
+            resPath = Path.Combine(resPath, "DotNetCore-zhHans");
+            Directory.CreateDirectory(resPath);
+            resPath = Path.Combine(resPath, $"{Guid.NewGuid()}.xml");
+            await Task.Run(() => new XmlCollate(Transmits.File.Path, resPath));
+            return resPath;
         }
 
-        private void ReplaceFile(string netstandardXmlPath)
-        {
-            var dir = Path.GetDirectoryName(Transmits.File.Path);
-            dir = Path.Combine(dir, "zh-hans");
-            Directory.CreateDirectory(dir);
+        //private bool IsNetstandard()
+        //{
+        //    var path = Transmits.File.Path.ToLower();
+        //    var target = Path.GetFileName(Transmits.File.Path);
+        //    return target == "netstandard.xml" 
+        //        && new[] { "netstandard.library", @"\ref\" }.All(x => path.Contains(x));
+        //}
 
-            var fileName = Path.GetFileName(Transmits.File.Path);
-            var targetFile = Path.Combine(dir, fileName);
+        //private void ReplaceFile(Exception ex)
+        //{
+        //    var dir = Environment.CurrentDirectory;
+        //    var path = GetNetstandardXmlPath(dir) ?? GetNetstandardXmlPath(Path.Combine(dir, "lib"));
+        //    ReplaceFile(path);
+        //    throw new Exception($"读取文件失败:{ex.Message}\r\n使用官方文件netstandard2.1替换");
+        //}
 
-            System.IO.File.Copy(netstandardXmlPath, targetFile);
-        }
+        //private void ReplaceFile(string netstandardXmlPath)
+        //{
+        //    var dir = Path.GetDirectoryName(Transmits.File.Path);
+        //    dir = Path.Combine(dir, "zh-hans");
+        //    Directory.CreateDirectory(dir);
 
-        private static string GetNetstandardXmlPath(string dir)
-        {
-            var path = Path.Combine(dir, "netstandard.xml");
-            if (System.IO.File.Exists(path)) return path;
-            return default;
-        }
+        //    var fileName = Path.GetFileName(Transmits.File.Path);
+        //    var targetFile = Path.Combine(dir, fileName);
+
+        //    System.IO.File.Copy(netstandardXmlPath, targetFile);
+        //}
+
+        //private static string GetNetstandardXmlPath(string dir)
+        //{
+        //    var path = Path.Combine(dir, "netstandard.xml");
+        //    if (System.IO.File.Exists(path)) return path;
+        //    return default;
+        //}
 
         private IEnumerable<RootNode> GetXmlNodes(XmlDocument doc) => GetMemberNode(doc)?
             .Select(CreateMemberNode)
@@ -109,10 +126,10 @@ namespace DotNetCoreZhHans.Service.FileHandlers.FileActuators
         private static IEnumerable<XmlNode> GetMemberNode(XmlDocument doc) => new[]
         {
             "doc/members",
-            // 待定，这个格式很奇怪,为毛有这种情况？
-            //"span/doc/members"
-        }.Select(doc.SelectSingleNode).OfType<XmlNode>()
-            .SelectMany(x => x.ChildNodes.OfType<XmlNode>());
+            "span/doc/members", // 这个格式很奇怪,为毛有这种情况？
+        }
+        .Select(doc.SelectSingleNode).OfType<XmlNode>()
+        .SelectMany(x => x.ChildNodes.OfType<XmlNode>());
 
         private MemberNode CreateMemberNode(XmlNode xmlNode)
         {

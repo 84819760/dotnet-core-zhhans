@@ -9,7 +9,8 @@ namespace DotNetCoreZhHans.Service.XmlFileProviders
 {
     internal class XmlFileTest
     {
-        private static readonly Regex regex = new(@"[\u4e00-\u9fa5]|[\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufc3f]|[\ufe70-\ufefc]");
+        //|[\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufc3f]|[\ufe70-\ufefc]
+        private static readonly Regex regex = new(@"[\u4e00-\u9fa5]");
         private readonly ITransmitData transmits;
         protected CancellationToken token;
         private readonly string filePath;
