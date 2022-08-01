@@ -14,6 +14,7 @@ namespace DotNetCoreZhHans.Service
     /// </summary>
     public class XmlFileProvider
     {
+        private const StringComparison ignoreCase = StringComparison.InvariantCultureIgnoreCase;
         private readonly CancellationToken token;
         private readonly ConfigManager config;
         private readonly bool isCover;
@@ -59,8 +60,8 @@ namespace DotNetCoreZhHans.Service
             && TryIsDoc(path)
             && IsExistsZhHansXml(path);
 
-        private static bool IsNotZhHans(string path) => !path
-            .Contains(@"\zh-Hans\", StringComparison.InvariantCultureIgnoreCase);
+        private static bool IsNotZhHans(string path) => 
+            !path.Contains(@"\zh-Hans\", ignoreCase);
 
         private IEnumerable<string> GetDirectories(string directory) => Directory
             .EnumerateDirectories(directory)
@@ -83,7 +84,11 @@ namespace DotNetCoreZhHans.Service
             return Path.Combine(dir, "zh-hans", xmlFileName);
         }
 
-        private bool IsDoc(string path) => File.ReadLines(path).Take(2).Contains("<doc>");
+        private bool IsDoc(string path) =>
+            File.ReadLines(path).Take(5).Any(IsContainsDoc);
+
+        private bool IsContainsDoc(string value) => 
+            value.Contains("<doc>", ignoreCase) || value.Contains("<doc ", ignoreCase);
 
         private string SendPath(string path)
         {
