@@ -19,6 +19,7 @@ public class TranslateService_Offline : TranslateServiceBase
     protected override Task<string> PostAsync(string request)
     {
         var res = $"{request}{OfflineKey}";
+        //return Task.FromResult("");用于测试行丢失！
         return Task.FromResult(res);
     }
 

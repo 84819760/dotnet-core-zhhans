@@ -49,7 +49,7 @@ namespace DotNetCoreZhHans.Service.ProcessingUnit
                 await SendNext(datas, resValue, group, isOffline);
             }
             catch (Exception)
-            {
+            {             
                 Transmits.CancellationTokenSource.Cancel();
                 throw;
             }

@@ -12,7 +12,6 @@ namespace DotNetCoreZhHans.Service.ProcessingUnit
         private readonly static object lockObj = new();
         private readonly ITransmitData transmits;
         private readonly int maxCount;
-        //private int count;
 
         public ApiDataPackBox(ApiRequestItem apiRequestItem, ITransmitData transmits)
         {
@@ -33,7 +32,6 @@ namespace DotNetCoreZhHans.Service.ProcessingUnit
                     IsComplete = count >= maxCount;
                     if (IsComplete) return false;
                 }
-                Debug.Print(GetLength().ToString());
                 list.Add(data);
             }
             return true;

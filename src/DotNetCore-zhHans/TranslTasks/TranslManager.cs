@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using DotNetCorezhHans.Base;
@@ -88,7 +85,7 @@ namespace DotNetCorezhHans.TranslTasks
         private async Task CallRun(CancellationToken token)
         {
             var res = await Task.Run(RunTask);
-            SetMasterTitlet("结束任务");          
+            SetMasterTitlet("结束任务");
             token.ThrowIfCancellationRequested();
             PageStatePublish(res, PageControlType.AbnormalList);
             await SetButtonState(ExecButtonState.Lock);

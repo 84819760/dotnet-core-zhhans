@@ -54,14 +54,13 @@ namespace DotNetCoreZhHans.Service
         private string[] CheckLength(string value, string apiName)
         {
             var res = GetRows(value);
-            if (res is null) return default;
             if (res.Length == Datas.Length) return res;
             var error = @$"翻译返回值出现行丢失！
 原文:{QueryValue}
 译文:{value}";
             var errorData = transmits.File
                 .CreateAndAdd(FilePath, MemberPath, nameof(NodeCacheDataGroup), error);
-            return default;
+            return GetRows(QueryValue);
         }
 
         private static string[] GetRows(string value) => value?
