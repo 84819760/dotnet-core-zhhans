@@ -74,7 +74,7 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\ReferenceAss
 
 ---
 
-# 本人英语水平问题，所以不要纠结源码中的命名！
+# 由于英语水平问题，所以不要纠结源码中的命名！
 > 不然我干嘛写这个？ ^__^      
 ---
 # 免责声明
