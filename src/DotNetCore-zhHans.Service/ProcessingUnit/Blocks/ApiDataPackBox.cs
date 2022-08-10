@@ -1,15 +1,18 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using DotNetCorezhHans.Base.Interfaces;
 using DotNetCoreZhHans.Service.ApiRequests;
+using System.Linq;
 
 namespace DotNetCoreZhHans.Service.ProcessingUnit
 {
     internal class ApiDataPackBox
     {
         private readonly List<NodeCacheData> list = new();
+        private readonly static object lockObj = new();
         private readonly ITransmitData transmits;
         private readonly int maxCount;
-        private int count;
+        //private int count;
 
         public ApiDataPackBox(ApiRequestItem apiRequestItem, ITransmitData transmits)
         {
@@ -22,15 +25,21 @@ namespace DotNetCoreZhHans.Service.ProcessingUnit
 
         public bool TryAdd(NodeCacheData data)
         {
-            if (list.Count > 0)
+            lock (lockObj)
             {
-                count += data.Length;
-                IsComplete = count > maxCount;
-                if (IsComplete) return false;
+                if (list.Count > 0)
+                {
+                    var count = GetLength() + data.Length;
+                    IsComplete = count >= maxCount;
+                    if (IsComplete) return false;
+                }
+                Debug.Print(GetLength().ToString());
+                list.Add(data);
             }
-            list.Add(data);
             return true;
         }
+
+        private int GetLength() => list.Sum(x => x.Length);
 
         public ApiRequestItem Api { get; }
 
