@@ -1,10 +1,11 @@
-﻿using DotNetCorezhHans;
+﻿using System.Diagnostics;
+using DotNetCorezhHans;
 
 namespace TranslateApi;
 
 public class TranslateService_Offline : TranslateServiceBase
 {
-    public const string OfflineKey = ",   未配置翻译API，默认使用原文替代。";
+    public const string OfflineKey = "!本地数据库中无翻译数据，需要开启API！";
 
     public TranslateService_Offline() : base(new()
     {
@@ -18,7 +19,10 @@ public class TranslateService_Offline : TranslateServiceBase
 
     protected override Task<string> PostAsync(string request)
     {
-        var res = $"{request}{OfflineKey}";
+        //Debug.Print(request);
+        IEnumerable<string> rows = request.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        rows = rows.Select(x => $"{x} {OfflineKey}");
+        var res = string.Join("\r\n", rows);
         //return Task.FromResult("");用于测试行丢失！
         return Task.FromResult(res);
     }

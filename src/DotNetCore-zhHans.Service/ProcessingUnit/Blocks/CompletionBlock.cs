@@ -15,7 +15,7 @@ namespace DotNetCoreZhHans.Service.ProcessingUnit
 
         public CompletionBlock(ITransmitData transmits, UpdateXmlBlock updateXmlUnit) : base(transmits)
         {
-            var execOption = CreateExecutionDataflowBlockOption(10000, 100);
+            var execOption = CreateExecutionDataflowBlockOption(1_000_000);
             block = new(Handler, execOption);
             block.LinkTo(updateXmlUnit);
         }
