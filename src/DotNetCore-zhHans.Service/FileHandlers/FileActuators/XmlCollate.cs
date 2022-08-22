@@ -61,7 +61,12 @@ internal class XmlCollate
 
     private void SetEnd()
     {
-        var value = xmlElement.ToString().Replace("<br>","<br/>", ignoreCase);
+        var value = xmlElement.ToString()
+            .Replace("<br>", "<br/>", ignoreCase);
+
+        if (value.StartsWith("<member"))
+            value = value.Replace("&,", "@,").Replace("&)", "@)");
+
         xmlElement.Clear();
 
         if (!IsP(value)) writerBuffer.Append(value);
@@ -70,7 +75,7 @@ internal class XmlCollate
     }
 
     private static bool IsP(string value)
-    {       
+    {
         return value.IndexOf("<p ", ignoreCase) > -1 ||
             value.IndexOf("<p>", ignoreCase) > -1 ||
             value.IndexOf("</p>", ignoreCase) > -1;

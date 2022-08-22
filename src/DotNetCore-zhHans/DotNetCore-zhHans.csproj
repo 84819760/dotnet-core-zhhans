@@ -10,10 +10,9 @@
 
 		<SignAssembly>false</SignAssembly>
 		<ApplicationIcon>j12.ico</ApplicationIcon>
-		<Version>2.0.29</Version>
 		<Nullable>disable</Nullable>		
 	</PropertyGroup>
-
+	<Import Project="../发布文件/DotNetCore-zhHans.props"/>
 	<ItemGroup>
 		<Compile Remove="CustomControls\**" />
 		<Compile Remove="Services\**" />

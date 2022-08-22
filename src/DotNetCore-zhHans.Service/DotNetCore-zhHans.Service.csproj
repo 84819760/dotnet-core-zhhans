@@ -4,8 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>DotNetCoreZhHans.Service</RootNamespace>
     <Platforms>AnyCPU;x64;x86</Platforms>
-	<Version>2.0.29</Version>
   </PropertyGroup>
+	<Import Project="../发布文件/DotNetCore-zhHans.props"/>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;WriteDbYes</DefineConstants>
