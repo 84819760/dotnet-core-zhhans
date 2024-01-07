@@ -24,6 +24,7 @@ namespace DotNetCorezhHans.Update
             }
             else
             {
+
                 MessageBox.Show("参数不正确");
                 Environment.Exit(0);
             }
